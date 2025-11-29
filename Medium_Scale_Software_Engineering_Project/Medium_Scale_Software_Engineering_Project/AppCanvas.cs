@@ -6,7 +6,7 @@ namespace Medium_Scale_Software_Engineering_Project
     /// <summary>
     /// This Class is a extention of ICanvas Class which inmplements and overrites all the methods of the Icanvas Class
     /// </summary>
-    internal class AppCanvas : ICanvas
+    internal class AppCanvas : Canvas
     {
         Bitmap bmp;
         Graphics g;
@@ -29,26 +29,7 @@ namespace Medium_Scale_Software_Engineering_Project
             brush = Brushes.Black;
         }
 
-        /// <summary>
-        /// This is the setter and getter for the horizontal position of the canvas
-        /// </summary>
-        public int Xpos
-        {
-            get => xpos;
-            set => xpos = value;
-        }
-        /// <summary>
-        /// This is the setter and getter for the Vertical position of the canvas
-        /// </summary>
-        public int Ypos
-        {
-            get => ypos;
-            set => ypos = value;
-        }
-
-        /// <summary>
-        /// This method is used to set the color of the pen
-        /// </summary>
+       
         public object PenColour
         {
             get => pen.Color;
@@ -60,17 +41,6 @@ namespace Medium_Scale_Software_Engineering_Project
                     brush = new SolidBrush(c);
                 }
             }
-        }
-
-        /// <summary>
-        /// this is used to moove the pen from one position to other
-        /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        public void MoveTo(int x, int y)
-        {
-            xpos = x;
-            ypos = y;
         }
 
         /// <summary>
@@ -132,13 +102,6 @@ namespace Medium_Scale_Software_Engineering_Project
         public void Clear()
         {
             g.Clear(Color.White);
-        }
-
-        public void Reset()
-        {
-            Clear();
-            xpos = 0;
-            ypos = 0;
         }
 
         public void SetColour(int red, int green, int blue)

@@ -52,31 +52,32 @@
             // textBox1
             // 
             textBox1.BackColor = Color.White;
-            textBox1.Location = new Point(36, 58);
+            textBox1.Location = new Point(26, 58);
             textBox1.Multiline = true;
             textBox1.Name = "textBox1";
             textBox1.ScrollBars = ScrollBars.Vertical;
-            textBox1.Size = new Size(673, 458);
+            textBox1.Size = new Size(683, 458);
             textBox1.TabIndex = 0;
             // 
             // debugWindow
             // 
-            debugWindow.Location = new Point(36, 718);
+            debugWindow.Location = new Point(36, 648);
             debugWindow.Multiline = true;
             debugWindow.Name = "debugWindow";
             debugWindow.ReadOnly = true;
             debugWindow.ScrollBars = ScrollBars.Vertical;
-            debugWindow.Size = new Size(673, 178);
+            debugWindow.Size = new Size(673, 248);
             debugWindow.TabIndex = 1;
             // 
             // button1
             // 
-            button1.Location = new Point(36, 650);
+            button1.BackColor = SystemColors.GradientActiveCaption;
+            button1.Location = new Point(36, 582);
             button1.Name = "button1";
-            button1.Size = new Size(150, 43);
+            button1.Size = new Size(107, 46);
             button1.TabIndex = 2;
             button1.Text = "Run";
-            button1.UseVisualStyleBackColor = true;
+            button1.UseVisualStyleBackColor = false;
             button1.Click += button1_Click;
             // 
             // pictureBox1
@@ -85,14 +86,14 @@
             pictureBox1.BorderStyle = BorderStyle.FixedSingle;
             pictureBox1.Location = new Point(715, 58);
             pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(1223, 838);
+            pictureBox1.Size = new Size(1254, 838);
             pictureBox1.TabIndex = 3;
             pictureBox1.TabStop = false;
             pictureBox1.Paint += pictureBox1_Paint;
             // 
             // textBox2
             // 
-            textBox2.Location = new Point(177, 557);
+            textBox2.Location = new Point(176, 542);
             textBox2.Name = "textBox2";
             textBox2.Size = new Size(495, 39);
             textBox2.TabIndex = 4;
@@ -100,7 +101,7 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(36, 562);
+            label1.Location = new Point(35, 542);
             label1.Name = "label1";
             label1.Size = new Size(130, 32);
             label1.TabIndex = 5;
