@@ -28,12 +28,12 @@
         /// </summary>
         private void InitializeComponent()
         {
-            textBox1 = new TextBox();
+            multiLineInputBox = new TextBox();
             debugWindow = new TextBox();
-            button1 = new Button();
-            pictureBox1 = new PictureBox();
-            textBox2 = new TextBox();
-            label1 = new Label();
+            runButton = new Button();
+            drawingBoard = new PictureBox();
+            singleLineInputBox = new TextBox();
+            commandLabel = new Label();
             menuStrip1 = new MenuStrip();
             fileToolStripMenuItem = new ToolStripMenuItem();
             newToolStripMenuItem = new ToolStripMenuItem();
@@ -45,19 +45,19 @@
             loadImageToolStripMenuItem = new ToolStripMenuItem();
             helpToolStripMenuItem = new ToolStripMenuItem();
             aboutToolStripMenuItem = new ToolStripMenuItem();
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)drawingBoard).BeginInit();
             menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
-            // textBox1
+            // multiLineInputBox
             // 
-            textBox1.BackColor = Color.White;
-            textBox1.Location = new Point(26, 58);
-            textBox1.Multiline = true;
-            textBox1.Name = "textBox1";
-            textBox1.ScrollBars = ScrollBars.Vertical;
-            textBox1.Size = new Size(683, 458);
-            textBox1.TabIndex = 0;
+            multiLineInputBox.BackColor = Color.White;
+            multiLineInputBox.Location = new Point(26, 58);
+            multiLineInputBox.Multiline = true;
+            multiLineInputBox.Name = "multiLineInputBox";
+            multiLineInputBox.ScrollBars = ScrollBars.Vertical;
+            multiLineInputBox.Size = new Size(683, 458);
+            multiLineInputBox.TabIndex = 0;
             // 
             // debugWindow
             // 
@@ -69,43 +69,43 @@
             debugWindow.Size = new Size(673, 248);
             debugWindow.TabIndex = 1;
             // 
-            // button1
+            // runButton
             // 
-            button1.BackColor = SystemColors.GradientActiveCaption;
-            button1.Location = new Point(36, 582);
-            button1.Name = "button1";
-            button1.Size = new Size(107, 46);
-            button1.TabIndex = 2;
-            button1.Text = "Run";
-            button1.UseVisualStyleBackColor = false;
-            button1.Click += button1_Click;
+            runButton.BackColor = SystemColors.GradientActiveCaption;
+            runButton.Location = new Point(36, 582);
+            runButton.Name = "runButton";
+            runButton.Size = new Size(107, 46);
+            runButton.TabIndex = 2;
+            runButton.Text = "Run";
+            runButton.UseVisualStyleBackColor = false;
+            runButton.Click += button1_Click;
             // 
-            // pictureBox1
+            // drawingBoard
             // 
-            pictureBox1.BackColor = SystemColors.ActiveCaptionText;
-            pictureBox1.BorderStyle = BorderStyle.FixedSingle;
-            pictureBox1.Location = new Point(715, 58);
-            pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(1254, 838);
-            pictureBox1.TabIndex = 3;
-            pictureBox1.TabStop = false;
-            pictureBox1.Paint += pictureBox1_Paint;
+            drawingBoard.BackColor = SystemColors.ActiveCaptionText;
+            drawingBoard.BorderStyle = BorderStyle.FixedSingle;
+            drawingBoard.Location = new Point(715, 58);
+            drawingBoard.Name = "drawingBoard";
+            drawingBoard.Size = new Size(1254, 838);
+            drawingBoard.TabIndex = 3;
+            drawingBoard.TabStop = false;
+            drawingBoard.Paint += pictureBox1_Paint;
             // 
-            // textBox2
+            // singleLineInputBox
             // 
-            textBox2.Location = new Point(176, 542);
-            textBox2.Name = "textBox2";
-            textBox2.Size = new Size(495, 39);
-            textBox2.TabIndex = 4;
+            singleLineInputBox.Location = new Point(176, 542);
+            singleLineInputBox.Name = "singleLineInputBox";
+            singleLineInputBox.Size = new Size(495, 39);
+            singleLineInputBox.TabIndex = 4;
             // 
-            // label1
+            // commandLabel
             // 
-            label1.AutoSize = true;
-            label1.Location = new Point(35, 542);
-            label1.Name = "label1";
-            label1.Size = new Size(130, 32);
-            label1.TabIndex = 5;
-            label1.Text = "Command:";
+            commandLabel.AutoSize = true;
+            commandLabel.Location = new Point(35, 542);
+            commandLabel.Name = "commandLabel";
+            commandLabel.Size = new Size(130, 32);
+            commandLabel.TabIndex = 5;
+            commandLabel.Text = "Command:";
             // 
             // menuStrip1
             // 
@@ -115,7 +115,7 @@
             menuStrip1.Name = "menuStrip1";
             menuStrip1.Size = new Size(1988, 40);
             menuStrip1.TabIndex = 6;
-            menuStrip1.Text = "menuStrip1";
+            menuStrip1.Text = "topMenuBar";
             // 
             // fileToolStripMenuItem
             // 
@@ -127,45 +127,45 @@
             // newToolStripMenuItem
             // 
             newToolStripMenuItem.Name = "newToolStripMenuItem";
-            newToolStripMenuItem.Size = new Size(359, 44);
+            newToolStripMenuItem.Size = new Size(229, 44);
             newToolStripMenuItem.Text = "New";
             // 
             // saveAsToolStripMenuItem
             // 
             saveAsToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { saveFileToolStripMenuItem, saveImageToolStripMenuItem });
             saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
-            saveAsToolStripMenuItem.Size = new Size(359, 44);
+            saveAsToolStripMenuItem.Size = new Size(229, 44);
             saveAsToolStripMenuItem.Text = "Save As";
             // 
             // saveFileToolStripMenuItem
             // 
             saveFileToolStripMenuItem.Name = "saveFileToolStripMenuItem";
-            saveFileToolStripMenuItem.Size = new Size(359, 44);
+            saveFileToolStripMenuItem.Size = new Size(270, 44);
             saveFileToolStripMenuItem.Text = "Save File";
             // 
             // saveImageToolStripMenuItem
             // 
             saveImageToolStripMenuItem.Name = "saveImageToolStripMenuItem";
-            saveImageToolStripMenuItem.Size = new Size(359, 44);
+            saveImageToolStripMenuItem.Size = new Size(270, 44);
             saveImageToolStripMenuItem.Text = "Save Image";
             // 
             // loadToolStripMenuItem
             // 
             loadToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { loadFileToolStripMenuItem, loadImageToolStripMenuItem });
             loadToolStripMenuItem.Name = "loadToolStripMenuItem";
-            loadToolStripMenuItem.Size = new Size(359, 44);
+            loadToolStripMenuItem.Size = new Size(229, 44);
             loadToolStripMenuItem.Text = "Load";
             // 
             // loadFileToolStripMenuItem
             // 
             loadFileToolStripMenuItem.Name = "loadFileToolStripMenuItem";
-            loadFileToolStripMenuItem.Size = new Size(359, 44);
+            loadFileToolStripMenuItem.Size = new Size(271, 44);
             loadFileToolStripMenuItem.Text = "Load File";
             // 
             // loadImageToolStripMenuItem
             // 
             loadImageToolStripMenuItem.Name = "loadImageToolStripMenuItem";
-            loadImageToolStripMenuItem.Size = new Size(359, 44);
+            loadImageToolStripMenuItem.Size = new Size(271, 44);
             loadImageToolStripMenuItem.Text = "Load Image";
             // 
             // helpToolStripMenuItem
@@ -178,7 +178,7 @@
             // aboutToolStripMenuItem
             // 
             aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            aboutToolStripMenuItem.Size = new Size(359, 44);
+            aboutToolStripMenuItem.Size = new Size(212, 44);
             aboutToolStripMenuItem.Text = "About";
             // 
             // OutputForm
@@ -186,17 +186,17 @@
             AutoScaleDimensions = new SizeF(13F, 32F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1988, 908);
-            Controls.Add(label1);
-            Controls.Add(textBox2);
-            Controls.Add(pictureBox1);
-            Controls.Add(button1);
+            Controls.Add(commandLabel);
+            Controls.Add(singleLineInputBox);
+            Controls.Add(drawingBoard);
+            Controls.Add(runButton);
             Controls.Add(debugWindow);
-            Controls.Add(textBox1);
+            Controls.Add(multiLineInputBox);
             Controls.Add(menuStrip1);
             MainMenuStrip = menuStrip1;
             Name = "OutputForm";
             Text = "MyBoose App";
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)drawingBoard).EndInit();
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
             ResumeLayout(false);
@@ -205,12 +205,12 @@
 
         #endregion
 
-        private TextBox textBox1;
+        private TextBox multiLineInputBox;
         private TextBox debugWindow;
-        private Button button1;
-        private PictureBox pictureBox1;
-        private TextBox textBox2;
-        private Label label1;
+        private Button runButton;
+        private PictureBox drawingBoard;
+        private TextBox singleLineInputBox;
+        private Label commandLabel;
         private MenuStrip menuStrip1;
         private ToolStripMenuItem fileToolStripMenuItem;
         private ToolStripMenuItem newToolStripMenuItem;

@@ -1,17 +1,25 @@
 using BOOSE;
+using MYBooseApp;
 using System.Diagnostics;
 
 namespace Medium_Scale_Software_Engineering_Project
 {
     public partial class OutputForm : Form
     {
-        AppCanvas canvas;
+        ICanvas canvas;
+        Graphics graphics;
+        StoredProgram Program;
+        CommandFactory Factory;
+        IParser parser;
+
         public OutputForm()
         {
             InitializeComponent();
             Debug.WriteLine(AboutBOOSE.about());
             canvas = new AppCanvas(Height, Width);
-            Parser.staticCanavas = canvas;
+            Factory = new AppCommandFactory();
+            Program =new StoredProgram(canvas);
+            parser = new Parser(Factory, Program);
         }
 
         private void pictureBox1_Paint(object sender, PaintEventArgs e)
@@ -23,14 +31,14 @@ namespace Medium_Scale_Software_Engineering_Project
 
         private void button1_Click(object sender, EventArgs e)
         {
-            string code = textBox1.Text;
+            string code = multiLineInputBox.Text;
 
             try
             {
                 Parser parser = new Parser();
                 StoredProgram program = parser.ParseProgram(code);
                 program.Execute();
-                pictureBox1.Invalidate();
+                drawingBoard.Invalidate();
             }
             catch (Exception ex)
             {
