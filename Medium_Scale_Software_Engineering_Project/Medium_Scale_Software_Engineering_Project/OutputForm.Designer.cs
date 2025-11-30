@@ -61,12 +61,12 @@
             // 
             // debugWindow
             // 
-            debugWindow.Location = new Point(36, 648);
+            debugWindow.Location = new Point(36, 634);
             debugWindow.Multiline = true;
             debugWindow.Name = "debugWindow";
             debugWindow.ReadOnly = true;
             debugWindow.ScrollBars = ScrollBars.Vertical;
-            debugWindow.Size = new Size(673, 248);
+            debugWindow.Size = new Size(673, 262);
             debugWindow.TabIndex = 1;
             // 
             // runButton
@@ -82,7 +82,7 @@
             // 
             // drawingBoard
             // 
-            drawingBoard.BackColor = SystemColors.ActiveCaptionText;
+            drawingBoard.BackColor = SystemColors.ButtonShadow;
             drawingBoard.BorderStyle = BorderStyle.FixedSingle;
             drawingBoard.Location = new Point(715, 58);
             drawingBoard.Name = "drawingBoard";
@@ -127,14 +127,14 @@
             // newToolStripMenuItem
             // 
             newToolStripMenuItem.Name = "newToolStripMenuItem";
-            newToolStripMenuItem.Size = new Size(229, 44);
+            newToolStripMenuItem.Size = new Size(359, 44);
             newToolStripMenuItem.Text = "New";
             // 
             // saveAsToolStripMenuItem
             // 
             saveAsToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { saveFileToolStripMenuItem, saveImageToolStripMenuItem });
             saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
-            saveAsToolStripMenuItem.Size = new Size(229, 44);
+            saveAsToolStripMenuItem.Size = new Size(359, 44);
             saveAsToolStripMenuItem.Text = "Save As";
             // 
             // saveFileToolStripMenuItem
@@ -153,19 +153,19 @@
             // 
             loadToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { loadFileToolStripMenuItem, loadImageToolStripMenuItem });
             loadToolStripMenuItem.Name = "loadToolStripMenuItem";
-            loadToolStripMenuItem.Size = new Size(229, 44);
+            loadToolStripMenuItem.Size = new Size(359, 44);
             loadToolStripMenuItem.Text = "Load";
             // 
             // loadFileToolStripMenuItem
             // 
             loadFileToolStripMenuItem.Name = "loadFileToolStripMenuItem";
-            loadFileToolStripMenuItem.Size = new Size(271, 44);
+            loadFileToolStripMenuItem.Size = new Size(359, 44);
             loadFileToolStripMenuItem.Text = "Load File";
             // 
             // loadImageToolStripMenuItem
             // 
             loadImageToolStripMenuItem.Name = "loadImageToolStripMenuItem";
-            loadImageToolStripMenuItem.Size = new Size(271, 44);
+            loadImageToolStripMenuItem.Size = new Size(359, 44);
             loadImageToolStripMenuItem.Text = "Load Image";
             // 
             // helpToolStripMenuItem

@@ -1,16 +1,23 @@
 ﻿using BOOSE;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MYBooseApp
 {
     internal class AppParser : Parser
     {
-        public AppParser(CommandFactory Factory, StoredProgram Program) : base(Factory, Program)
+        private readonly StoredProgram _program;
+
+        public AppParser(CommandFactory factory, StoredProgram program)
+            : base(factory, program)
         {
+            _program = program;   
+            program.SetSyntaxStatus(true);
+        }
+
+        
+        public void Parse(string source)
+        {
+            _program.Clear();           
+            base.ParseProgram(source);  
         }
     }
 }

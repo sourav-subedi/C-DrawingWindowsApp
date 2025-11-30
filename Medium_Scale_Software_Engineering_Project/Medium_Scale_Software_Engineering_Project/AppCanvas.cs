@@ -1,36 +1,64 @@
-﻿using BOOSE;
-using System.Drawing;
+﻿using System.Drawing;
+using BOOSE;
 
-namespace Medium_Scale_Software_Engineering_Project
+namespace MYBooseApp
 {
-    /// <summary>
-    /// This Class is a extention of ICanvas Class which inmplements and overrites all the methods of the Icanvas Class
-    /// </summary>
     internal class AppCanvas : Canvas
     {
-        Bitmap bmp;
-        Graphics g;
-        Pen pen;
-        Brush brush;
-        int xpos, ypos;
+        private Bitmap bmp;
+        private Graphics g;
+        private Pen pen;
+        private SolidBrush brush;
+        public int xpos, ypos;
 
-        /// <summary>
-        /// This is the constructor of the class which initializes all the necessary attribute of the class
-        /// </summary>
-        /// <param name="width"></param>
-        /// <param name="height"></param>
         public AppCanvas(int width, int height)
         {
             bmp = new Bitmap(width, height);
             g = Graphics.FromImage(bmp);
-            Clear();
-
             pen = new Pen(Color.Black, 2);
-            brush = Brushes.Black;
+            brush = new SolidBrush(Color.Black);
+            Clear();
         }
 
        
-        public object PenColour
+        public override void MoveTo(int x, int y)
+        {
+            xpos = x;
+            ypos = y;
+        }
+
+        public override void DrawTo(int x, int y)
+        {
+            g.DrawLine(pen, xpos, ypos, x, y);
+            xpos = x;
+            ypos = y;
+        }
+
+        public override void Circle(int radius, bool filled)
+        {
+            Rectangle r = new Rectangle(xpos - radius, ypos - radius, radius * 2, radius * 2);
+            if (filled)
+                g.FillEllipse(brush, r);
+            else
+                g.DrawEllipse(pen, r);
+        }
+
+        public override void Rect(int width, int height, bool filled)
+        {
+            if (filled)
+                g.FillRectangle(brush, xpos, ypos, width, height);
+            else
+                g.DrawRectangle(pen, xpos, ypos, width, height);
+        }
+
+        public override void Clear()
+        {
+            g.Clear(Color.White);
+            xpos = 0;
+            ypos = 0;
+        }
+
+        public override object PenColour
         {
             get => pen.Color;
             set
@@ -43,87 +71,21 @@ namespace Medium_Scale_Software_Engineering_Project
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        public void DrawTo(int x, int y)
-        {
-            g.DrawLine(pen, xpos, ypos, x, y);
-            xpos = x;
-            ypos = y;
-        }
+        public override object getBitmap() => bmp;
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="radius"></param>
-        /// <param name="filled"></param>
-        public void Circle(int radius, bool filled)
-        {
-            if (filled)
-                g.FillEllipse(brush, xpos, ypos, radius * 2, radius * 2);
-            else
-                g.DrawEllipse(pen, xpos, ypos, radius * 2, radius * 2);
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="width"></param>
-        /// <param name="height"></param>
-        /// <param name="filled"></param>
-        public void Rect(int width, int height, bool filled)
-        {
-            if (filled)
-                g.FillRectangle(brush, xpos, ypos, width, height);
-            else
-                g.DrawRectangle(pen, xpos, ypos, width, height);
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="width"></param>
-        /// <param name="height"></param>
-        public void Tri(int width, int height)
-        {
-            Point p1 = new Point(xpos, ypos);
-            Point p2 = new Point(xpos + width, ypos);
-            Point p3 = new Point(xpos + width / 2, ypos - height);
-
-            g.DrawPolygon(pen, new Point[] { p1, p2, p3 });
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public void Clear()
-        {
-            g.Clear(Color.White);
-        }
-
-        public void SetColour(int red, int green, int blue)
-        {
-            PenColour = Color.FromArgb(red, green, blue);
-        }
-
+        
         public void Set(int width, int height)
         {
+            bmp?.Dispose();
+            g?.Dispose();
             bmp = new Bitmap(width, height);
             g = Graphics.FromImage(bmp);
             Clear();
         }
 
-        public void WriteText(string text)
+        public void WriteText(string text, int x, int y)
         {
-            g.DrawString(text, new Font("Arial", 14), brush, xpos, ypos);
-        }
-
-        public object getBitmap()
-        {
-            return bmp;
+            g.DrawString(text, new Font("Arial", 12), brush, x, y);
         }
     }
 }
