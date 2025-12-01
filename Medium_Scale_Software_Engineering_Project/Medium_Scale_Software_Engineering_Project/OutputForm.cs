@@ -9,7 +9,7 @@ namespace Medium_Scale_Software_Engineering_Project
     public partial class OutputForm : Form
     {
         private AppCanvas canvas;
-        private CommandFactory factory;
+        private AppCommandFactory factory;
         private StoredProgram program;
         private AppParser parser;
 
@@ -22,7 +22,7 @@ namespace Medium_Scale_Software_Engineering_Project
             this.Load += (s, e) =>
             {
                 canvas = new AppCanvas(drawingBoard.Width, drawingBoard.Height);
-                factory = new CommandFactory();  // Use DLL factory
+                factory = new AppCommandFactory();  // Use DLL factory
                 program = new StoredProgram(canvas);
                 parser = new AppParser(factory, program);
 
