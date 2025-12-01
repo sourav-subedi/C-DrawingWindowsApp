@@ -9,13 +9,11 @@ namespace Medium_Scale_Software_Engineering_Project
     public partial class OutputForm : Form
     {
         private AppCanvas canvas;
-        private AppCommandFactory factory;
+        private CommandFactory factory;
         private StoredProgram program;
         private AppParser parser;
 
-        private readonly string sampleProgram = @"for count = 1 to 10 step 2
-    circle count * 10
-end for";
+
 
         public OutputForm()
         {
@@ -24,7 +22,7 @@ end for";
             this.Load += (s, e) =>
             {
                 canvas = new AppCanvas(drawingBoard.Width, drawingBoard.Height);
-                factory = new AppCommandFactory();
+                factory = new CommandFactory();  // Use DLL factory
                 program = new StoredProgram(canvas);
                 parser = new AppParser(factory, program);
 
@@ -34,7 +32,6 @@ end for";
                 canvas.WriteText("BOOSE Ready", 20, 50);
                 RefreshCanvas();
 
-                multiLineInputBox.Text = sampleProgram;
             };
         }
 
@@ -51,7 +48,6 @@ end for";
 
             canvas.Clear();
             canvas.PenColour = Color.Black;
-            canvas.WriteText("Running...", 20, 50);
             RefreshCanvas();
             debugWindow.Clear();
 
