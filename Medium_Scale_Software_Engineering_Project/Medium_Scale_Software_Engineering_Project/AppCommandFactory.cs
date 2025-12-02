@@ -13,20 +13,21 @@ namespace MYBooseApp
         {
             commandType = commandType.ToLower().Trim();
 
-            switch (commandType)
+            if (commandType == "moveto")
             {
-                case "moveto":
-                    return new AppMoveto();
-
-                case "circle":
-                    return new AppCircle();
-
-                case "rect":
-                case "rectangle":
-                    return new AppRect();
-
-                default:
-                    return base.MakeCommand(commandType);
+                return new AppMoveto();
+            }
+            else if (commandType == "circle")
+            {
+                return new AppCircle();
+            }
+            else if (commandType == "rect" || commandType == "rectangle")
+            {
+                return new AppRect();
+            }
+            else
+            {
+                return base.MakeCommand(commandType);
             }
         }
 

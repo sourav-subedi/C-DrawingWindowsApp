@@ -12,6 +12,9 @@ namespace MYBooseApp
     /// </summary>
     internal class AppCircle : CommandOneParameter
     {
+        public AppCircle() : base()
+        {
+        }
         public override void Execute()
         {
             base.Execute();

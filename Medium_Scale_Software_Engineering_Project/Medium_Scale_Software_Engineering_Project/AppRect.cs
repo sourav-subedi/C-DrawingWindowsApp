@@ -10,8 +10,9 @@ namespace MYBooseApp
     /// <summary>
     /// This class overrides the base class to remove the restriction
     /// </summary>
-    internal class AppRect : CommandOneParameter
+    internal class AppRect : CommandTwoParameters
     {
+
         public override void Execute()
         {
             base.Execute();
