@@ -26,7 +26,7 @@ namespace Medium_Scale_Software_Engineering_Project
                 program = new StoredProgram(canvas);
                 parser = new AppParser(factory, program);
 
-                
+
                 canvas.Clear();
                 canvas.PenColour = Color.Black;
                 canvas.WriteText("BOOSE Ready", 20, 50);
@@ -53,10 +53,10 @@ namespace Medium_Scale_Software_Engineering_Project
 
             try
             {
-                parser.Parse(code);  
-                program.Run();         
+                parser.Parse(code);
+                program.Run();
 
-                debugWindow.AppendText($"[{DateTime.Now:HH:mm:ss}] Success! 5 circles drawn.\r\n");
+                debugWindow.AppendText($"[{DateTime.Now:HH:mm:ss}] Success!\r\n");
             }
             catch (ParserException pe)
             {
@@ -76,6 +76,89 @@ namespace Medium_Scale_Software_Engineering_Project
         {
             if (canvas?.getBitmap() is Bitmap bmp)
                 e.Graphics.DrawImage(bmp, 0, 0);
+        }
+
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var result = MessageBox.Show("Are you sure you want to exit?",
+                                 "Exit",
+                                 MessageBoxButtons.YesNo,
+                                 MessageBoxIcon.Question);
+
+            if (result == DialogResult.Yes)
+            {
+                Application.Exit();
+            }
+        }
+
+        private void newToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            multiLineInputBox.Clear();
+            canvas.Clear();
+            drawingBoard.Image = canvas.getBitmap() as Bitmap;
+            drawingBoard.Invalidate();
+        }
+
+        private void saveFileToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog dialog = new SaveFileDialog();
+            dialog.Filter = "BOOSE File (*.txt)|*.txt|All Files (*.*)|*.*";
+
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                System.IO.File.WriteAllText(dialog.FileName, multiLineInputBox.Text);
+                MessageBox.Show("Code saved successfully!", "Success");
+            }
+        }
+
+        private void saveImageToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog dialog = new SaveFileDialog();
+            dialog.Filter = "PNG Image (*.png)|*.png|JPEG Image (*.jpg)|*.jpg";
+
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                Bitmap bmp = canvas.getBitmap() as Bitmap;
+                if (bmp != null)
+                {
+                    bmp.Save(dialog.FileName);
+                    MessageBox.Show("Image saved successfully!", "Success");
+                }
+            }
+        }
+
+        private void loadFileToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog dialog = new OpenFileDialog();
+            dialog.Filter = "BOOSE File (*.txt)|*.txt|All Files (*.*)|*.*";
+
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                multiLineInputBox.Text = System.IO.File.ReadAllText(dialog.FileName);
+                MessageBox.Show("Code loaded successfully!", "Success");
+            }
+        }
+
+        private void loadImageToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog dialog = new OpenFileDialog();
+            dialog.Filter = "Image Files (*.png;*.jpg)|*.png;*.jpg";
+
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                Bitmap bmp = new Bitmap(dialog.FileName);
+
+                drawingBoard.Image = bmp;
+                drawingBoard.Invalidate();
+            }
+        }
+
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("BOOSE Editor\nBuilt by Sourav\n2025\nUsing BOOSE Interpreter",
+                "About",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information);
         }
     }
 }
