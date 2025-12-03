@@ -160,5 +160,56 @@ namespace Medium_Scale_Software_Engineering_Project
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Information);
         }
+
+        private void singleLineInputBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                e.SuppressKeyPress = true;   // Prevent ding sound
+                HandleSingleCommand(singleLineInputBox.Text.Trim());
+                singleLineInputBox.Clear();
+            }
+        }
+
+        private void HandleSingleCommand(string command)
+        {
+            command = command.ToLower().Trim();
+
+            switch (command)
+            {
+                case "new":
+                case "reset":
+                case "clear":
+                    newToolStripMenuItem_Click(null, null);
+                    break;
+
+                case "save":
+                    saveFileToolStripMenuItem_Click(null, null);
+                    break;
+
+                case "saveimage":
+                    saveImageToolStripMenuItem_Click(null, null);
+                    break;
+
+                case "load":
+                case "open":
+                    loadFileToolStripMenuItem_Click(null, null);
+                    break;
+
+                case "loadimage":
+                    loadImageToolStripMenuItem_Click(null, null);
+                    break;
+
+                case "exit":
+                case "quit":
+                    Application.Exit();
+                    break;
+
+                default:
+                    MessageBox.Show("Unknown command: " + command);
+                    break;
+            }
+        }
+
     }
 }
