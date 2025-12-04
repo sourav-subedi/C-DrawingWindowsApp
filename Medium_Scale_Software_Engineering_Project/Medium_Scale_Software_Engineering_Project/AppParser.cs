@@ -2,7 +2,7 @@
 
 namespace MYBooseApp
 {
-    internal class AppParser : Parser
+    public class AppParser : Parser
     {
         private readonly StoredProgram _program;
 

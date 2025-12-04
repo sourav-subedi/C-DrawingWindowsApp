@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MYBooseApp
 {
-    internal class AppStoredProgram : StoredProgram
+    public class AppStoredProgram : StoredProgram
     {
         public AppStoredProgram(ICanvas canvas) : base(canvas)
         {

@@ -4,7 +4,7 @@ using BOOSE;
 
 namespace MYBooseApp
 {
-    internal class AppCanvas : Canvas
+    public class AppCanvas : Canvas
     {
         private Bitmap bmp;
         private Graphics g;

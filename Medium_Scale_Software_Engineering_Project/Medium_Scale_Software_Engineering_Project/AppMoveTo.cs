@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MYBooseApp
 {
-    internal class AppMoveto: CommandTwoParameters
+    public class AppMoveto: CommandTwoParameters
     {
         public override void Execute()
         {

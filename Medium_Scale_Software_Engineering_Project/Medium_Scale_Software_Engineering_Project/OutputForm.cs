@@ -165,7 +165,7 @@ namespace Medium_Scale_Software_Engineering_Project
         {
             if (e.KeyCode == Keys.Enter)
             {
-                e.SuppressKeyPress = true;   // Prevent ding sound
+                e.SuppressKeyPress = true;   // Prevent ding sound on keypress
                 HandleSingleCommand(singleLineInputBox.Text.Trim());
                 singleLineInputBox.Clear();
             }
