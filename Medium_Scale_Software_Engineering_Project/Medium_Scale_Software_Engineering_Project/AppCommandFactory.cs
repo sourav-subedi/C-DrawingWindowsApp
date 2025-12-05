@@ -7,8 +7,16 @@ using System.Threading.Tasks;
 
 namespace MYBooseApp
 {
+    /// <summary>
+    /// the extention of the command factory to add custom made command into it
+    /// </summary>
     public class AppCommandFactory : CommandFactory
     {
+        /// <summary>
+        /// the method overrides the method from the base class to add custom commands
+        /// </summary>
+        /// <param name="commandType">the string command name</param>
+        /// <returns></returns>
         public override ICommand MakeCommand(string commandType)
         {
             commandType = commandType.ToLower().Trim();

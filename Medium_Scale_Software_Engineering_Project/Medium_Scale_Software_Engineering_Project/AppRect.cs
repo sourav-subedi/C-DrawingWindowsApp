@@ -12,6 +12,10 @@ namespace MYBooseApp
     /// </summary>
     internal class AppRect : CommandTwoParameters
     {
+        /// <summary>
+        /// extends the base method to remove restriction
+        /// </summary>
+        /// <exception cref="CommandException"></exception>
 
         public override void Execute()
         {

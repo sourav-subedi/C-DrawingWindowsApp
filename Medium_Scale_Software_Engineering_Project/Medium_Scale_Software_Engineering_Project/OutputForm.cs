@@ -6,6 +6,10 @@ using MYBooseApp;
 
 namespace Medium_Scale_Software_Engineering_Project
 {
+    /// <summary>
+    /// the main form application to run the programs from the library
+    /// it contains the input box, output canvas and the debug window 
+    /// </summary>
     public partial class OutputForm : Form
     {
         private AppCanvas canvas;
@@ -14,15 +18,18 @@ namespace Medium_Scale_Software_Engineering_Project
         private AppParser parser;
 
 
-
+        /// <summary>
+        /// initialize the form and all the required boose components
+        /// and prepare the canvas for drawing
+        /// </summary>
         public OutputForm()
         {
             InitializeComponent();
 
             this.Load += (s, e) =>
             {
-                canvas = new AppCanvas(drawingBoard.Width, drawingBoard.Height);
-                factory = new AppCommandFactory();  // Use DLL factory
+                canvas = new AppCanvas(drawingBoard.Width, drawingBoard.Height);  //call the constructor of canvas class
+                factory = new AppCommandFactory();  // Use Custom factory
                 program = new StoredProgram(canvas);
                 parser = new AppParser(factory, program);
 
@@ -34,13 +41,20 @@ namespace Medium_Scale_Software_Engineering_Project
 
             };
         }
-
+        /// <summary>
+        /// refreshes display image on the drawing board
+        /// by updating picturebox with latest canvas
+        /// </summary>
         private void RefreshCanvas()
         {
             drawingBoard.Image = canvas.getBitmap() as Bitmap;
             drawingBoard.Invalidate();
         }
-
+        
+        /// <summary>
+        /// executes the multiline command from the multilinetextbox
+        /// and shows the debugging information to the debug window
+        /// </summary>
         private void button1_Click(object sender, EventArgs e)
         {
             string code = multiLineInputBox.Text.Trim();
@@ -71,13 +85,18 @@ namespace Medium_Scale_Software_Engineering_Project
                 RefreshCanvas();
             }
         }
-
+        /// <summary>
+        /// Paint handler for the drawing board. Draws the canvas bitmap on the PictureBox.
+        /// </summary>
         private void pictureBox1_Paint(object sender, PaintEventArgs e)
         {
             if (canvas?.getBitmap() is Bitmap bmp)
                 e.Graphics.DrawImage(bmp, 0, 0);
         }
 
+        /// <summary>
+        /// handles the exit logic of the application
+        /// </summary>
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var result = MessageBox.Show("Are you sure you want to exit?",
@@ -90,7 +109,9 @@ namespace Medium_Scale_Software_Engineering_Project
                 Application.Exit();
             }
         }
-
+        /// <summary>
+        /// clears the program text area and resets the canvas
+        /// </summary>
         private void newToolStripMenuItem_Click(object sender, EventArgs e)
         {
             multiLineInputBox.Clear();
@@ -98,7 +119,9 @@ namespace Medium_Scale_Software_Engineering_Project
             drawingBoard.Image = canvas.getBitmap() as Bitmap;
             drawingBoard.Invalidate();
         }
-
+        /// <summary>
+        /// save the program in a text file format
+        /// </summary>
         private void saveFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SaveFileDialog dialog = new SaveFileDialog();
@@ -110,7 +133,9 @@ namespace Medium_Scale_Software_Engineering_Project
                 MessageBox.Show("Code saved successfully!", "Success");
             }
         }
-
+        /// <summary>
+        /// save the image from canvas in png or jpg format
+        /// </summary>
         private void saveImageToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SaveFileDialog dialog = new SaveFileDialog();
@@ -126,7 +151,9 @@ namespace Medium_Scale_Software_Engineering_Project
                 }
             }
         }
-
+        /// <summary>
+        /// load the commands from text file to the miltiline textbox
+        /// </summary>
         private void loadFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OpenFileDialog dialog = new OpenFileDialog();
@@ -138,7 +165,9 @@ namespace Medium_Scale_Software_Engineering_Project
                 MessageBox.Show("Code loaded successfully!", "Success");
             }
         }
-
+        /// <summary>
+        /// loads the image to the canvas
+        /// </summary>
         private void loadImageToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OpenFileDialog dialog = new OpenFileDialog();
@@ -152,7 +181,9 @@ namespace Medium_Scale_Software_Engineering_Project
                 drawingBoard.Invalidate();
             }
         }
-
+        /// <summary>
+        /// shows the programs about information
+        /// </summary>
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
             MessageBox.Show("BOOSE Editor\nBuilt by Sourav\n2025\nUsing BOOSE Interpreter",
@@ -161,6 +192,10 @@ namespace Medium_Scale_Software_Engineering_Project
                 MessageBoxIcon.Information);
         }
 
+        /// <summary>
+        /// Handles Enter key input inside the single-line command box.
+        /// Processes commands like 'save', 'reset', 'exit', etc.
+        /// </summary>
         private void singleLineInputBox_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
@@ -170,7 +205,10 @@ namespace Medium_Scale_Software_Engineering_Project
                 singleLineInputBox.Clear();
             }
         }
-
+        /// <summary>
+        /// Executes a single-word command such as:
+        /// new, reset, save, load, saveimage, loadimage, exit.
+        /// </summary>
         private void HandleSingleCommand(string command)
         {
             command = command.ToLower().Trim();

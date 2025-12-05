@@ -4,6 +4,10 @@ using BOOSE;
 
 namespace MYBooseApp
 {
+    /// <summary>
+    /// This class extends the canvas class from the library
+    /// The umplemented method from the libray are implemented here
+    /// </summary>
     public class AppCanvas : Canvas
     {
         private Bitmap bmp;
@@ -15,6 +19,11 @@ namespace MYBooseApp
         private int _xpos;
         private int _ypos;
 
+        /// <summary>
+        /// it is used to initalize the canvas 
+        /// </summary>
+        /// <param name="width">the width of the canvas</param>
+        /// <param name="height">the height of the canvas</param>
         public AppCanvas(int width, int height)
         {
             bmp = new Bitmap(Math.Max(1, width), Math.Max(1, height));
@@ -24,18 +33,26 @@ namespace MYBooseApp
             Clear();
         }
 
+        /// <summary>
+        /// handlels the horizontal position of the cursor
+        /// </summary>
         public override int Xpos
         {
             get => _xpos;
             set => _xpos = value;
         }
-
+        /// <summary>
+        /// handlels the verticle position of the cursor
+        /// </summary>
         public override int Ypos
         {
             get => _ypos;
             set => _ypos = value;
         }
 
+        /// <summary>
+        /// handels the color of the pen
+        /// </summary>
         public override object PenColour
         {
             get => currentColour;
@@ -64,7 +81,11 @@ namespace MYBooseApp
             }
         }
 
-        
+        /// <summary>
+        /// draws the circle
+        /// </summary>
+        /// <param name="radius">the radius of the circle</param>
+        /// <param name="filled">bool value to determine the fill of the circle </param>
         public override void Circle(int radius, bool filled)
         {
             if (radius <= 0) return;
@@ -75,7 +96,12 @@ namespace MYBooseApp
                 g.DrawEllipse(pen, rect);
         }
 
-        
+        /// <summary>
+        /// draws the rectangle
+        /// </summary>
+        /// <param name="width">width of recatangle</param>
+        /// <param name="height">height of rectangle</param>
+        /// <param name="filled">bool value to determine the fill of the rectangle</param>
         public override void Rect(int width, int height, bool filled)
         {
             if (width <= 0 || height <= 0) return;
@@ -84,11 +110,22 @@ namespace MYBooseApp
             else
                 g.DrawRectangle(pen, _xpos, _ypos, width, height);
         }
+        /// <summary>
+        /// handles the difference in spelling of the rect method
+        /// </summary>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
+        /// <param name="filled"></param>
         public override void Rectangle(int width, int height, bool filled)
         {
             Rect(width, height, filled);
         }
 
+        /// <summary>
+        /// draws the triangle
+        /// </summary>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
         public override void Tri(int width, int height)
         {
             if (width <= 0 || height == 0) return;
@@ -99,14 +136,21 @@ namespace MYBooseApp
 
             g.DrawPolygon(pen, new[] { p1, p2, p3 });
         }
-
+        /// <summary>
+        /// clears the canvas
+        /// </summary>
         public override void Clear()
         {
             g.Clear(Color.White);
-            _xpos = 0;
-            _ypos = 0;
+            //_xpos = 0;
+            //_ypos = 0;
         }
 
+        /// <summary>
+        /// draws the line 
+        /// </summary>
+        /// <param name="x">horizontal position of the end of line</param>
+        /// <param name="y">verticle position fo the end of line</param>
         public override void DrawTo(int x, int y)
         {
             g.DrawLine(pen, _xpos, _ypos, x, y);
@@ -114,20 +158,37 @@ namespace MYBooseApp
             _ypos = y;
         }
 
+        /// <summary>
+        /// returns the bitmap 
+        /// </summary>
+        /// <returns></returns>
         public override object getBitmap()
         {
             return bmp;
         }
+        /// <summary>
+        /// moves the pen to the desired position
+        /// </summary>
+        /// <param name="x">horizontal position of the pen</param>
+        /// <param name="y">vertical postion of the pen</param>
         public override void MoveTo(int x, int y)
         {
             _xpos = x;
             _ypos = y;
         }
+        /// <summary>
+        /// resets the canvas and sets position of pen to 0,0
+        /// </summary>
         public override void Reset()
         {
             _xpos = 0;
             _ypos = 0;
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
         public override void Set(int width, int height)
         {
             if (width <= 0) width = 1;
@@ -139,6 +200,12 @@ namespace MYBooseApp
             g = Graphics.FromImage(bmp);
             Clear();
         }
+        /// <summary>
+        /// sets the color of the brush
+        /// </summary>
+        /// <param name="red">red value</param>
+        /// <param name="green">green value</param>
+        /// <param name="blue">blue value</param>
         public override void SetColour(int red, int green, int blue)
         {
             red = Math.Max(0, Math.Min(255, red));
@@ -164,6 +231,12 @@ namespace MYBooseApp
                 g.DrawString(text, f, brush, _xpos, _ypos);
             }
         }
+        /// <summary>
+        /// writes the text in the canvas
+        /// </summary>
+        /// <param name="text">the text to be written</param>
+        /// <param name="x">the horizontal position of the text</param>
+        /// <param name="y">the vertical position of the text</param>
         public void WriteText(string text, int x, int y)
         {
             if (string.IsNullOrEmpty(text)) return;
@@ -173,6 +246,9 @@ namespace MYBooseApp
             }
         }
 
+        /// <summary>
+        /// used to dispose the resource after use
+        /// </summary>
         public void DisposeResources()
         {
             pen?.Dispose();

@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace MyBooseAppUnitTest
 {
+    /// <summary>
+    /// the test class to test drawto method
+    /// </summary>
     [TestClass]
     public class DrawToTests
     {
@@ -16,6 +19,9 @@ namespace MyBooseAppUnitTest
         private AppCommandFactory factory;
         private AppParser parser;
 
+        /// <summary>
+        /// initialize the values and basic setup for testing purpose
+        /// </summary>
         [TestInitialize]
         public void Setup()
         {
@@ -25,6 +31,9 @@ namespace MyBooseAppUnitTest
             parser = new AppParser(factory, program);
         }
 
+        /// <summary>
+        /// test method for validating test
+        /// </summary>
         [TestMethod]
         public void DrawTo_UpdatesPenPositionCorrectly()
         {

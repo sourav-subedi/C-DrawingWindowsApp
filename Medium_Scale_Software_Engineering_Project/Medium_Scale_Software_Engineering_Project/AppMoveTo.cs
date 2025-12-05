@@ -5,8 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MYBooseApp
-{
+namespace MYBooseApp { 
+
+    /// <summary>
+    /// override base moveto class to remove restriction
+    /// </summary>
     public class AppMoveto: CommandTwoParameters
     {
         public override void Execute()

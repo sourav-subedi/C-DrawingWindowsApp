@@ -2,6 +2,9 @@
 
 namespace MYBooseApp
 {
+    /// <summary>
+    /// extends the base parser from the library
+    /// </summary>
     public class AppParser : Parser
     {
         private readonly StoredProgram _program;

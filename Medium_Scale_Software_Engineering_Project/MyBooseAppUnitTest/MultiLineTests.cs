@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace MyBooseAppUnitTest
 {
+    /// <summary>
+    /// test class to test teh multiline command
+    /// </summary>
     [TestClass]
     public class MultiLineTests
     {
@@ -16,6 +19,9 @@ namespace MyBooseAppUnitTest
         private AppCommandFactory factory;
         private AppParser parser;
 
+        /// <summary>
+        /// inital setup for conducting test
+        /// </summary>
         [TestInitialize]
         public void Setup()
         {
@@ -25,6 +31,9 @@ namespace MyBooseAppUnitTest
             parser = new AppParser(factory, program);
         }
 
+        /// <summary>
+        /// test method for validating test
+        /// </summary>
         [TestMethod]
         public void MultiLineProgram_ExecutesCorrectly()
         {
