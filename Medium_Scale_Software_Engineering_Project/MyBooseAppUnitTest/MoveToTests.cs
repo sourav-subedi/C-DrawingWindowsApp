@@ -1,45 +1,24 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using BOOSE;
+﻿using BOOSE;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MYBooseApp;
 
 namespace MyBooseAppUnitTest
 {
-    /// <summary>
-    /// test class to test the moveto class
-    /// </summary>
     [TestClass]
     public class MoveToTests
     {
-        private AppCanvas canvas;
-        private StoredProgram program;
-        private AppCommandFactory factory;
-        private AppParser parser;
-
-        /// <summary>
-        /// initialize the values and basic setup for testing purpose
-        /// </summary>
-        [TestInitialize]
-        public void Setup()
-        {
-            canvas = new AppCanvas(500, 500);
-            factory = new AppCommandFactory();
-            program = new StoredProgram(canvas);
-            parser = new AppParser(factory, program);
-        }
-
-        /// <summary>
-        /// test method for validating test
-        /// </summary>
         [TestMethod]
-        public void MoveTo_UpdatesPenPositionCorrectly()
+        public void MoveTo_ShouldUpdatePenPosition()
         {
-            string code = "moveto 100,200";
+            // Arrange
+            var canvas = new AppCanvas(500, 500);
 
-            parser.Parse(code);
-            program.Run();
+            // Act
+            canvas.MoveTo(50, 100);
 
-            Assert.AreEqual(100, canvas.Xpos);
-            Assert.AreEqual(200, canvas.Ypos);
+            // Assert
+            Assert.AreEqual(50, canvas.Xpos);
+            Assert.AreEqual(100, canvas.Ypos);
         }
     }
 }

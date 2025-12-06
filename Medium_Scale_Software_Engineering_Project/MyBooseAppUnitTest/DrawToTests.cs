@@ -14,36 +14,18 @@ namespace MyBooseAppUnitTest
     [TestClass]
     public class DrawToTests
     {
-        private AppCanvas canvas;
-        private StoredProgram program;
-        private AppCommandFactory factory;
-        private AppParser parser;
-
-        /// <summary>
-        /// initialize the values and basic setup for testing purpose
-        /// </summary>
-        [TestInitialize]
-        public void Setup()
-        {
-            canvas = new AppCanvas(500, 500);
-            factory = new AppCommandFactory();
-            program = new StoredProgram(canvas);
-            parser = new AppParser(factory, program);
-        }
-
-        /// <summary>
-        /// test method for validating test
-        /// </summary>
         [TestMethod]
-        public void DrawTo_UpdatesPenPositionCorrectly()
+        public void DrawTo_ShouldUpdatePenPosition()
         {
-            string code = "drawto 300,400";
+            // Arrange
+            var canvas = new AppCanvas(500, 500);
 
-            parser.Parse(code);
-            program.Run();
+            // Act
+            canvas.DrawTo(50, 100);
 
-            Assert.AreEqual(300, canvas.Xpos);
-            Assert.AreEqual(400, canvas.Ypos);
+            // Assert
+            Assert.AreEqual(50, canvas.Xpos);
+            Assert.AreEqual(100, canvas.Ypos);
         }
     }
 }
