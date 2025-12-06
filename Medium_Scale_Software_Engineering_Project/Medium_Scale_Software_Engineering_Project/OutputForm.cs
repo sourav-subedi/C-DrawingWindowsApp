@@ -1,15 +1,12 @@
-﻿using System;
-using System.Drawing;
-using System.Windows.Forms;
-using BOOSE;
+﻿using BOOSE;
 using MYBooseApp;
+using System;
+using System.Drawing;
+using System.Text;
+using System.Windows.Forms;
 
 namespace Medium_Scale_Software_Engineering_Project
 {
-    /// <summary>
-    /// the main form application to run the programs from the library
-    /// it contains the input box, output canvas and the debug window 
-    /// </summary>
     public partial class OutputForm : Form
     {
         private AppCanvas canvas;
@@ -17,48 +14,52 @@ namespace Medium_Scale_Software_Engineering_Project
         private StoredProgram program;
         private AppParser parser;
 
-
-        /// <summary>
-        /// initialize the form and all the required boose components
-        /// and prepare the canvas for drawing
-        /// </summary>
         public OutputForm()
         {
             InitializeComponent();
 
             this.Load += (s, e) =>
             {
-                canvas = new AppCanvas(drawingBoard.Width, drawingBoard.Height);  //call the constructor of canvas class
-                factory = new AppCommandFactory();  // Use Custom factory
-                program = new StoredProgram(canvas);
-                parser = new AppParser(factory, program);
+                try
+                {
+                    canvas = new AppCanvas(drawingBoard.Width, drawingBoard.Height);
+                    factory = new AppCommandFactory();
+                    program = new StoredProgram(canvas);
+                    parser = new AppParser(factory, program);
 
-
-                canvas.Clear();
-                canvas.PenColour = Color.Black;
-                canvas.WriteText("BOOSE Ready", 20, 50);
-                RefreshCanvas();
-
+                    canvas.Clear();
+                    canvas.PenColour = Color.Black;
+                    canvas.WriteText("BOOSE Ready", 20, 50);
+                    RefreshCanvas();
+                }
+                catch (Exception ex)
+                {
+                    debugWindow.AppendText($"INIT ERROR: {ex.Message}\r\n");
+                }
             };
         }
-        /// <summary>
-        /// refreshes display image on the drawing board
-        /// by updating picturebox with latest canvas
-        /// </summary>
+
         private void RefreshCanvas()
         {
-            drawingBoard.Image = canvas.getBitmap() as Bitmap;
-            drawingBoard.Invalidate();
+            try
+            {
+                drawingBoard.Image = canvas?.getBitmap() as Bitmap;
+                drawingBoard.Invalidate();
+            }
+            catch (Exception ex)
+            {
+                debugWindow.AppendText($"REFRESH ERROR: {ex.Message}\r\n");
+            }
         }
-        
-        /// <summary>
-        /// executes the multiline command from the multilinetextbox
-        /// and shows the debugging information to the debug window
-        /// </summary>
+
         private void button1_Click(object sender, EventArgs e)
         {
-            string code = multiLineInputBox.Text.Trim();
-            if (string.IsNullOrWhiteSpace(code)) return;
+            string code = multiLineInputBox.Text;
+            if (string.IsNullOrWhiteSpace(code))
+            {
+                debugWindow.AppendText("No code entered.\r\n");
+                return;
+            }
 
             canvas.Clear();
             canvas.PenColour = Color.Black;
@@ -67,14 +68,57 @@ namespace Medium_Scale_Software_Engineering_Project
 
             try
             {
-                parser.Parse(code);
-                program.Run();
+                string[] lines = code.Split(new[] { "\r\n", "\n" }, StringSplitOptions.None);
+                StringBuilder statementBuffer = new StringBuilder();
+                int statementStartLine = 0;
 
+                for (int i = 0; i < lines.Length; i++)
+                {
+                    string line = lines[i].Trim();
+                    if (string.IsNullOrWhiteSpace(line)) continue;
+
+                    if (statementBuffer.Length == 0)
+                        statementStartLine = i + 1; // remember start line of this statement
+
+                    statementBuffer.AppendLine(line);
+
+                    // Check if statement ends (example: ";" or custom logic for blocks)
+                    if (line.EndsWith(";") || line == "end") // adjust according to your language
+                    {
+                        try
+                        {
+                            parser.Parse(statementBuffer.ToString()); // parse full statement
+                        }
+                        catch (Exception ex)
+                        {
+                            debugWindow.AppendText(
+                                $"[{DateTime.Now:HH:mm:ss}] ERROR near line {statementStartLine}: {ex.Message}\r\n"
+                            );
+                            return; // stop execution on error
+                        }
+
+                        statementBuffer.Clear(); // reset buffer for next statement
+                    }
+                }
+
+                // Parse any leftover statement
+                if (statementBuffer.Length > 0)
+                {
+                    try
+                    {
+                        parser.Parse(statementBuffer.ToString());
+                    }
+                    catch (Exception ex)
+                    {
+                        debugWindow.AppendText(
+                            $"[{DateTime.Now:HH:mm:ss}] ERROR near line {statementStartLine}: {ex.Message}\r\n"
+                        );
+                        return;
+                    }
+                }
+
+                program.Run();
                 debugWindow.AppendText($"[{DateTime.Now:HH:mm:ss}] Success!\r\n");
-            }
-            catch (ParserException pe)
-            {
-                debugWindow.AppendText($"[{DateTime.Now:HH:mm:ss}] SYNTAX ERROR: {pe.Message}\r\n");
             }
             catch (Exception ex)
             {
@@ -85,169 +129,217 @@ namespace Medium_Scale_Software_Engineering_Project
                 RefreshCanvas();
             }
         }
-        /// <summary>
-        /// Paint handler for the drawing board. Draws the canvas bitmap on the PictureBox.
-        /// </summary>
+
+
+
         private void pictureBox1_Paint(object sender, PaintEventArgs e)
         {
-            if (canvas?.getBitmap() is Bitmap bmp)
-                e.Graphics.DrawImage(bmp, 0, 0);
+            try
+            {
+                if (canvas?.getBitmap() is Bitmap bmp)
+                    e.Graphics.DrawImage(bmp, 0, 0);
+            }
+            catch (Exception ex)
+            {
+                debugWindow.AppendText($"PAINT ERROR: {ex.Message}\r\n");
+            }
         }
 
-        /// <summary>
-        /// handles the exit logic of the application
-        /// </summary>
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var result = MessageBox.Show("Are you sure you want to exit?",
-                                 "Exit",
-                                 MessageBoxButtons.YesNo,
-                                 MessageBoxIcon.Question);
-
-            if (result == DialogResult.Yes)
+            try
             {
-                Application.Exit();
-            }
-        }
-        /// <summary>
-        /// clears the program text area and resets the canvas
-        /// </summary>
-        private void newToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            multiLineInputBox.Clear();
-            canvas.Clear();
-            drawingBoard.Image = canvas.getBitmap() as Bitmap;
-            drawingBoard.Invalidate();
-        }
-        /// <summary>
-        /// save the program in a text file format
-        /// </summary>
-        private void saveFileToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            SaveFileDialog dialog = new SaveFileDialog();
-            dialog.Filter = "BOOSE File (*.txt)|*.txt|All Files (*.*)|*.*";
+                var result = MessageBox.Show("Are you sure you want to exit?",
+                                             "Exit",
+                                             MessageBoxButtons.YesNo,
+                                             MessageBoxIcon.Question);
 
-            if (dialog.ShowDialog() == DialogResult.OK)
-            {
-                System.IO.File.WriteAllText(dialog.FileName, multiLineInputBox.Text);
-                MessageBox.Show("Code saved successfully!", "Success");
-            }
-        }
-        /// <summary>
-        /// save the image from canvas in png or jpg format
-        /// </summary>
-        private void saveImageToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            SaveFileDialog dialog = new SaveFileDialog();
-            dialog.Filter = "PNG Image (*.png)|*.png|JPEG Image (*.jpg)|*.jpg";
-
-            if (dialog.ShowDialog() == DialogResult.OK)
-            {
-                Bitmap bmp = canvas.getBitmap() as Bitmap;
-                if (bmp != null)
+                if (result == DialogResult.Yes)
                 {
-                    bmp.Save(dialog.FileName);
-                    MessageBox.Show("Image saved successfully!", "Success");
+                    Application.Exit();
                 }
             }
+            catch (Exception ex)
+            {
+                debugWindow.AppendText($"EXIT ERROR: {ex.Message}\r\n");
+            }
         }
-        /// <summary>
-        /// load the commands from text file to the miltiline textbox
-        /// </summary>
+
+        private void newToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                multiLineInputBox.Clear();
+                canvas.Clear();
+                RefreshCanvas();
+            }
+            catch (Exception ex)
+            {
+                debugWindow.AppendText($"RESET ERROR: {ex.Message}\r\n");
+            }
+        }
+
+        private void saveFileToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                SaveFileDialog dialog = new SaveFileDialog();
+                dialog.Filter = "BOOSE File (*.txt)|*.txt|All Files (*.*)|*.*";
+
+                if (dialog.ShowDialog() == DialogResult.OK)
+                {
+                    System.IO.File.WriteAllText(dialog.FileName, multiLineInputBox.Text);
+                    MessageBox.Show("Code saved successfully!", "Success");
+                }
+            }
+            catch (Exception ex)
+            {
+                debugWindow.AppendText($"SAVE FILE ERROR: {ex.Message}\r\n");
+            }
+        }
+
+        private void saveImageToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                SaveFileDialog dialog = new SaveFileDialog();
+                dialog.Filter = "PNG Image (*.png)|*.png|JPEG Image (*.jpg)|*.jpg";
+
+                if (dialog.ShowDialog() == DialogResult.OK)
+                {
+                    if (canvas?.getBitmap() is Bitmap bmp)
+                    {
+                        bmp.Save(dialog.FileName);
+                        MessageBox.Show("Image saved successfully!", "Success");
+                    }
+                    else
+                    {
+                        debugWindow.AppendText("No image available to save.\r\n");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                debugWindow.AppendText($"SAVE IMAGE ERROR: {ex.Message}\r\n");
+            }
+        }
+
         private void loadFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            OpenFileDialog dialog = new OpenFileDialog();
-            dialog.Filter = "BOOSE File (*.txt)|*.txt|All Files (*.*)|*.*";
-
-            if (dialog.ShowDialog() == DialogResult.OK)
+            try
             {
-                multiLineInputBox.Text = System.IO.File.ReadAllText(dialog.FileName);
-                MessageBox.Show("Code loaded successfully!", "Success");
+                OpenFileDialog dialog = new OpenFileDialog();
+                dialog.Filter = "BOOSE File (*.txt)|*.txt|All Files (*.*)|*.*";
+
+                if (dialog.ShowDialog() == DialogResult.OK)
+                {
+                    multiLineInputBox.Text = System.IO.File.ReadAllText(dialog.FileName);
+                    MessageBox.Show("Code loaded successfully!", "Success");
+                }
+            }
+            catch (Exception ex)
+            {
+                debugWindow.AppendText($"LOAD FILE ERROR: {ex.Message}\r\n");
             }
         }
-        /// <summary>
-        /// loads the image to the canvas
-        /// </summary>
+
         private void loadImageToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            OpenFileDialog dialog = new OpenFileDialog();
-            dialog.Filter = "Image Files (*.png;*.jpg)|*.png;*.jpg";
-
-            if (dialog.ShowDialog() == DialogResult.OK)
+            try
             {
-                Bitmap bmp = new Bitmap(dialog.FileName);
+                OpenFileDialog dialog = new OpenFileDialog();
+                dialog.Filter = "Image Files (*.png;*.jpg)|*.png;*.jpg";
 
-                drawingBoard.Image = bmp;
-                drawingBoard.Invalidate();
+                if (dialog.ShowDialog() == DialogResult.OK)
+                {
+                    Bitmap bmp = new Bitmap(dialog.FileName);
+                    drawingBoard.Image = bmp;
+                    drawingBoard.Invalidate();
+                }
+            }
+            catch (Exception ex)
+            {
+                debugWindow.AppendText($"LOAD IMAGE ERROR: {ex.Message}\r\n");
             }
         }
-        /// <summary>
-        /// shows the programs about information
-        /// </summary>
+
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("BOOSE Editor\nBuilt by Sourav\n2025\nUsing BOOSE Interpreter",
-                "About",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Information);
+            try
+            {
+                MessageBox.Show("BOOSE Editor\nBuilt by Sourav\n2025\nUsing BOOSE Interpreter",
+                    "About",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                debugWindow.AppendText($"ABOUT ERROR: {ex.Message}\r\n");
+            }
         }
 
-        /// <summary>
-        /// Handles Enter key input inside the single-line command box.
-        /// Processes commands like 'save', 'reset', 'exit', etc.
-        /// </summary>
         private void singleLineInputBox_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Enter)
+            try
             {
-                e.SuppressKeyPress = true;   // Prevent ding sound on keypress
-                HandleSingleCommand(singleLineInputBox.Text.Trim());
-                singleLineInputBox.Clear();
+                if (e.KeyCode == Keys.Enter)
+                {
+                    e.SuppressKeyPress = true;
+                    HandleSingleCommand(singleLineInputBox.Text.Trim());
+                    singleLineInputBox.Clear();
+                }
+            }
+            catch (Exception ex)
+            {
+                debugWindow.AppendText($"COMMAND INPUT ERROR: {ex.Message}\r\n");
             }
         }
-        /// <summary>
-        /// Executes a single-word command such as:
-        /// new, reset, save, load, saveimage, loadimage, exit.
-        /// </summary>
+
         private void HandleSingleCommand(string command)
         {
-            command = command.ToLower().Trim();
-
-            switch (command)
+            try
             {
-                case "new":
-                case "reset":
-                case "clear":
-                    newToolStripMenuItem_Click(null, null);
-                    break;
+                command = command.ToLower().Trim();
 
-                case "save":
-                    saveFileToolStripMenuItem_Click(null, null);
-                    break;
+                switch (command)
+                {
+                    case "new":
+                    case "reset":
+                    case "clear":
+                        newToolStripMenuItem_Click(null, null);
+                        break;
 
-                case "saveimage":
-                    saveImageToolStripMenuItem_Click(null, null);
-                    break;
+                    case "save":
+                        saveFileToolStripMenuItem_Click(null, null);
+                        break;
 
-                case "load":
-                case "open":
-                    loadFileToolStripMenuItem_Click(null, null);
-                    break;
+                    case "saveimage":
+                        saveImageToolStripMenuItem_Click(null, null);
+                        break;
 
-                case "loadimage":
-                    loadImageToolStripMenuItem_Click(null, null);
-                    break;
+                    case "load":
+                    case "open":
+                        loadFileToolStripMenuItem_Click(null, null);
+                        break;
 
-                case "exit":
-                case "quit":
-                    Application.Exit();
-                    break;
+                    case "loadimage":
+                        loadImageToolStripMenuItem_Click(null, null);
+                        break;
 
-                default:
-                    MessageBox.Show("Unknown command: " + command);
-                    break;
+                    case "exit":
+                    case "quit":
+                        Application.Exit();
+                        break;
+
+                    default:
+                        MessageBox.Show("Unknown command: " + command);
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                debugWindow.AppendText($"SINGLE COMMAND ERROR: {ex.Message}\r\n");
             }
         }
-
     }
 }

@@ -1,34 +1,41 @@
 ﻿using BOOSE;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MYBooseApp
 {
     /// <summary>
-    /// This class overrides the base class to remove the restriction
+    /// Overrides the base class to remove restriction and add proper validation
     /// </summary>
     internal class AppRect : CommandTwoParameters
     {
-        /// <summary>
-        /// extends the base method to remove restriction
-        /// </summary>
-        /// <exception cref="CommandException"></exception>
-
         public override void Execute()
         {
-            base.Execute();
+            try
+            {
+                // Parse parameters safely
+                base.Execute();
+            }
+            catch (StoredProgramException ex)
+            {
+                // Message if parameter can't be evaluated
+                throw new Exception($"Rectangle parameters must be integers. Details: {ex.Message}");
+            }
 
-            int w = base.Paramsint[0];
-            int h = base.Paramsint[1];
+            if (Paramsint.Length < 2)
+            {
+                throw new Exception("Rectangle command requires exactly 2 integer parameters.");
+            }
 
+            int w = Paramsint[0];
+            int h = Paramsint[1];
 
             if (w < 0 || h < 0)
-                throw new CommandException("Rectangle width/height cannot be negative.");
+            {
+                throw new CommandException($"Rectangle width/height cannot be negative. Received ({w}, {h}).");
+            }
 
-            base.Canvas.Rect(w, h, false);
+            // Draw the rectangle with validated parameters
+            Canvas.Rect(w, h, filled: false);
         }
     }
 }

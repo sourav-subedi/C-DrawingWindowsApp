@@ -1,22 +1,43 @@
 ﻿using BOOSE;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace MYBooseApp { 
-
+namespace MYBooseApp
+{
     /// <summary>
-    /// override base moveto class to remove restriction
+    /// Override base moveto class to add validation for positive integers
+    /// and handle invalid expressions gracefully
     /// </summary>
-    public class AppMoveto: CommandTwoParameters
+    public class AppMoveto : CommandTwoParameters
     {
         public override void Execute()
         {
-            base.Execute();
+            try
+            {
+                // Try base execution to parse parameters
+                base.Execute();
+            }
+            catch (StoredProgramException ex)
+            {
+                // Catch parsing errors and provide the message
+                throw new Exception($"MoveTo parameters must be integers. Details: {ex.Message}");
+            }
 
-            Canvas.MoveTo(Paramsint[0], Paramsint[1]);
+            // Validate that both parameters are positive integers
+            if (Paramsint.Length < 2)
+            {
+                throw new Exception("MoveTo command requires exactly 2 integer parameters.");
+            }
+
+            int x = Paramsint[0];
+            int y = Paramsint[1];
+
+            if (x < 0 || y < 0)
+            {
+                throw new Exception($"MoveTo parameters must be positive integers. Received ({x}, {y}).");
+            }
+
+            // Execute the actual movement
+            Canvas.MoveTo(x, y);
         }
     }
 }
