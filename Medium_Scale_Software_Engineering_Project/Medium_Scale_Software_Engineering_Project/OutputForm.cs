@@ -7,13 +7,36 @@ using System.Windows.Forms;
 
 namespace Medium_Scale_Software_Engineering_Project
 {
+    /// <summary>
+    /// Represents the main output and editor form for the BOOSE graphics application.
+    /// Handles program input, parsing, execution, canvas drawing, file operations, and UI commands.
+    /// </summary>
     public partial class OutputForm : Form
     {
+        /// <summary>
+        /// The application canvas used for drawing shapes and text.
+        /// </summary>
         private AppCanvas canvas;
+
+        /// <summary>
+        /// Command factory responsible for creating BOOSE command objects.
+        /// </summary>
         private AppCommandFactory factory;
+
+        /// <summary>
+        /// Stores the parsed BOOSE program before execution.
+        /// </summary>
         private StoredProgram program;
+
+        /// <summary>
+        /// The parser responsible for converting text commands into BOOSE executable commands.
+        /// </summary>
         private AppParser parser;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="OutputForm"/> class.
+        /// Sets up the BOOSE environment, canvas, parser, and UI.
+        /// </summary>
         public OutputForm()
         {
             InitializeComponent();
@@ -39,6 +62,9 @@ namespace Medium_Scale_Software_Engineering_Project
             };
         }
 
+        /// <summary>
+        /// Refreshes the drawing canvas displayed on the PictureBox.
+        /// </summary>
         private void RefreshCanvas()
         {
             try
@@ -52,6 +78,11 @@ namespace Medium_Scale_Software_Engineering_Project
             }
         }
 
+        /// <summary>
+        /// Executes when the "Run" button is clicked.
+        /// Parses user input line-by-line, handles multi-line statements,
+        /// and runs the BOOSE program when all lines are valid.
+        /// </summary>
         private void button1_Click(object sender, EventArgs e)
         {
             string code = multiLineInputBox.Text;
@@ -78,30 +109,28 @@ namespace Medium_Scale_Software_Engineering_Project
                     if (string.IsNullOrWhiteSpace(line)) continue;
 
                     if (statementBuffer.Length == 0)
-                        statementStartLine = i + 1; // remember start line of this statement
+                        statementStartLine = i + 1;
 
                     statementBuffer.AppendLine(line);
 
-                    // Check if statement ends (example: ";" or custom logic for blocks)
-                    if (line.EndsWith(";") || line == "end") // adjust according to your language
+                    if (line.EndsWith(";") || line == "end")
                     {
                         try
                         {
-                            parser.Parse(statementBuffer.ToString()); // parse full statement
+                            parser.Parse(statementBuffer.ToString());
                         }
                         catch (Exception ex)
                         {
                             debugWindow.AppendText(
                                 $"[{DateTime.Now:HH:mm:ss}] ERROR near line {statementStartLine}: {ex.Message}\r\n"
                             );
-                            return; // stop execution on error
+                            return;
                         }
 
-                        statementBuffer.Clear(); // reset buffer for next statement
+                        statementBuffer.Clear();
                     }
                 }
 
-                // Parse any leftover statement
                 if (statementBuffer.Length > 0)
                 {
                     try
@@ -130,8 +159,9 @@ namespace Medium_Scale_Software_Engineering_Project
             }
         }
 
-
-
+        /// <summary>
+        /// Handles custom drawing of the PictureBox to ensure the canvas bitmap is displayed correctly.
+        /// </summary>
         private void pictureBox1_Paint(object sender, PaintEventArgs e)
         {
             try
@@ -145,19 +175,21 @@ namespace Medium_Scale_Software_Engineering_Project
             }
         }
 
+        /// <summary>
+        /// Confirms before closing the application when the Exit menu item is clicked.
+        /// </summary>
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
             {
-                var result = MessageBox.Show("Are you sure you want to exit?",
-                                             "Exit",
-                                             MessageBoxButtons.YesNo,
-                                             MessageBoxIcon.Question);
+                var result = MessageBox.Show(
+                    "Are you sure you want to exit?",
+                    "Exit",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question);
 
                 if (result == DialogResult.Yes)
-                {
                     Application.Exit();
-                }
             }
             catch (Exception ex)
             {
@@ -165,6 +197,9 @@ namespace Medium_Scale_Software_Engineering_Project
             }
         }
 
+        /// <summary>
+        /// Clears input and resets the canvas when creating a new program.
+        /// </summary>
         private void newToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
@@ -179,6 +214,9 @@ namespace Medium_Scale_Software_Engineering_Project
             }
         }
 
+        /// <summary>
+        /// Saves the contents of the editor to a text file.
+        /// </summary>
         private void saveFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
@@ -198,6 +236,9 @@ namespace Medium_Scale_Software_Engineering_Project
             }
         }
 
+        /// <summary>
+        /// Saves the current canvas image to disk.
+        /// </summary>
         private void saveImageToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
@@ -224,6 +265,9 @@ namespace Medium_Scale_Software_Engineering_Project
             }
         }
 
+        /// <summary>
+        /// Loads a BOOSE program text file into the editor.
+        /// </summary>
         private void loadFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
@@ -243,6 +287,9 @@ namespace Medium_Scale_Software_Engineering_Project
             }
         }
 
+        /// <summary>
+        /// Loads an image file into the drawing board.
+        /// </summary>
         private void loadImageToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
@@ -263,11 +310,15 @@ namespace Medium_Scale_Software_Engineering_Project
             }
         }
 
+        /// <summary>
+        /// Displays application information.
+        /// </summary>
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
             {
-                MessageBox.Show("BOOSE Editor\nBuilt by Sourav\n2025\nUsing BOOSE Interpreter",
+                MessageBox.Show(
+                    "BOOSE Editor\nBuilt by Sourav\n2025\nUsing BOOSE Interpreter",
                     "About",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Information);
@@ -278,6 +329,9 @@ namespace Medium_Scale_Software_Engineering_Project
             }
         }
 
+        /// <summary>
+        /// Handles Enter key input for the single-line command box.
+        /// </summary>
         private void singleLineInputBox_KeyDown(object sender, KeyEventArgs e)
         {
             try
@@ -295,6 +349,9 @@ namespace Medium_Scale_Software_Engineering_Project
             }
         }
 
+        /// <summary>
+        /// Executes quick UI commands (new, save, load, exit) typed in the single-line command box.
+        /// </summary>
         private void HandleSingleCommand(string command)
         {
             try

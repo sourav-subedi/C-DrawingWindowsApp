@@ -4,6 +4,9 @@ using MYBooseApp;
 
 namespace MyBooseAppUnitTest
 {
+    // <summary>
+    /// the test class to test moveto method
+    /// </summary>
     [TestClass]
     public class MoveToTests
     {
