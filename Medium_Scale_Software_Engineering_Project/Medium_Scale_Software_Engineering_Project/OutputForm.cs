@@ -1,6 +1,7 @@
 ﻿using BOOSE;
 using MYBooseApp;
 using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
@@ -40,6 +41,7 @@ namespace Medium_Scale_Software_Engineering_Project
         public OutputForm()
         {
             InitializeComponent();
+            Debug.WriteLine(AboutBOOSE.about());
 
             this.Load += (s, e) =>
             {

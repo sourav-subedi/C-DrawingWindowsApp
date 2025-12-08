@@ -1,0 +1,51 @@
+### YamlMime:ManagedReference
+items:
+- uid: MYBooseApp
+  commentId: N:MYBooseApp
+  id: MYBooseApp
+  children:
+  - MYBooseApp.AppCanvas
+  - MYBooseApp.AppCommandFactory
+  - MYBooseApp.AppMoveto
+  - MYBooseApp.AppParser
+  - MYBooseApp.AppStoredProgram
+  langs:
+  - csharp
+  - vb
+  name: MYBooseApp
+  nameWithType: MYBooseApp
+  fullName: MYBooseApp
+  type: Namespace
+  assemblies:
+  - MYBooseApp
+references:
+- uid: MYBooseApp.AppCanvas
+  commentId: T:MYBooseApp.AppCanvas
+  href: MYBooseApp.AppCanvas.html
+  name: AppCanvas
+  nameWithType: AppCanvas
+  fullName: MYBooseApp.AppCanvas
+- uid: MYBooseApp.AppCommandFactory
+  commentId: T:MYBooseApp.AppCommandFactory
+  href: MYBooseApp.AppCommandFactory.html
+  name: AppCommandFactory
+  nameWithType: AppCommandFactory
+  fullName: MYBooseApp.AppCommandFactory
+- uid: MYBooseApp.AppMoveto
+  commentId: T:MYBooseApp.AppMoveto
+  href: MYBooseApp.AppMoveto.html
+  name: AppMoveto
+  nameWithType: AppMoveto
+  fullName: MYBooseApp.AppMoveto
+- uid: MYBooseApp.AppParser
+  commentId: T:MYBooseApp.AppParser
+  href: MYBooseApp.AppParser.html
+  name: AppParser
+  nameWithType: AppParser
+  fullName: MYBooseApp.AppParser
+- uid: MYBooseApp.AppStoredProgram
+  commentId: T:MYBooseApp.AppStoredProgram
+  href: MYBooseApp.AppStoredProgram.html
+  name: AppStoredProgram
+  nameWithType: AppStoredProgram
+  fullName: MYBooseApp.AppStoredProgram

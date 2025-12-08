@@ -1,0 +1,23 @@
+### YamlMime:ManagedReference
+items:
+- uid: Medium_Scale_Software_Engineering_Project
+  commentId: N:Medium_Scale_Software_Engineering_Project
+  id: Medium_Scale_Software_Engineering_Project
+  children:
+  - Medium_Scale_Software_Engineering_Project.OutputForm
+  langs:
+  - csharp
+  - vb
+  name: Medium_Scale_Software_Engineering_Project
+  nameWithType: Medium_Scale_Software_Engineering_Project
+  fullName: Medium_Scale_Software_Engineering_Project
+  type: Namespace
+  assemblies:
+  - MYBooseApp
+references:
+- uid: Medium_Scale_Software_Engineering_Project.OutputForm
+  commentId: T:Medium_Scale_Software_Engineering_Project.OutputForm
+  href: Medium_Scale_Software_Engineering_Project.OutputForm.html
+  name: OutputForm
+  nameWithType: OutputForm
+  fullName: Medium_Scale_Software_Engineering_Project.OutputForm
