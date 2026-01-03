@@ -21,7 +21,11 @@ namespace MYBooseApp
         {
             commandType = commandType.ToLower().Trim();
 
-            if (commandType == "moveto")
+            if (commandType == "int")
+            {
+                return new AppInt();
+            }
+            else if (commandType == "moveto")
             {
                 return new AppMoveto();
             }
