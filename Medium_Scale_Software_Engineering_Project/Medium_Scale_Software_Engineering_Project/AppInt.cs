@@ -1,42 +1,57 @@
 ﻿using BOOSE;
 
-namespace MYBooseApp
+public class AppInt : Evaluation, ICommand
 {
-    /// <summary>
-    /// Custom integer variable implementation without BOOSE restrictions.
-    /// Supports both declaration with and without assignment.
-    /// </summary>
-    public class AppInt : Evaluation
+    public AppInt() { }
+    public AppInt(StoredProgram program)
     {
-        private int value;
+        this.Program = program ?? throw new ArgumentNullException(nameof(program));
+    }
 
-        public override void Compile()
+    public override int Value
+    {
+        get => base.value;
+        set => base.value = value;
+    }
+
+    public override void Compile()
+    {
+        if (Program == null)
+            throw new NullReferenceException("Program reference is null in AppInt.");
+
+        base.Compile();
+
+        if (!Program.VariableExists(VarName))
         {
-            base.Compile();
             Program.AddVariable(this);
-        }
 
-        public override void Execute()
-        {
-            base.Execute();
-
-            
-            if (string.IsNullOrWhiteSpace(evaluatedExpression))
-            {
-                Program.UpdateVariable(varName, 0);
-                return;
-            }
-
-            
-            if (!int.TryParse(evaluatedExpression, out value))
-            {
-                if (double.TryParse(evaluatedExpression, out _))
-                    throw new StoredProgramException("Invalid int assignment: decimal value.");
-
-                throw new StoredProgramException("Invalid int assignment.");
-            }
-
-            Program.UpdateVariable(varName, value);
+            if (!string.IsNullOrEmpty(Expression) && Expression != "0")
+                Execute();
+            else
+                Value = 0;
         }
     }
+
+    public override void Execute()
+    {
+        if (Program == null)
+            throw new NullReferenceException("Program reference is null in AppInt.");
+
+        base.Execute();
+
+        if (!int.TryParse(evaluatedExpression, out int result))
+        {
+            if (double.TryParse(evaluatedExpression, out _))
+                throw new StoredProgramException("Cannot assign double to integer variable.");
+            else
+                throw new StoredProgramException($"Cannot assign '{evaluatedExpression}' to integer variable.");
+        }
+
+        Value = result;
+
+        if (Program.VariableExists(VarName))
+            Program.UpdateVariable(VarName, Value);
+    }
+
+    public override void CheckParameters(string[] parameterList) { }
 }
