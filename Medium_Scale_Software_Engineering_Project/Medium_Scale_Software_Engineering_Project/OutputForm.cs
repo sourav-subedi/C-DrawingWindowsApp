@@ -1,4 +1,5 @@
 ﻿using BOOSE;
+using BOOSEDrawingApp;
 using MYBooseApp;
 using System;
 using System.Diagnostics;
@@ -27,7 +28,7 @@ namespace Medium_Scale_Software_Engineering_Project
         /// <summary>
         /// Stores the parsed BOOSE program before execution.
         /// </summary>
-        private StoredProgram program;
+        private AppStoredProgram program;
 
         /// <summary>
         /// The parser responsible for converting text commands into BOOSE executable commands.
@@ -49,7 +50,7 @@ namespace Medium_Scale_Software_Engineering_Project
                 {
                     canvas = new AppCanvas(drawingBoard.Width, drawingBoard.Height);
                     factory = new AppCommandFactory();
-                    program = new StoredProgram(canvas);
+                    program = new AppStoredProgram(canvas);
                     parser = new AppParser(factory, program);
 
                     canvas.Clear();
@@ -119,7 +120,7 @@ namespace Medium_Scale_Software_Engineering_Project
                     {
                         try
                         {
-                            parser.Parse(statementBuffer.ToString());
+                            parser.ParseProgram(statementBuffer.ToString());
                         }
                         catch (Exception ex)
                         {
@@ -137,7 +138,7 @@ namespace Medium_Scale_Software_Engineering_Project
                 {
                     try
                     {
-                        parser.Parse(statementBuffer.ToString());
+                        parser.ParseProgram(statementBuffer.ToString());
                     }
                     catch (Exception ex)
                     {

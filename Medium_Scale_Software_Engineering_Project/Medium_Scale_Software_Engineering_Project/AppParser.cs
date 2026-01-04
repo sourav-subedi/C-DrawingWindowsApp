@@ -1,72 +1,129 @@
 ﻿using BOOSE;
-using System;
+using MYBooseApp;
+using System.Drawing;
 
 namespace MYBooseApp
 {
-    /// <summary>
-    /// Custom parser extending BOOSE.Parser.
-    /// Supports AppInt, variable assignments, and normal commands.
-    /// </summary>
     public class AppParser : Parser
     {
-        private readonly StoredProgram _program;
-        private readonly CommandFactory _factory;
+        private StoredProgram storedProgram;
+
+        private ICommandFactory factory;
 
         public AppParser(CommandFactory factory, StoredProgram program)
             : base(factory, program)
         {
-            _program = program;
-            _factory = factory;
-            _program.SetSyntaxStatus(true);
-        }
-
-        public void Parse(string source)
-        {
-            if (string.IsNullOrWhiteSpace(source)) return;
-
-            _program.Clear();
-            base.ParseProgram(source);
+            storedProgram = program;
+            this.factory = factory;
         }
 
         public override ICommand ParseCommand(string line)
         {
-            line = line.Trim();
-            if (string.IsNullOrEmpty(line) || line.StartsWith("*"))
+            if (string.IsNullOrWhiteSpace(line) || line.TrimStart().StartsWith("*"))
                 return null;
 
-            int spaceIndex = line.IndexOf(' ');
-            string firstWord = (spaceIndex >= 0) ? line.Substring(0, spaceIndex) : line;
-            string rest = (spaceIndex >= 0) ? line.Substring(spaceIndex + 1).Trim() : "";
+            line = Normalise(line);
 
-            if (firstWord.ToLower() == "int")
+            string[] tokens = line.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+
+            string commandName = tokens[0];
+            string parameterText = string.Join(" ", tokens.Skip(1));
+
+            if (tokens.Length > 1 &&
+                tokens[1] == "=" &&
+                commandName != "myint" &&
+                commandName != "int" &&
+                commandName != "real" &&
+                commandName != "boolean")
             {
-                var appInt = new AppInt(_program); // critical: pass program
-                appInt.Set(_program, rest);
-                appInt.Compile();
-                return appInt;
+                if (!storedProgram.VariableExists(commandName))
+                    throw new ParserException("Variable not declared: " + commandName);
+
+                parameterText = commandName + " " + parameterText;
+
+                Evaluation variable = storedProgram.GetVariable(commandName);
+
+                if (variable is Int || variable is AppInt)
+                    commandName = "int";
+                else if (variable is Real)
+                    commandName = "real";
+                else if (variable is BOOSE.Boolean)
+                    commandName = "boolean";
+                else
+                    throw new ParserException("Unknown variable type");
             }
 
-            if (rest.StartsWith("=") && _program.VariableExists(firstWord))
+            ICommand command = factory.MakeCommand(commandName);
+            command.Set(storedProgram, parameterText);
+            command.Compile();
+
+            return command;
+        }
+
+        public override void ParseProgram(string programText)
+        {
+            base.ParseProgram(programText);
+            programText += "\n";
+            string errorText = "";
+            string[] lines = programText.Split('\n');
+
+            for (int i = 0; i < lines.Length; i++)
             {
-                var varObj = _program.GetVariable(firstWord) as AppInt;
-                if (varObj == null)
+                lines[i] = lines[i].Trim();
+
+                if (string.IsNullOrWhiteSpace(lines[i]) || lines[i].StartsWith("*"))
+                    continue;
+
+                try
                 {
-                    varObj = new AppInt(_program) { VarName = firstWord };
-                    _program.AddVariable(varObj);
-                }
+                    ICommand command = ParseCommand(lines[i]);
 
-                varObj.Expression = rest.Substring(1).Trim();
-                varObj.Compile();
-                return varObj;
+                    if (command is Method method)
+                    {
+                        _ = method.MethodName;
+                        command = ParseCommand(method.Type + " " + method.MethodName);
+                        storedProgram.Remove(command);
+
+                        for (int j = 0; j < method.LocalVariables.Length; j++)
+                        {
+                            command = ParseCommand(method.LocalVariables[j]);
+                            ((Evaluation)command).Local = true;
+                            storedProgram.Remove(command);
+                        }
+                    }
+                }
+                catch (BOOSEException ex)
+                {
+                    if (!string.IsNullOrEmpty(ex.Message))
+                    {
+                        errorText += ex.Message + " at line " + (i + 1) + "\n";
+                        storedProgram.SetSyntaxStatus(false);
+                    }
+                }
             }
 
+            if (!string.IsNullOrWhiteSpace(errorText))
+            {
+                throw new ParserException(errorText.Trim());
+            }
+        }
 
+        private string Normalise(string line)
+        {
+            if (string.IsNullOrWhiteSpace(line))
+                return string.Empty;
 
-            // --- other commands
-            var cmd = _factory.MakeCommand(firstWord);
-            cmd.Set(_program, rest);
-            cmd.Compile();
-            return cmd;
+            line = line.Trim();
+
+            line = line.Replace("=", " = ");
+            line = line.Replace(",", ",");
+            line = line.Replace("(", "(");
+            line = line.Replace(")", ")");
+            line = line.Replace("\t", " ");
+            while (line.Contains("  "))
+                line = line.Replace("  ", " ");
+
+            return line;
         }
     }
 }

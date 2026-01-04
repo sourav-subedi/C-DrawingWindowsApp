@@ -7,10 +7,10 @@ internal class AppRect : CommandTwoParameters
     public override void Execute()
     {
         // --- Debug lines ---
-        System.Diagnostics.Debug.WriteLine("Width variable exists: " + Program.VariableExists("width"));
-        System.Diagnostics.Debug.WriteLine("Width value: " + ((AppInt)Program.GetVariable("width"))?.Value);
-        System.Diagnostics.Debug.WriteLine("Height variable exists: " + Program.VariableExists("height"));
-        System.Diagnostics.Debug.WriteLine("Height value: " + ((AppInt)Program.GetVariable("height"))?.Value);
+        //System.Diagnostics.Debug.WriteLine("Width variable exists: " + Program.VariableExists("width"));
+        //System.Diagnostics.Debug.WriteLine("Width value: " + ((AppInt)Program.GetVariable("width"))?.Value);
+        //System.Diagnostics.Debug.WriteLine("Height variable exists: " + Program.VariableExists("height"));
+        //System.Diagnostics.Debug.WriteLine("Height value: " + ((AppInt)Program.GetVariable("height"))?.Value);
 
         try
         {
