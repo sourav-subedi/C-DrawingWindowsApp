@@ -25,10 +25,10 @@ namespace MYBooseApp
             {
                 if (double.TryParse(evaluatedExpression, out var _))
                 {
-                    throw new StoredProgramException(/* original message call */ "Fractional values are not allowed for integer variables.");
+                    throw new StoredProgramException("Fractional values are not allowed for integer variables.");
                 }
 
-                throw new StoredProgramException(/* original message call */ "Invalid integer format.");
+                throw new StoredProgramException("Invalid integer format.");
             }
 
             base.Program.UpdateVariable(varName, value);

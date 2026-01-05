@@ -1,5 +1,5 @@
 ﻿using BOOSE;
-using BOOSEDrawingApp;
+//using BOOSEDrawingApp;
 using MYBooseApp;
 using System;
 using System.Diagnostics;

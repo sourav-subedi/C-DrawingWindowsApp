@@ -15,6 +15,9 @@ namespace MYBooseApp
             if (commandType == "int")
                 return new AppInt();
 
+            if (commandType == "real")
+                return new AppReal();
+
             if (commandType == "moveto")
                 return new AppMoveto();
 

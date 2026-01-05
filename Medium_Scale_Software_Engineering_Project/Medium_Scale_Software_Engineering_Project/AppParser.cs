@@ -6,7 +6,7 @@ namespace MYBooseApp
 {
     public class AppParser : Parser
     {
-        private StoredProgram storedProgram;
+        private StoredProgram storedProgram;    
 
         private ICommandFactory factory;
 
@@ -31,7 +31,7 @@ namespace MYBooseApp
 
             if (tokens.Length > 1 &&
                 tokens[1] == "=" &&
-                commandName != "myint" &&
+                commandName != "appint" &&
                 commandName != "int" &&
                 commandName != "real" &&
                 commandName != "boolean")
@@ -45,7 +45,7 @@ namespace MYBooseApp
 
                 if (variable is Int || variable is AppInt)
                     commandName = "int";
-                else if (variable is Real)
+                else if (variable is Real || variable is AppReal)
                     commandName = "real";
                 else if (variable is BOOSE.Boolean)
                     commandName = "boolean";
@@ -115,15 +115,23 @@ namespace MYBooseApp
 
             line = line.Trim();
 
+            // Add spaces around operators and delimiters
             line = line.Replace("=", " = ");
-            line = line.Replace(",", ",");
-            line = line.Replace("(", "(");
-            line = line.Replace(")", ")");
+            line = line.Replace("+", " + ");
+            line = line.Replace("-", " - ");
+            line = line.Replace("*", " * ");
+            line = line.Replace("/", " / ");
+            line = line.Replace("%", " % ");
+            line = line.Replace(",", " , ");
+            line = line.Replace("(", " ( ");
+            line = line.Replace(")", " ) ");
             line = line.Replace("\t", " ");
+
+            // Clean up multiple spaces
             while (line.Contains("  "))
                 line = line.Replace("  ", " ");
 
-            return line;
+            return line.Trim();
         }
     }
 }
