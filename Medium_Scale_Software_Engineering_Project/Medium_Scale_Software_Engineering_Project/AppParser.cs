@@ -62,7 +62,6 @@ namespace MYBooseApp
 
         public override void ParseProgram(string programText)
         {
-            base.ParseProgram(programText);
             programText += "\n";
             string errorText = "";
             string[] lines = programText.Split('\n');
@@ -78,17 +77,22 @@ namespace MYBooseApp
                 {
                     ICommand command = ParseCommand(lines[i]);
 
-                    if (command is Method method)
+                    if (command != null)
                     {
-                        _ = method.MethodName;
-                        command = ParseCommand(method.Type + " " + method.MethodName);
-                        storedProgram.Remove(command);
+                        storedProgram.Add(command);  
 
-                        for (int j = 0; j < method.LocalVariables.Length; j++)
+                        if (command is Method method)
                         {
-                            command = ParseCommand(method.LocalVariables[j]);
-                            ((Evaluation)command).Local = true;
+                            _ = method.MethodName;
+                            command = ParseCommand(method.Type + " " + method.MethodName);
                             storedProgram.Remove(command);
+
+                            for (int j = 0; j < method.LocalVariables.Length; j++)
+                            {
+                                command = ParseCommand(method.LocalVariables[j]);
+                                ((Evaluation)command).Local = true;
+                                storedProgram.Remove(command);
+                            }
                         }
                     }
                 }

@@ -1,19 +1,90 @@
 ﻿using BOOSE;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MYBooseApp
 {
     public class AppStoredProgram : StoredProgram
     {
+        private ICanvas canvas;
         public AppStoredProgram(ICanvas canvas) : base(canvas)
         {
+            this.canvas = canvas;
         }
 
-        public override void Run()  // Added 'override' keyword
+        public ICanvas GetCanvas()
+        {
+            return canvas;
+        }
+
+        // Override to handle AppReal
+        public override void UpdateVariable(string varName, double value)
+        {
+            Evaluation variable = (Evaluation)GetVariable(varName);
+
+            if (variable is Real)
+            {
+                ((Real)variable).Value = value;
+            }
+            else if (variable is AppReal)  // Handle AppReal!
+            {
+                ((AppReal)variable).Value = value;
+            }
+            else
+            {
+                throw new CommandException("Type mismatch, expected a real value");
+            }
+        }
+
+        // Override to handle AppInt
+        public override void UpdateVariable(string varName, int value)
+        {
+            int index = FindVariable(varName);
+            Evaluation evaluation = (Evaluation)GetVariable(index);
+
+            if (evaluation is Int)
+            {
+                ((Int)evaluation).Value = value;
+            }
+            else if (evaluation is AppInt)  // Handle AppInt!
+            {
+                ((AppInt)evaluation).Value = value;
+            }
+            else
+            {
+                evaluation.Value = value;
+            }
+        }
+
+        // Override GetVarValue to handle AppReal
+        public override string GetVarValue(string varName)
+        {
+            int num = FindVariable(varName);
+            if (num == -1)
+            {
+                throw new StoredProgramException("Variable not found");
+            }
+
+            Evaluation evaluation = GetVariable(num);
+
+            if (evaluation is Real)
+            {
+                return ((Real)evaluation).Value.ToString();
+            }
+            else if (evaluation is AppReal)  // Handle AppReal!
+            {
+                return ((AppReal)evaluation).Value.ToString();
+            }
+            else if (evaluation is BOOSE.Boolean)
+            {
+                if (((BOOSE.Boolean)evaluation).BoolValue)
+                    return "true";
+                return "false";
+            }
+
+            return evaluation.Value.ToString();
+        }
+
+        public override void Run()
         {
             int num = 0;
             string error = "";
@@ -29,8 +100,6 @@ namespace MYBooseApp
                 }
                 catch (BOOSEException e)
                 {
-                    // Don't call SetSyntaxStatus(false) here!
-                    // The syntax is valid, this is a runtime error
                     hadRuntimeError = true;
                     error += "Runtime error: " + e.Message + " at line " + PC + Environment.NewLine;
                 }
@@ -41,7 +110,6 @@ namespace MYBooseApp
                 }
             }
 
-            // Only check if there were runtime errors, not syntax validity
             if (hadRuntimeError)
             {
                 throw new StoredProgramException(error.Trim());

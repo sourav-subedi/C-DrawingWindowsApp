@@ -102,62 +102,41 @@ namespace Medium_Scale_Software_Engineering_Project
 
             try
             {
-                string[] lines = code.Split(new[] { "\r\n", "\n" }, StringSplitOptions.None);
-                StringBuilder statementBuffer = new StringBuilder();
-                int statementStartLine = 0;
+                debugWindow.AppendText("=== Starting Execution ===\r\n");
 
-                for (int i = 0; i < lines.Length; i++)
+                // Reset the program to clear old commands
+                program.ResetProgram();
+                debugWindow.AppendText("Program reset.\r\n");
+
+                // Parse the entire program at once (BOOSE handles line breaks)
+                debugWindow.AppendText($"Parsing code...\r\n");
+                parser.ParseProgram(code);
+
+                debugWindow.AppendText($"Parsed {program.Count} commands.\r\n");
+
+                if (program.Count == 0)
                 {
-                    string line = lines[i].Trim();
-                    if (string.IsNullOrWhiteSpace(line)) continue;
-
-                    if (statementBuffer.Length == 0)
-                        statementStartLine = i + 1;
-
-                    statementBuffer.AppendLine(line);
-
-                    if (line.EndsWith(";") || line == "end")
-                    {
-                        try
-                        {
-                            parser.ParseProgram(statementBuffer.ToString());
-                        }
-                        catch (Exception ex)
-                        {
-                            debugWindow.AppendText(
-                                $"[{DateTime.Now:HH:mm:ss}] ERROR near line {statementStartLine}: {ex.Message}\r\n"
-                            );
-                            return;
-                        }
-
-                        statementBuffer.Clear();
-                    }
+                    debugWindow.AppendText("WARNING: No commands were parsed!\r\n");
+                    return;
                 }
 
-                if (statementBuffer.Length > 0)
-                {
-                    try
-                    {
-                        parser.ParseProgram(statementBuffer.ToString());
-                    }
-                    catch (Exception ex)
-                    {
-                        debugWindow.AppendText(
-                            $"[{DateTime.Now:HH:mm:ss}] ERROR near line {statementStartLine}: {ex.Message}\r\n"
-                        );
-                        return;
-                    }
-                }
-
+                // Run the program
+                debugWindow.AppendText("Running program...\r\n");
                 program.Run();
+
                 debugWindow.AppendText($"[{DateTime.Now:HH:mm:ss}] Success!\r\n");
             }
             catch (Exception ex)
             {
                 debugWindow.AppendText($"[{DateTime.Now:HH:mm:ss}] ERROR: {ex.Message}\r\n");
+                if (ex.InnerException != null)
+                {
+                    debugWindow.AppendText($"Inner: {ex.InnerException.Message}\r\n");
+                }
             }
             finally
             {
+                debugWindow.AppendText("Refreshing canvas...\r\n");
                 RefreshCanvas();
             }
         }
