@@ -24,6 +24,48 @@ namespace MYBooseApp
             catch { }
         }
 
+        private void ResetBooleanCounter()
+        {
+            try
+            {
+                var boolType = typeof(BOOSE.Boolean);
+                var fields = boolType.GetFields(BindingFlags.NonPublic | BindingFlags.Static);
+                foreach (var field in fields)
+                {
+                    if (field.FieldType == typeof(int))
+                    {
+                        field.SetValue(null, 0);
+                        break;
+                    }
+                }
+            }
+            catch { }
+        }
+
+        private void ResetCompoundCounters()
+        {
+            ResetCounter(typeof(If));
+            ResetCounter(typeof(Else));
+            ResetCounter(typeof(End));
+        }
+
+        private void ResetCounter(System.Type type)
+        {
+            try
+            {
+                var fields = type.GetFields(BindingFlags.NonPublic | BindingFlags.Static);
+                foreach (var field in fields)
+                {
+                    if (field.FieldType == typeof(int))
+                    {
+                        field.SetValue(null, 1);
+                        break;
+                    }
+                }
+            }
+            catch { }
+        }
+
         public override ICommand MakeCommand(string commandType)
         {
             commandType = commandType.ToLower().Trim();
@@ -34,22 +76,46 @@ namespace MYBooseApp
             if (commandType == "real")
                 return new AppReal();
 
+            //if (commandType == "boolean")
+            //{
+            //    ResetBooleanCounter();
+            //    return new AppBoolean();
+            //}
+
             if (commandType == "array")
             {
-                ResetArrayCounter();  // Reset before creating
+                ResetArrayCounter();
                 return new AppArray();
             }
 
             if (commandType == "poke")
             {
-                ResetArrayCounter();  // Reset before creating
+                ResetArrayCounter();
                 return new AppPoke();
             }
 
             if (commandType == "peek")
             {
-                ResetArrayCounter();  // Reset before creating
+                ResetArrayCounter();
                 return new AppPeek();
+            }
+
+            if (commandType == "if")
+            {
+                ResetCompoundCounters();
+                return new AppIf();
+            }
+
+            if (commandType == "else")
+            {
+                ResetCompoundCounters();
+                return new AppElse();
+            }
+
+            if (commandType == "end")
+            {
+                ResetCompoundCounters();
+                return new AppEnd();
             }
 
             if (commandType == "write")

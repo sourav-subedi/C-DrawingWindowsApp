@@ -93,6 +93,11 @@ namespace MYBooseApp
             while (Commandsleft())
             {
                 ICommand command = (ICommand)NextCommand();
+                if (command == null)
+                {
+                    continue; // skip null commands
+                }
+
                 try
                 {
                     num++;
