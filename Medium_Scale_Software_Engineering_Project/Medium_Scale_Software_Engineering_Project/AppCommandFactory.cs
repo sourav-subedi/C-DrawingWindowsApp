@@ -47,6 +47,7 @@ namespace MYBooseApp
             ResetCounter(typeof(If));
             ResetCounter(typeof(Else));
             ResetCounter(typeof(End));
+            ResetCounter(typeof(While));
         }
 
         private void ResetCounter(System.Type type)
@@ -110,6 +111,12 @@ namespace MYBooseApp
             {
                 ResetCompoundCounters();
                 return new AppElse();
+            }
+
+            if (commandType == "while")
+            {
+                ResetCompoundCounters();
+                return new AppWhile();
             }
 
             if (commandType == "end")

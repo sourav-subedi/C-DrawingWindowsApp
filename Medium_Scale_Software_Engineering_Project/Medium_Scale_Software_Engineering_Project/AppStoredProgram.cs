@@ -89,18 +89,50 @@ namespace MYBooseApp
             int num = 0;
             string error = "";
             bool hadRuntimeError = false;
+            int lastPC = -1;
+            int sameLineCount = 0;
 
             while (Commandsleft())
             {
                 ICommand command = (ICommand)NextCommand();
+
                 if (command == null)
                 {
-                    continue; // skip null commands
+                    continue;
                 }
 
                 try
                 {
                     num++;
+
+                    // Track if we're stuck on the same line
+                    if (PC == lastPC)
+                    {
+                        sameLineCount++;
+                        if (sameLineCount > 10)
+                        {
+                            System.Diagnostics.Debug.WriteLine($"STUCK: Iteration {num}, PC = {PC}, Command = {command.GetType().Name}");
+
+                            // Check variable values if it's a while or if
+                            if (command is AppWhile || command is While)
+                            {
+                                var condCmd = command as ConditionalCommand;
+                                System.Diagnostics.Debug.WriteLine($"  Condition = {condCmd?.Condition}, BoolValue = {condCmd?.BoolValue}");
+                            }
+                        }
+                    }
+                    else
+                    {
+                        lastPC = PC;
+                        sameLineCount = 0;
+                    }
+
+                    // Debug output every 1000 iterations
+                    if (num % 1000 == 0)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"Iteration {num}, PC = {PC}, Command = {command.GetType().Name}");
+                    }
+
                     command.Execute();
                 }
                 catch (BOOSEException e)
@@ -111,7 +143,7 @@ namespace MYBooseApp
 
                 if (num > 50000 && PC < 20)
                 {
-                    throw new StoredProgramException("Program limit reached.");
+                    throw new StoredProgramException($"Program limit reached - possible infinite loop at line {PC}.");
                 }
             }
 
