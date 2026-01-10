@@ -20,7 +20,7 @@ namespace MYBooseApp
                 {
                     if (field.FieldType == typeof(int))
                     {
-                        field.SetValue(null, 1);
+                        field.SetValue(null, 0);
                         break;
                     }
                 }
@@ -29,47 +29,45 @@ namespace MYBooseApp
         }
 
         public override void Compile()
-{
-    base.CorrespondingCommand = base.Program.Pop();
-    
-    if ((base.CorrespondingCommand is If || base.CorrespondingCommand is AppIf) && 
-        !base.ParameterList.Contains("if"))
-    {
-        throw new CommandException("End if expected");
-    }
-    if ((base.CorrespondingCommand is While || base.CorrespondingCommand is AppWhile) && 
-        !base.ParameterList.Contains("while"))
-    {
-        throw new CommandException("End while expected");
-    }
+        {
+            base.CorrespondingCommand = base.Program.Pop();
+
+            if ((base.CorrespondingCommand is If || base.CorrespondingCommand is AppIf) &&
+                !base.ParameterList.Contains("if"))
+            {
+                throw new CommandException("End if expected");
+            }
+
+            if ((base.CorrespondingCommand is While || base.CorrespondingCommand is AppWhile) &&
+                !base.ParameterList.Contains("while"))
+            {
+                throw new CommandException("End while expected");
+            }
+
             if ((base.CorrespondingCommand is For || base.CorrespondingCommand is AppFor) &&
-                        !base.ParameterList.Contains("for"))
+                !base.ParameterList.Contains("for"))
             {
                 throw new CommandException("End for expected");
             }
 
             base.LineNumber = base.Program.Count;
-    base.CorrespondingCommand.EndLineNumber = base.LineNumber;
-}
+            base.CorrespondingCommand.EndLineNumber = base.LineNumber;
+        }
 
-public override void Execute()
-{
-            //if (base.CorrespondingCommand is While || base.CorrespondingCommand is AppWhile)
-            //{
-            //    System.Diagnostics.Debug.WriteLine($"AppEnd: Jumping from PC {base.Program.PC} back to {base.CorrespondingCommand.LineNumber - 1}");
-            //    System.Diagnostics.Debug.WriteLine($"  While LineNumber = {base.CorrespondingCommand.LineNumber}");
-            //    System.Diagnostics.Debug.WriteLine($"  End LineNumber = {base.LineNumber}");
-
-            //    base.Program.PC = base.CorrespondingCommand.LineNumber - 1;
-            //}
-
+        public override void Execute()
+        {
             if (base.CorrespondingCommand is While || base.CorrespondingCommand is AppWhile)
-    {
-        base.Program.PC = base.CorrespondingCommand.LineNumber - 1;
-    }
+            {
+                // Re-evaluate the while condition
+                dynamic whileCmd = base.CorrespondingCommand;
+                if (whileCmd.Condition.Value) // Only loop back if condition is still true
+                {
+                    base.Program.PC = base.CorrespondingCommand.LineNumber - 1;
+                }
+                // Otherwise, execution continues normally past the loop
+            }
             else if (base.CorrespondingCommand is For || base.CorrespondingCommand is AppFor)
             {
-                // Cast to access properties
                 dynamic obj = base.CorrespondingCommand;
                 Evaluation loopControlV = obj.LoopControlV;
                 int num = loopControlV.Value + obj.Step;
@@ -92,9 +90,9 @@ public override void Execute()
                 }
             }
             else if (base.CorrespondingCommand is Method)
-    {
-        base.Program.PC = base.CorrespondingCommand.ReturnLineNumber;
-    }
-}
+            {
+                base.Program.PC = base.CorrespondingCommand.ReturnLineNumber;
+            }
+        }
     }
 }

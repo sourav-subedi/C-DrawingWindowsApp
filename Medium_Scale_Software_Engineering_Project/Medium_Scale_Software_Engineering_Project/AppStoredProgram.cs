@@ -141,7 +141,7 @@ namespace MYBooseApp
                     error += "Runtime error: " + e.Message + " at line " + PC + Environment.NewLine;
                 }
 
-                if (num > 10000000 && PC < 5)
+                if (num > 5000 && PC < 20)
                 {
                     throw new StoredProgramException($"Program limit reached - possible infinite loop at line {PC}.");
                 }

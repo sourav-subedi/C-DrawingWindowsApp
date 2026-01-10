@@ -21,7 +21,7 @@ namespace MYBooseApp
                 {
                     if (field.FieldType == typeof(int))
                     {
-                        field.SetValue(null, 1);
+                        field.SetValue(null, 0); // Changed from 1 to 0
                         break;
                     }
                 }
@@ -29,13 +29,10 @@ namespace MYBooseApp
             catch { }
         }
 
-        // OVERRIDE Execute to evaluate the condition!
         public override void Execute()
         {
-            base.Execute(); // This calls ConditionalCommand.Execute() which evaluates the expression
-
-            // ConditionalCommand.Execute() already checks Condition and jumps to EndLineNumber if false
-            // So we don't need to do anything else here
+            base.Execute(); // Calls ConditionalCommand.Execute() which evaluates condition
+            // ConditionalCommand.Execute() jumps to EndLineNumber if condition is false
         }
     }
 }
