@@ -3,12 +3,20 @@ using System;
 
 namespace MYBooseApp
 {
+    /// <summary>
+    /// Represents a custom Real (floating-point) variable for the MYBooseApp environment.
+    /// Extends <see cref="Evaluation"/> to implement real-number-specific evaluation,
+    /// compilation, and assignment with validation.
+    /// </summary>
     public sealed class AppReal : Evaluation
     {
         private static int instantiationCount;
         private double realValue;
 
-        // Shadow the base Value property like Real does
+        /// <summary>
+        /// Gets or sets the real value of this variable.
+        /// Shadowing the base <see cref="Evaluation.Value"/> property.
+        /// </summary>
         public new double Value
         {
             get
@@ -23,13 +31,20 @@ namespace MYBooseApp
             }
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AppReal"/> class.
+        /// Increments the instantiation counter. No limit on instantiations.
+        /// </summary>
         public AppReal()
         {
             instantiationCount++;
             Console.WriteLine($"[DEBUG] AppReal instantiated. Count = {instantiationCount}");
-            // Restriction removed: no limit on instantiations
         }
 
+        /// <summary>
+        /// Compiles the real variable command by invoking the base Compile method
+        /// and registering the variable in the program.
+        /// </summary>
         public override void Compile()
         {
             Console.WriteLine($"[DEBUG] Compiling AppReal variable '{varName}'");
@@ -38,6 +53,13 @@ namespace MYBooseApp
             Console.WriteLine($"[DEBUG] Variable '{varName}' added to program");
         }
 
+        /// <summary>
+        /// Executes the real variable command by evaluating the expression and converting
+        /// it to a double value. Updates the program variable with the evaluated value.
+        /// </summary>
+        /// <exception cref="StoredProgramException">
+        /// Thrown when the evaluated expression is not a valid real number.
+        /// </exception>
         public override void Execute()
         {
             Console.WriteLine($"[DEBUG] Executing AppReal variable '{varName}'");
@@ -53,7 +75,7 @@ namespace MYBooseApp
 
             Console.WriteLine($"[DEBUG] Parsed real value: {realValue}");
 
-            // CRITICAL: Update with double value
+            // Update program variable with the parsed double value
             base.Program.UpdateVariable(varName, realValue);
             Console.WriteLine($"[DEBUG] Program variable '{varName}' updated with value {realValue}");
         }

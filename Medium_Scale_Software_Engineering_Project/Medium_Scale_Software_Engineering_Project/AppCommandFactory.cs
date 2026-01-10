@@ -4,8 +4,17 @@ using System.Reflection;
 
 namespace MYBooseApp
 {
+    /// <summary>
+    /// Custom command factory for the MYBooseApp environment.
+    /// Extends <see cref="CommandFactory"/> to create application-specific commands
+    /// and reset internal counters for arrays, booleans, and compound commands.
+    /// </summary>
     public class AppCommandFactory : CommandFactory
     {
+        /// <summary>
+        /// Resets the internal static counter for <see cref="BOOSE.Array"/> commands.
+        /// Uses reflection to find the first static integer field and set it to 0.
+        /// </summary>
         private void ResetArrayCounter()
         {
             try
@@ -24,6 +33,10 @@ namespace MYBooseApp
             catch { }
         }
 
+        /// <summary>
+        /// Resets the internal static counter for <see cref="BOOSE.Boolean"/> commands.
+        /// Uses reflection to find the first static integer field and set it to 0.
+        /// </summary>
         private void ResetBooleanCounter()
         {
             try
@@ -42,6 +55,9 @@ namespace MYBooseApp
             catch { }
         }
 
+        /// <summary>
+        /// Resets internal counters for compound commands: If, Else, End, While.
+        /// </summary>
         private void ResetCompoundCounters()
         {
             ResetCounter(typeof(If));
@@ -50,6 +66,11 @@ namespace MYBooseApp
             ResetCounter(typeof(While));
         }
 
+        /// <summary>
+        /// Resets the first static integer counter of a given command type to 1.
+        /// Used to initialize counters for compound commands.
+        /// </summary>
+        /// <param name="type">The command type to reset.</param>
         private void ResetCounter(System.Type type)
         {
             try
@@ -67,6 +88,13 @@ namespace MYBooseApp
             catch { }
         }
 
+        /// <summary>
+        /// Creates a command instance based on the given command type string.
+        /// Overrides the base <see cref="CommandFactory.MakeCommand(string)"/> method.
+        /// Resets relevant counters for certain command types before returning the instance.
+        /// </summary>
+        /// <param name="commandType">The type of command to create (case-insensitive).</param>
+        /// <returns>An <see cref="ICommand"/> instance corresponding to the command type.</returns>
         public override ICommand MakeCommand(string commandType)
         {
             commandType = commandType.ToLower().Trim();
@@ -102,6 +130,7 @@ namespace MYBooseApp
             if (commandType == "if")
             {
                 ResetCompoundCounters();
+                ResetBooleanCounter();
                 return new AppIf();
             }
             if (commandType == "else")
@@ -112,13 +141,19 @@ namespace MYBooseApp
             if (commandType == "while")
             {
                 ResetCompoundCounters();
+                ResetBooleanCounter();
                 return new AppWhile();
             }
             if (commandType == "for")
+            {
+                ResetBooleanCounter();
                 return new AppFor();
+            }
+
             if (commandType == "method")
             {
                 ResetCompoundCounters();
+                ResetBooleanCounter();
                 return new AppMethod();
             }
             if (commandType == "end")
@@ -136,6 +171,7 @@ namespace MYBooseApp
                 return new AppRect();
             if (commandType == "call")
                 return new Call();
+
             return base.MakeCommand(commandType);
         }
     }

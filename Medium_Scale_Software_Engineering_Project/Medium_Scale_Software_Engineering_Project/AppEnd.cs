@@ -3,13 +3,26 @@ using System.Reflection;
 
 namespace MYBooseApp
 {
+    /// <summary>
+    /// Represents a custom End command for the MYBooseApp environment.
+    /// Extends <see cref="CompoundCommand"/> and handles the termination of
+    /// compound commands like If, While, For, and Method.
+    /// </summary>
     public class AppEnd : CompoundCommand
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AppEnd"/> class
+        /// and resets the internal End counter.
+        /// </summary>
         public AppEnd()
         {
             ResetEndCounter();
         }
 
+        /// <summary>
+        /// Resets the internal static counter of the <see cref="End"/> class to 0.
+        /// Uses reflection to find the first static integer field.
+        /// </summary>
         private void ResetEndCounter()
         {
             try
@@ -25,9 +38,21 @@ namespace MYBooseApp
                     }
                 }
             }
-            catch { }
+            catch
+            {
+                // Silently ignore exceptions
+            }
         }
 
+        /// <summary>
+        /// Compiles the End command by linking it to the corresponding compound command
+        /// (If, While, For, or Method) and validates the end syntax.
+        /// Sets the <see cref="CompoundCommand.LineNumber"/> and the
+        /// <see cref="CompoundCommand.CorrespondingCommand.EndLineNumber"/>.
+        /// </summary>
+        /// <exception cref="CommandException">
+        /// Thrown when the End does not match the expected compound command.
+        /// </exception>
         public override void Compile()
         {
             base.CorrespondingCommand = base.Program.Pop();
@@ -60,6 +85,13 @@ namespace MYBooseApp
             base.CorrespondingCommand.EndLineNumber = base.LineNumber;
         }
 
+        /// <summary>
+        /// Executes the End command by updating the program counter or loop control
+        /// based on the type of corresponding command (While, For, AppFor, Method, etc.).
+        /// </summary>
+        /// <exception cref="CommandException">
+        /// Thrown when the loop control variable is not found or the loop direction is invalid.
+        /// </exception>
         public override void Execute()
         {
             if (base.CorrespondingCommand is While || base.CorrespondingCommand is AppWhile)
@@ -72,19 +104,15 @@ namespace MYBooseApp
             }
             else if (base.CorrespondingCommand is AppFor appForCmd)
             {
-                // Get FRESH reference to the loop control variable from Program
+                // Get fresh reference to the loop control variable
                 int varIndex = base.Program.FindVariable(appForCmd.LoopControlV.VarName);
                 if (varIndex == -1)
-                {
                     throw new CommandException("Loop control variable not found");
-                }
 
                 Evaluation loopControlV = base.Program.GetVariable(varIndex);
-
                 int currentValue = loopControlV.Value;
                 int num = currentValue + appForCmd.Step;
 
-                // Update the value
                 loopControlV.Value = num;
                 base.Program.UpdateVariable(loopControlV.VarName, num);
 
@@ -94,7 +122,6 @@ namespace MYBooseApp
                     throw new CommandException("Invalid for loop direction");
                 }
 
-                // Jump back if loop should continue
                 if ((appForCmd.Step > 0 && num <= appForCmd.To) ||
                     (appForCmd.Step < 0 && num >= appForCmd.To))
                 {
@@ -103,19 +130,14 @@ namespace MYBooseApp
             }
             else if (base.CorrespondingCommand is For forCmd)
             {
-                // Get FRESH reference to the loop control variable from Program
                 int varIndex = base.Program.FindVariable(forCmd.LoopControlV.VarName);
                 if (varIndex == -1)
-                {
                     throw new CommandException("Loop control variable not found");
-                }
 
                 Evaluation loopControlV = base.Program.GetVariable(varIndex);
-
                 int currentValue = loopControlV.Value;
                 int num = currentValue + forCmd.Step;
 
-                // Update the value
                 loopControlV.Value = num;
                 base.Program.UpdateVariable(loopControlV.VarName, num);
 
@@ -125,7 +147,6 @@ namespace MYBooseApp
                     throw new CommandException("Invalid for loop direction");
                 }
 
-                // Jump back if loop should continue
                 if ((forCmd.Step > 0 && num <= forCmd.To) ||
                     (forCmd.Step < 0 && num >= forCmd.To))
                 {
@@ -134,8 +155,7 @@ namespace MYBooseApp
             }
             else if (base.CorrespondingCommand is AppMethod || base.CorrespondingCommand is Method)
             {
-                // For method ends, just return to the caller
-                // The ReturnLineNumber is set by the Call command
+                // Return to caller for methods
                 base.Program.PC = base.CorrespondingCommand.ReturnLineNumber;
             }
         }

@@ -1,15 +1,11 @@
 ﻿using BOOSE;
 using MYBooseApp;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MyBooseAppUnitTest
 {
     /// <summary>
-    /// test class to test teh multiline command
+    /// Test class to validate execution of multiline commands
     /// </summary>
     [TestClass]
     public class MultiLineTests
@@ -20,7 +16,7 @@ namespace MyBooseAppUnitTest
         private AppParser parser;
 
         /// <summary>
-        /// inital setup for conducting test
+        /// Initial setup for the tests
         /// </summary>
         [TestInitialize]
         public void Setup()
@@ -32,7 +28,7 @@ namespace MyBooseAppUnitTest
         }
 
         /// <summary>
-        /// test method for validating test
+        /// Test method for executing multiple commands sequentially
         /// </summary>
         [TestMethod]
         public void MultiLineProgram_ExecutesCorrectly()
@@ -44,9 +40,11 @@ namespace MyBooseAppUnitTest
                 rect 100,50
             ";
 
-            parser.Parse(code);
+           
+            parser.ParseProgram(code);
             program.Run();
 
+            // Check final pen position
             Assert.AreEqual(200, canvas.Xpos);
             Assert.AreEqual(200, canvas.Ypos);
         }

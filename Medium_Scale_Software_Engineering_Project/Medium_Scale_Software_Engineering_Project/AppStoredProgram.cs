@@ -6,31 +6,50 @@ using System.Linq;
 
 namespace MYBooseApp
 {
+    /// <summary>
+    /// Represents a stored program in the MYBooseApp environment.
+    /// Handles AppInt, AppReal, and AppBoolean variable types and executes commands on a canvas.
+    /// </summary>
     public class AppStoredProgram : StoredProgram
     {
         private ICanvas canvas;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AppStoredProgram"/> class with a canvas.
+        /// </summary>
+        /// <param name="canvas">The canvas used for drawing and output.</param>
         public AppStoredProgram(ICanvas canvas) : base(canvas)
         {
             this.canvas = canvas;
         }
 
+        /// <summary>
+        /// Gets the canvas associated with this stored program.
+        /// </summary>
+        /// <returns>The <see cref="ICanvas"/> instance.</returns>
         public ICanvas GetCanvas()
         {
             return canvas;
         }
 
-        // Override to handle AppReal
+        /// <summary>
+        /// Updates the value of a variable of type double.
+        /// Handles <see cref="AppReal"/> and <see cref="Real"/>.
+        /// </summary>
+        /// <param name="varName">The variable name.</param>
+        /// <param name="value">The double value to assign.</param>
+        /// <exception cref="CommandException">Thrown if the variable type is not real.</exception>
         public override void UpdateVariable(string varName, double value)
         {
             Evaluation variable = (Evaluation)GetVariable(varName);
 
-            if (variable is Real)
+            if (variable is Real r)
             {
-                ((Real)variable).Value = value;
+                r.Value = value;
             }
-            else if (variable is AppReal)  // Handle AppReal!
+            else if (variable is AppReal ar)
             {
-                ((AppReal)variable).Value = value;
+                ar.Value = value;
             }
             else
             {
@@ -38,19 +57,24 @@ namespace MYBooseApp
             }
         }
 
-        // Override to handle AppInt
+        /// <summary>
+        /// Updates the value of a variable of type integer.
+        /// Handles <see cref="AppInt"/> and <see cref="Int"/>.
+        /// </summary>
+        /// <param name="varName">The variable name.</param>
+        /// <param name="value">The integer value to assign.</param>
         public override void UpdateVariable(string varName, int value)
         {
             int index = FindVariable(varName);
             Evaluation evaluation = (Evaluation)GetVariable(index);
 
-            if (evaluation is Int)
+            if (evaluation is Int i)
             {
-                ((Int)evaluation).Value = value;
+                i.Value = value;
             }
-            else if (evaluation is AppInt)  // Handle AppInt!
+            else if (evaluation is AppInt ai)
             {
-                ((AppInt)evaluation).Value = value;
+                ai.Value = value;
             }
             else
             {
@@ -58,18 +82,24 @@ namespace MYBooseApp
             }
         }
 
-        // Override to handle AppBoolean
+        /// <summary>
+        /// Updates the value of a variable of type boolean.
+        /// Handles <see cref="AppBoolean"/> and <see cref="BOOSE.Boolean"/>.
+        /// </summary>
+        /// <param name="varName">The variable name.</param>
+        /// <param name="value">The boolean value to assign.</param>
+        /// <exception cref="CommandException">Thrown if the variable type is not boolean.</exception>
         public override void UpdateVariable(string varName, bool value)
         {
             Evaluation variable = GetVariable(varName);
 
-            if (variable is BOOSE.Boolean)
+            if (variable is BOOSE.Boolean b)
             {
-                ((BOOSE.Boolean)variable).BoolValue = value;
+                b.BoolValue = value;
             }
-            else if (variable is AppBoolean)  // Handle AppBoolean!
+            else if (variable is AppBoolean ab)
             {
-                ((AppBoolean)variable).BoolValue = value;
+                ab.BoolValue = value;
             }
             else
             {
@@ -77,7 +107,13 @@ namespace MYBooseApp
             }
         }
 
-        // Override GetVarValue to handle AppReal and AppBoolean
+        /// <summary>
+        /// Gets the string representation of a variable's value.
+        /// Supports AppReal, AppBoolean, Real, and BOOSE.Boolean.
+        /// </summary>
+        /// <param name="varName">The variable name.</param>
+        /// <returns>The value of the variable as a string.</returns>
+        /// <exception cref="StoredProgramException">Thrown if the variable is not found.</exception>
         public override string GetVarValue(string varName)
         {
             int num = FindVariable(varName);
@@ -88,30 +124,31 @@ namespace MYBooseApp
 
             Evaluation evaluation = GetVariable(num);
 
-            if (evaluation is Real)
+            if (evaluation is Real r)
             {
-                return ((Real)evaluation).Value.ToString();
+                return r.Value.ToString();
             }
-            else if (evaluation is AppReal)  // Handle AppReal!
+            else if (evaluation is AppReal ar)
             {
-                return ((AppReal)evaluation).Value.ToString();
+                return ar.Value.ToString();
             }
-            else if (evaluation is AppBoolean)  // Handle AppBoolean first!
+            else if (evaluation is AppBoolean ab)
             {
-                if (((AppBoolean)evaluation).BoolValue)
-                    return "true";
-                return "false";
+                return ab.BoolValue ? "true" : "false";
             }
-            else if (evaluation is BOOSE.Boolean)
+            else if (evaluation is BOOSE.Boolean b)
             {
-                if (((BOOSE.Boolean)evaluation).BoolValue)
-                    return "true";
-                return "false";
+                return b.BoolValue ? "true" : "false";
             }
 
             return evaluation.Value.ToString();
         }
 
+        /// <summary>
+        /// Executes all commands in the stored program sequentially.
+        /// Throws <see cref="StoredProgramException"/> if a runtime error occurs.
+        /// </summary>
+        /// <exception cref="StoredProgramException">Thrown if a runtime error occurs during execution.</exception>
         public override void Run()
         {
             int num = 0;
@@ -123,48 +160,12 @@ namespace MYBooseApp
                 ICommand command = (ICommand)NextCommand();
 
                 if (command == null)
-                {
                     continue;
-                }
 
                 try
                 {
                     num++;
-
-                    // Debug first 10 AppEnd executions
-                    if (command is AppEnd && num < 100)
-                    {
-                        System.Diagnostics.Debug.WriteLine($"\n[{num}] PC={PC}, AppEnd executing");
-                        if (VariableExists("count"))
-                        {
-                            System.Diagnostics.Debug.WriteLine($"  count variable = {GetVarValue("count")}");
-                        }
-
-                        var endCmd = command as AppEnd;
-                        if (endCmd?.CorrespondingCommand is AppFor appFor)
-                        {
-                            System.Diagnostics.Debug.WriteLine($"  AppFor.LoopControlV.Value = {appFor.LoopControlV.Value}");
-                            System.Diagnostics.Debug.WriteLine($"  AppFor.From = {appFor.From}, To = {appFor.To}, Step = {appFor.Step}");
-                        }
-                    }
-
                     command.Execute();
-
-                    // Check PC after AppEnd execution
-                    if (command is AppEnd && num < 100)
-                    {
-                        System.Diagnostics.Debug.WriteLine($"  AFTER Execute: PC = {PC}");
-                    }
-
-                    if (num > 200)
-                    {
-                        System.Diagnostics.Debug.WriteLine("\n=== DEBUG STOP ===");
-                        if (VariableExists("count"))
-                        {
-                            System.Diagnostics.Debug.WriteLine($"Final count = {GetVarValue("count")}");
-                        }
-                        throw new StoredProgramException($"Debug stop");
-                    }
                 }
                 catch (BOOSEException e)
                 {
@@ -180,30 +181,4 @@ namespace MYBooseApp
             }
         }
     }
-    }
-//```
-
-//Now test both programs:
-
-//**For loop: **
-//```
-//pen 255,0,0
-//moveto 100,100
-//for count = 1 to 10 step 2
-//	circle count * 10
-//end for
-//```
-
-//**While loop:**
-//```
-//moveto 100,100
-//int width = 9
-//int height = 100
-//pen 255,128,0
-//while height > 50
-//	circle height
-//	height = height - 15
-//end while
-//pen 0,255,0
-//moveto 25,25
-//rect 100,100
+}
