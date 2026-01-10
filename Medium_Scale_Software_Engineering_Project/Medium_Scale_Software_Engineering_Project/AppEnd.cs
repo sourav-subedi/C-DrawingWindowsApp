@@ -58,33 +58,66 @@ namespace MYBooseApp
         {
             if (base.CorrespondingCommand is While || base.CorrespondingCommand is AppWhile)
             {
-                // Re-evaluate the while condition
-                dynamic whileCmd = base.CorrespondingCommand;
-                if (whileCmd.Condition.Value) // Only loop back if condition is still true
+                var whileCmd = base.CorrespondingCommand as ConditionalCommand;
+                if (whileCmd != null && whileCmd.Condition)
                 {
                     base.Program.PC = base.CorrespondingCommand.LineNumber - 1;
                 }
-                // Otherwise, execution continues normally past the loop
             }
-            else if (base.CorrespondingCommand is For || base.CorrespondingCommand is AppFor)
+            else if (base.CorrespondingCommand is AppFor appForCmd)
             {
-                dynamic obj = base.CorrespondingCommand;
-                Evaluation loopControlV = obj.LoopControlV;
-                int num = loopControlV.Value + obj.Step;
+                // Handle AppFor
+                Evaluation loopControlV = appForCmd.LoopControlV;
+
+                int currentValue = loopControlV.Value;
+                int num = currentValue + appForCmd.Step;
 
                 if (!base.Program.VariableExists(loopControlV.VarName))
                 {
                     throw new CommandException("Loop control variable not found");
                 }
 
+                // Update BOTH the LoopControlV object AND the program variable
+                loopControlV.Value = num;  // THIS IS CRITICAL!
                 base.Program.UpdateVariable(loopControlV.VarName, num);
 
-                if ((obj.From > obj.To && obj.Step >= 0) || (obj.From < obj.To && obj.Step <= 0))
+                if ((appForCmd.From > appForCmd.To && appForCmd.Step >= 0) ||
+                    (appForCmd.From < appForCmd.To && appForCmd.Step <= 0))
                 {
                     throw new CommandException("Invalid for loop direction");
                 }
 
-                if ((num < obj.To && obj.Step > 0) || (num > obj.To && obj.Step < 0))
+                // Jump back if loop should continue
+                if ((appForCmd.Step > 0 && num <= appForCmd.To) ||
+                    (appForCmd.Step < 0 && num >= appForCmd.To))
+                {
+                    base.Program.PC = base.CorrespondingCommand.LineNumber;
+                }
+            }
+            else if (base.CorrespondingCommand is For forCmd)
+            {
+                // Handle original For
+                Evaluation loopControlV = forCmd.LoopControlV;
+                int num = loopControlV.Value + forCmd.Step;
+
+                if (!base.Program.VariableExists(loopControlV.VarName))
+                {
+                    throw new CommandException("Loop control variable not found");
+                }
+
+                // Update BOTH
+                loopControlV.Value = num;  // THIS IS CRITICAL!
+                base.Program.UpdateVariable(loopControlV.VarName, num);
+
+                if ((forCmd.From > forCmd.To && forCmd.Step >= 0) ||
+                    (forCmd.From < forCmd.To && forCmd.Step <= 0))
+                {
+                    throw new CommandException("Invalid for loop direction");
+                }
+
+                // Jump back if loop should continue
+                if ((forCmd.Step > 0 && num <= forCmd.To) ||
+                    (forCmd.Step < 0 && num >= forCmd.To))
                 {
                     base.Program.PC = base.CorrespondingCommand.LineNumber;
                 }

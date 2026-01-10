@@ -71,48 +71,44 @@ namespace MYBooseApp
         {
             commandType = commandType.ToLower().Trim();
 
+            // Handle evaluation/assignment - this is what handles "height = height - 15"
+            if (commandType == "evaluation")
+                return new AppEvaluation();
+
             if (commandType == "int")
                 return new AppInt();
-
             if (commandType == "real")
                 return new AppReal();
-
-            //if (commandType == "boolean")
-            //{
-            //    ResetBooleanCounter();
-            //    return new AppBoolean();
-            //}
-
+            if (commandType == "boolean")
+            {
+                ResetBooleanCounter();
+                return new AppBoolean();
+            }
             if (commandType == "array")
             {
                 ResetArrayCounter();
                 return new AppArray();
             }
-
             if (commandType == "poke")
             {
                 ResetArrayCounter();
                 return new AppPoke();
             }
-
             if (commandType == "peek")
             {
                 ResetArrayCounter();
                 return new AppPeek();
             }
-
             if (commandType == "if")
             {
                 ResetCompoundCounters();
                 return new AppIf();
             }
-
             if (commandType == "else")
             {
                 ResetCompoundCounters();
                 return new AppElse();
             }
-
             if (commandType == "while")
             {
                 ResetCompoundCounters();
@@ -120,22 +116,17 @@ namespace MYBooseApp
             }
             if (commandType == "for")
                 return new AppFor();
-
             if (commandType == "end")
             {
                 ResetCompoundCounters();
                 return new AppEnd();
             }
-
             if (commandType == "write")
                 return new AppWrite();
-
             if (commandType == "moveto")
                 return new AppMoveto();
-
             if (commandType == "circle")
                 return new AppCircle();
-
             if (commandType == "rect" || commandType == "rectangle")
                 return new AppRect();
 
