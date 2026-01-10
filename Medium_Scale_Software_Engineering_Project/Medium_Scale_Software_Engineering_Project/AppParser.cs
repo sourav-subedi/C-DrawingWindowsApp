@@ -85,9 +85,14 @@ namespace MYBooseApp
 
                     if (command != null)
                     {
-                        storedProgram.Add(command);
+                        // CompoundCommands (If, While, For, Method, End) add themselves during Compile()
+                        // Only manually add non-compound commands
+                        if (!(command is CompoundCommand))
+                        {
+                            storedProgram.Add(command);
+                        }
 
-                        // Handle both Method and AppMethod
+                        // Handle Method (AppMethod inherits from Method, so this catches both)
                         if (command is Method method)
                         {
                             _ = method.MethodName;
@@ -97,19 +102,6 @@ namespace MYBooseApp
                             for (int j = 0; j < method.LocalVariables.Length; j++)
                             {
                                 command = ParseCommand(method.LocalVariables[j]);
-                                ((Evaluation)command).Local = true;
-                                storedProgram.Remove(command);
-                            }
-                        }
-                        else if (command is AppMethod appMethod)
-                        {
-                            _ = appMethod.MethodName;
-                            command = ParseCommand(appMethod.Type + " " + appMethod.MethodName);
-                            storedProgram.Remove(command);
-
-                            for (int j = 0; j < appMethod.LocalVariables.Length; j++)
-                            {
-                                command = ParseCommand(appMethod.LocalVariables[j]);
                                 ((Evaluation)command).Local = true;
                                 storedProgram.Remove(command);
                             }
