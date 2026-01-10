@@ -8,6 +8,7 @@ namespace MYBooseApp
         public AppWhile()
         {
             ResetWhileCounter();
+            CondType = conditionalTypes.commWhile;
         }
 
         private void ResetWhileCounter()
@@ -26,6 +27,15 @@ namespace MYBooseApp
                 }
             }
             catch { }
+        }
+
+        // OVERRIDE Execute to evaluate the condition!
+        public override void Execute()
+        {
+            base.Execute(); // This calls ConditionalCommand.Execute() which evaluates the expression
+
+            // ConditionalCommand.Execute() already checks Condition and jumps to EndLineNumber if false
+            // So we don't need to do anything else here
         }
     }
 }

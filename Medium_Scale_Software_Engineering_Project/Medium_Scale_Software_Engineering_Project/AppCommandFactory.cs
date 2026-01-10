@@ -118,6 +118,8 @@ namespace MYBooseApp
                 ResetCompoundCounters();
                 return new AppWhile();
             }
+            if (commandType == "for")
+                return new AppFor();
 
             if (commandType == "end")
             {

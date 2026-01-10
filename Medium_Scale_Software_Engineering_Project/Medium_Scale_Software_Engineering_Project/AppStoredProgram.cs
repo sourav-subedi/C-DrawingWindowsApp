@@ -128,10 +128,10 @@ namespace MYBooseApp
                     }
 
                     // Debug output every 1000 iterations
-                    if (num % 1000 == 0)
-                    {
-                        System.Diagnostics.Debug.WriteLine($"Iteration {num}, PC = {PC}, Command = {command.GetType().Name}");
-                    }
+                    //if (num % 1000 == 0)
+                    //{
+                    //    System.Diagnostics.Debug.WriteLine($"Iteration {num}, PC = {PC}, Command = {command.GetType().Name}");
+                    //}
 
                     command.Execute();
                 }
@@ -141,7 +141,7 @@ namespace MYBooseApp
                     error += "Runtime error: " + e.Message + " at line " + PC + Environment.NewLine;
                 }
 
-                if (num > 50000 && PC < 20)
+                if (num > 10000000 && PC < 5)
                 {
                     throw new StoredProgramException($"Program limit reached - possible infinite loop at line {PC}.");
                 }
