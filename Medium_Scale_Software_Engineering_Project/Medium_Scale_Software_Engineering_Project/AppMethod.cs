@@ -1,56 +1,40 @@
 ﻿using BOOSE;
-using System.Reflection;
 
 namespace MYBooseApp
 {
     /// <summary>
     /// Represents a custom Method command for the MYBooseApp environment.
-    /// Extends the base <see cref="Method"/> class and ensures the internal
-    /// static method counter is reset before any instance is created.
+    /// Extends the base <see cref="Method"/> class without using any static counters.
     /// </summary>
     public class AppMethod : Method
     {
         /// <summary>
-        /// Static constructor. Resets the internal static counter of the <see cref="Method"/> class
-        /// before any instance is created.
-        /// </summary>
-        static AppMethod()
-        {
-            ResetMethodCounterStatic();
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="AppMethod"/> class.
-        /// Resets the internal static method counter again to handle multiple method instances.
+        /// All static counter restrictions have been removed.
         /// </summary>
         public AppMethod()
         {
-            ResetMethodCounterStatic();
+            // No static counter reset required
         }
 
         /// <summary>
-        /// Resets the internal static counter of the <see cref="Method"/> class to 1.
-        /// Uses reflection to find the first static integer field.
+        /// Compiles the method command by calling the base Compile method.
+        /// You can add custom initialization here if needed.
         /// </summary>
-        private static void ResetMethodCounterStatic()
+        public override void Compile()
         {
-            try
-            {
-                var methodType = typeof(Method);
-                var fields = methodType.GetFields(BindingFlags.NonPublic | BindingFlags.Static);
-                foreach (var field in fields)
-                {
-                    if (field.FieldType == typeof(int))
-                    {
-                        field.SetValue(null, 1);
-                        break;
-                    }
-                }
-            }
-            catch
-            {
-                // Silently ignore exceptions
-            }
+            base.Compile();
+            // Any additional setup for AppMethod can go here
+        }
+
+        /// <summary>
+        /// Executes the method command by calling the base Execute method.
+        /// Custom logic can be added here if needed.
+        /// </summary>
+        public override void Execute()
+        {
+            base.Execute();
+            // Additional execution behavior can be implemented here
         }
     }
 }

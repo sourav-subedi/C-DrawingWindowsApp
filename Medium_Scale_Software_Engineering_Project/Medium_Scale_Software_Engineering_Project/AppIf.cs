@@ -1,46 +1,43 @@
 ﻿using BOOSE;
-using System.Reflection;
 
 namespace MYBooseApp
 {
     /// <summary>
     /// Represents a custom If command for the MYBooseApp environment.
-    /// Extends the base <see cref="CompoundCommand"/> class and resets the internal
-    /// If counter upon instantiation.
+    /// Extends the base <see cref="CompoundCommand"/> class without static counters.
     /// </summary>
     public class AppIf : CompoundCommand
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="AppIf"/> class
-        /// and resets the internal If counter.
+        /// Initializes a new instance of the <see cref="AppIf"/> class.
         /// </summary>
         public AppIf()
         {
-            ResetIfCounter();
+            // No static counter, so nothing to reset
         }
 
         /// <summary>
-        /// Resets the internal static counter of the <see cref="If"/> class to 1.
-        /// Uses reflection to find the first static integer field.
+        /// Compiles the If command by evaluating its condition expression.
         /// </summary>
-        private void ResetIfCounter()
+        public override void Compile()
         {
-            try
+            base.Compile();
+            // Optionally, you can evaluate and store the condition if needed:
+            if (!string.IsNullOrEmpty(Expression))
             {
-                var ifType = typeof(If);
-                var fields = ifType.GetFields(BindingFlags.NonPublic | BindingFlags.Static);
-                foreach (var field in fields)
-                {
-                    if (field.FieldType == typeof(int))
-                    {
-                        field.SetValue(null, 1);
-                        break;
-                    }
-                }
+                Condition = Program.EvaluateExpression(Expression).Trim().ToLower() == "true";
             }
-            catch
+        }
+
+        /// <summary>
+        /// Executes the If command by checking its condition.
+        /// </summary>
+        public override void Execute()
+        {
+            // Evaluate the condition at runtime
+            if (!string.IsNullOrEmpty(Expression))
             {
-                // Silently ignore exceptions
+                Condition = Program.EvaluateExpression(Expression).Trim().ToLower() == "true";
             }
         }
     }

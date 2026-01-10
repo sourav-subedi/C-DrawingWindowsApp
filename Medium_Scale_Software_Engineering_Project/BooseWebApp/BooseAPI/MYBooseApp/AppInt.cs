@@ -7,29 +7,27 @@ namespace MYBooseApp
     /// Extends <see cref="Evaluation"/> to implement integer-specific evaluation,
     /// compilation, and assignment with validation.
     /// </summary>
-    public class AppInt : Evaluation
+    public sealed class AppInt : Evaluation
     {
+        private static int instantiationCount;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="AppInt"/> class.
-        /// No static counters or instantiation limits.
+        /// The restriction on instantiation count has been removed.
         /// </summary>
         public AppInt()
         {
-            // No static counter restrictions
+            // Restriction removed: no limit on instantiations
         }
 
         /// <summary>
         /// Compiles the integer command by invoking the base Compile method
-        /// and registering the variable in the program if it doesn't exist.
+        /// and registering the variable in the program.
         /// </summary>
         public override void Compile()
         {
             base.Compile();
-
-            if (!Program.VariableExists(VarName))
-            {
-                Program.AddVariable(this);
-            }
+            base.Program.AddVariable(this);
         }
 
         /// <summary>
@@ -43,18 +41,17 @@ namespace MYBooseApp
         {
             base.Execute();
 
-            if (!int.TryParse(evaluatedExpression, out int intValue))
+            if (!int.TryParse(evaluatedExpression, out value))
             {
-                if (double.TryParse(evaluatedExpression, out _))
+                if (double.TryParse(evaluatedExpression, out var _))
                 {
                     throw new StoredProgramException("Fractional values are not allowed for integer variables.");
                 }
 
-                throw new StoredProgramException($"Invalid integer format: '{evaluatedExpression}'");
+                throw new StoredProgramException("Invalid integer format.");
             }
 
-            value = intValue;
-            Program.UpdateVariable(VarName, intValue);
+            base.Program.UpdateVariable(varName, value);
         }
     }
 }

@@ -1,47 +1,22 @@
 ﻿using BOOSE;
-using System.Reflection;
 
 namespace MYBooseApp
 {
     /// <summary>
     /// Represents a custom Boolean command for the BOOSE scripting environment.
     /// Extends the base <see cref="BOOSE.Boolean"/> class to provide custom
-    /// expression evaluation and internal counter reset for boolean variables.
+    /// expression evaluation without relying on static counters.
     /// </summary>
     public class AppBoolean : BOOSE.Boolean
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="AppBoolean"/> class.
-        /// Resets the internal Boolean counter to ensure fresh state.
         /// </summary>
         public AppBoolean()
         {
-            ResetBooleanCounter();
-        }
-
-        /// <summary>
-        /// Resets the internal static boolean counter in <see cref="BOOSE.Boolean"/>.
-        /// Uses reflection to find and reset the first static integer field.
-        /// </summary>
-        private void ResetBooleanCounter()
-        {
-            try
-            {
-                var booleanType = typeof(BOOSE.Boolean);
-                var fields = booleanType.GetFields(BindingFlags.NonPublic | BindingFlags.Static);
-                foreach (var field in fields)
-                {
-                    if (field.FieldType == typeof(int))
-                    {
-                        field.SetValue(null, 0);
-                        break;
-                    }
-                }
-            }
-            catch
-            {
-                // Silently ignore exceptions
-            }
+            // No static counter, fresh instance
+            value = 0;
+            BoolValue = false;
         }
 
         /// <summary>
@@ -62,30 +37,36 @@ namespace MYBooseApp
         /// </exception>
         public override void Execute()
         {
-            // Call Evaluation.Execute() to get the evaluated expression
+            // Get the raw expression
             string text = Expression;
+
+            // Evaluate if it's an expression
             if (base.Program.IsExpression(text))
             {
-                // Convert && to AND and || to OR before evaluation
-                string convertedExpr = text.Replace("&&", "AND").Replace("||", "OR").Replace("!", "NOT ");
+                // Convert C# style logical operators to BOOSE equivalents
+                string convertedExpr = text.Replace("&&", "AND")
+                                           .Replace("||", "OR")
+                                           .Replace("!", "NOT ");
                 text = base.Program.EvaluateExpression(convertedExpr).Trim().ToLower();
             }
 
-            // Now check if it's true or false
-            if (text.Equals("true") || text.Equals("1") || text.Equals("-1"))
+            // Convert result to boolean
+            switch (text)
             {
-                value = 1;
-                BoolValue = true;
-                return;
+                case "true":
+                case "1":
+                case "-1":
+                    value = 1;
+                    BoolValue = true;
+                    break;
+                case "false":
+                case "0":
+                    value = 0;
+                    BoolValue = false;
+                    break;
+                default:
+                    throw new CommandException($"Invalid boolean value '{text}'. Expected 'true' or 'false'.");
             }
-            if (text.Equals("false") || text.Equals("0"))
-            {
-                value = 0;
-                BoolValue = false;
-                return;
-            }
-
-            throw new CommandException("Invalid boolean value. Expected 'true' or 'false'.");
         }
     }
 }

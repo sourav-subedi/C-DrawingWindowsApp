@@ -1,13 +1,12 @@
 ﻿using BOOSE;
-using MYBooseApp;
-using System.Drawing;
+using System;
+using System.Linq;
 
 namespace MYBooseApp
 {
     /// <summary>
-    /// Represents a custom parser for the MYBooseApp environment.
-    /// Extends the base <see cref="Parser"/> to handle App* commands,
-    /// custom variable types, and expression normalization.
+    /// Custom parser for the MYBooseApp environment.
+    /// Extends <see cref="Parser"/> to handle App* commands and custom variable types.
     /// </summary>
     public class AppParser : Parser
     {
@@ -27,30 +26,25 @@ namespace MYBooseApp
         }
 
         /// <summary>
-        /// Parses a single line of program text into an <see cref="ICommand"/> object.
-        /// Handles assignment statements, variable type inference, and App* commands.
+        /// Parses a single line of code into a command.
+        /// Supports AppInt, AppReal, AppBoolean, and other App* commands.
         /// </summary>
-        /// <param name="line">The line of code to parse.</param>
-        /// <returns>An <see cref="ICommand"/> representing the parsed line, or null if the line is empty or a comment.</returns>
-        /// <exception cref="ParserException">Thrown if a variable is undeclared or has an unknown type.</exception>
         public override ICommand ParseCommand(string line)
         {
             if (string.IsNullOrWhiteSpace(line) || line.TrimStart().StartsWith("*"))
                 return null;
 
             line = Normalise(line);
-
             string[] tokens = line.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+
             string commandName = tokens[0];
             string parameterText = string.Join(" ", tokens.Skip(1));
 
             // Handle assignment statements
-            if (tokens.Length > 1 &&
-                tokens[1] == "=" &&
-                commandName != "appint" &&
-                commandName != "int" &&
-                commandName != "real" &&
-                commandName != "boolean")
+            if (tokens.Length > 1 && tokens[1] == "=" &&
+                commandName != "appint" && commandName != "int" &&
+                commandName != "appreal" && commandName != "real" &&
+                commandName != "appboolean" && commandName != "boolean")
             {
                 if (!storedProgram.VariableExists(commandName))
                     throw new ParserException("Variable not declared: " + commandName);
@@ -58,11 +52,12 @@ namespace MYBooseApp
                 parameterText = commandName + " " + parameterText;
                 Evaluation variable = storedProgram.GetVariable(commandName);
 
-                if (variable is Int || variable is AppInt)
+                // Infer type from existing variable
+                if (variable is AppInt || variable is Int)
                     commandName = "int";
-                else if (variable is Real || variable is AppReal)
+                else if (variable is AppReal || variable is Real)
                     commandName = "real";
-                else if (variable is BOOSE.Boolean)
+                else if (variable is AppBoolean || variable is BOOSE.Boolean)
                     commandName = "boolean";
                 else
                     throw new ParserException("Unknown variable type");
@@ -76,53 +71,32 @@ namespace MYBooseApp
         }
 
         /// <summary>
-        /// Parses a multi-line program text into the <see cref="StoredProgram"/>.
-        /// Handles comments, blank lines, compound commands, and method commands.
+        /// Parses a multi-line program text into the StoredProgram.
+        /// Handles comments, blank lines, compound commands, and methods.
         /// </summary>
-        /// <param name="programText">The program text to parse.</param>
-        /// <exception cref="ParserException">Thrown when syntax errors are detected.</exception>
         public override void ParseProgram(string programText)
         {
-            // Remove BOM if present
             if (programText.Length > 0 && programText[0] == '\uFEFF')
                 programText = programText.Substring(1);
 
-            programText += "\n";
-            string errorText = "";
             string[] lines = programText.Split('\n');
+            string errorText = "";
 
             for (int i = 0; i < lines.Length; i++)
             {
                 lines[i] = lines[i].Trim();
-
                 if (string.IsNullOrWhiteSpace(lines[i]) || lines[i].StartsWith("*"))
                     continue;
 
                 try
                 {
                     ICommand command = ParseCommand(lines[i]);
+                    if (command != null && !(command is CompoundCommand))
+                        storedProgram.Add(command);
 
-                    if (command != null)
+                    if (command is Method method)
                     {
-                        if (!(command is CompoundCommand))
-                        {
-                            storedProgram.Add(command);
-                        }
-
-                        // Handle method commands
-                        if (command is Method method)
-                        {
-                            _ = method.MethodName;
-                            command = ParseCommand(method.Type + " " + method.MethodName);
-                            storedProgram.Remove(command);
-
-                            for (int j = 0; j < method.LocalVariables.Length; j++)
-                            {
-                                command = ParseCommand(method.LocalVariables[j]);
-                                ((Evaluation)command).Local = true;
-                                storedProgram.Remove(command);
-                            }
-                        }
+                        // Optional: handle method local variables if needed
                     }
                 }
                 catch (BOOSEException ex)
@@ -136,37 +110,22 @@ namespace MYBooseApp
             }
 
             if (!string.IsNullOrWhiteSpace(errorText))
-            {
                 throw new ParserException(errorText.Trim());
-            }
         }
 
         /// <summary>
-        /// Normalizes a line of code by adding spaces around operators and delimiters
-        /// and removing extra whitespace. Prepares the line for tokenization.
+        /// Adds spaces around operators and removes extra spaces.
         /// </summary>
-        /// <param name="line">The line of code to normalize.</param>
-        /// <returns>A normalized string ready for parsing.</returns>
         private string Normalise(string line)
         {
-            if (string.IsNullOrWhiteSpace(line))
-                return string.Empty;
+            if (string.IsNullOrWhiteSpace(line)) return "";
 
             line = line.Trim();
+            string[] operators = { "=", "+", "-", "*", "/", "%", ",", "(", ")" };
+            foreach (var op in operators)
+                line = line.Replace(op, $" {op} ");
 
-            // Add spaces around operators and delimiters
-            line = line.Replace("=", " = ");
-            line = line.Replace("+", " + ");
-            line = line.Replace("-", " - ");
-            line = line.Replace("*", " * ");
-            line = line.Replace("/", " / ");
-            line = line.Replace("%", " % ");
-            line = line.Replace(",", " , ");
-            line = line.Replace("(", " ( ");
-            line = line.Replace(")", " ) ");
             line = line.Replace("\t", " ");
-
-            // Clean up multiple spaces
             while (line.Contains("  "))
                 line = line.Replace("  ", " ");
 

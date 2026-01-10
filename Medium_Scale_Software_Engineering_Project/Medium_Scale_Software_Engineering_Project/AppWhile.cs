@@ -1,58 +1,107 @@
 ﻿using BOOSE;
-using System.Reflection;
+using System;
+using System.Text.RegularExpressions;
+using System.Data;
 
 namespace MYBooseApp
 {
     /// <summary>
     /// Represents a custom While loop command for the MYBooseApp environment.
-    /// Extends <see cref="CompoundCommand"/> and ensures the internal static
-    /// while counter is reset before execution.
+    /// Evaluates a condition and loops until the condition is false.
     /// </summary>
     public class AppWhile : CompoundCommand
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="AppWhile"/> class.
-        /// Resets the internal while counter and sets the condition type.
+        /// The raw condition expression for this While command.
+        /// Must be set before Execute() is called.
+        /// </summary>
+        public string Expression { get; set; }
+
+        /// <summary>
+        /// Default constructor sets the conditional type.
         /// </summary>
         public AppWhile()
         {
-            ResetWhileCounter();
-            CondType = conditionalTypes.commWhile;
+            CondType = ConditionalCommand.conditionalTypes.commWhile;
         }
 
         /// <summary>
-        /// Resets the internal static counter of the <see cref="While"/> class to 0.
-        /// Uses reflection to find the first static integer field.
+        /// Sets the While loop condition from parser.
         /// </summary>
-        private void ResetWhileCounter()
+        public new void Set(StoredProgram program, string parameters)
         {
-            try
-            {
-                var whileType = typeof(While);
-                var fields = whileType.GetFields(BindingFlags.NonPublic | BindingFlags.Static);
-                foreach (var field in fields)
-                {
-                    if (field.FieldType == typeof(int))
-                    {
-                        field.SetValue(null, 0); // Reset counter to 0
-                        break;
-                    }
-                }
-            }
-            catch
-            {
-                // Silently ignore exceptions
-            }
+            base.Set(program, parameters);
+
+            if (string.IsNullOrWhiteSpace(parameters))
+                throw new BOOSEException("While loop requires a condition expression.");
+
+            Expression = parameters.Trim();
         }
 
         /// <summary>
-        /// Executes the While loop command by evaluating its condition.
-        /// If the condition is false, jumps to the corresponding End command.
-        /// Inherits most behavior from <see cref="ConditionalCommand.Execute"/>.
+        /// Compiles the While command by pushing itself to the program stack
+        /// for linking with AppEnd.
+        /// </summary>
+        public override void Compile()
+        {
+            base.Program.Push(this); // so AppEnd can link to it
+        }
+
+        /// <summary>
+        /// Executes the While loop by evaluating the condition.
+        /// If false, jumps to corresponding End using LineNumber.
         /// </summary>
         public override void Execute()
         {
-            base.Execute(); // ConditionalCommand.Execute() evaluates condition and handles jump
+            if (string.IsNullOrWhiteSpace(Expression))
+                throw new BOOSEException("While condition expression is not set.");
+
+            bool conditionMet = EvaluateCondition(Expression);
+
+            // Keep base property for compatibility
+            if (this is ConditionalCommand cc)
+                cc.Condition = conditionMet;
+
+            // If condition is false, jump to End
+            if (!conditionMet && CorrespondingCommand != null)
+            {
+                Program.PC = CorrespondingCommand.LineNumber;
+            }
+        }
+
+        /// <summary>
+        /// Evaluates the condition string dynamically.
+        /// Supports variables and logical operators.
+        /// </summary>
+        private bool EvaluateCondition(string cond)
+        {
+            if (string.IsNullOrWhiteSpace(cond))
+                throw new BOOSEException("Cannot evaluate empty condition.");
+
+            string expr = cond.Trim();
+
+            // Replace variables with their current values
+            expr = Regex.Replace(expr, @"\b[a-zA-Z_][a-zA-Z0-9_]*\b", match =>
+            {
+                string varName = match.Value;
+                return Program.VariableExists(varName) ? Program.GetVarValue(varName) : varName;
+            });
+
+            // Convert logical operators to DataTable-compatible syntax
+            expr = expr.Replace("&&", " AND ")
+                       .Replace("||", " OR ")
+                       .Replace("!", "NOT ");
+
+            try
+            {
+                var dt = new DataTable();
+                object result = dt.Compute(expr, "");
+                return Convert.ToBoolean(result);
+            }
+            catch (Exception ex)
+            {
+                throw new BOOSEException($"Failed to evaluate condition '{cond}': {ex.Message}");
+            }
         }
     }
 }

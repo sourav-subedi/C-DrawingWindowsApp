@@ -1,12 +1,9 @@
 ﻿using BOOSE;
-using static BOOSE.ConditionalCommand;
 
 namespace MYBooseApp
 {
     /// <summary>
     /// Represents a custom For loop command for the MYBooseApp environment.
-    /// Extends <see cref="ConditionalCommand"/> to implement For loop behavior with
-    /// loop control variables, from/to values, and optional step.
     /// </summary>
     public class AppFor : ConditionalCommand
     {
@@ -18,44 +15,24 @@ namespace MYBooseApp
         private string stepStr;
         private string loopVarName;
         private Evaluation loopControlV = new Evaluation();
-        private bool firstExecution = true;  // Track first execution
+        private bool firstExecution = true;
 
         /// <summary>
         /// Gets the loop control variable used in this For loop.
         /// </summary>
         public Evaluation LoopControlV => loopControlV;
 
-        /// <summary>
-        /// Gets or sets the starting value of the loop.
-        /// </summary>
-        public int From
-        {
-            get { return from; }
-            set { from = value; }
-        }
+        /// <summary>Starting value of the loop</summary>
+        public int From { get => from; set => from = value; }
+
+        /// <summary>Ending value of the loop</summary>
+        public int To { get => to; set => to = value; }
+
+        /// <summary>Step increment/decrement of the loop (default 1)</summary>
+        public int Step { get => step; set => step = value; }
 
         /// <summary>
-        /// Gets or sets the ending value of the loop.
-        /// </summary>
-        public int To
-        {
-            get { return to; }
-            set { to = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the step value for the loop increment/decrement.
-        /// Default is 1.
-        /// </summary>
-        public int Step
-        {
-            get { return step; }
-            set { step = value; }
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AppFor"/> class.
-        /// Sets the conditional type to <see cref="conditionalTypes.commFor"/>.
+        /// Default constructor sets the conditional type to commFor
         /// </summary>
         public AppFor()
         {
@@ -63,45 +40,38 @@ namespace MYBooseApp
         }
 
         /// <summary>
-        /// Compiles the For loop command by parsing the expression for the loop
-        /// control variable, from/to values, and optional step.
-        /// Registers the loop variable in the program if it does not exist.
+        /// Sets the loop parameters from parser.
+        /// Syntax example: "i = 1 to 10 step 2"
         /// </summary>
-        /// <exception cref="StoredProgramException">
-        /// Thrown when the For loop expression is invalid or parameters cannot be parsed.
-        /// </exception>
-        public override void Compile()
+        public new void Set(StoredProgram program, string parameters)
         {
-            base.Compile();
-            string[] array = base.Expression.Split('=');
-            string[] array2 = array[1].Trim().Split(' ', StringSplitOptions.RemoveEmptyEntries);
+            base.Set(program, parameters);
 
-            fromStr = array2[0];
-            toStr = array2[2];
+            if (string.IsNullOrWhiteSpace(parameters))
+                throw new BOOSEException("For loop requires parameters.");
 
-            if (array2.Length > 4)
+            string[] parts = parameters.Split('=', 2);
+            if (parts.Length != 2)
+                throw new BOOSEException("Invalid For loop syntax, expected 'variable = from to to [step x]'");
+
+            loopVarName = parts[0].Trim();
+            string[] values = parts[1].Trim().Split(' ', StringSplitOptions.RemoveEmptyEntries);
+
+            if (values.Length < 3)
+                throw new BOOSEException("For loop requires 'from', 'to' and optional 'step'.");
+
+            fromStr = values[0];
+            if (values[1].ToLower() != "to")
+                throw new BOOSEException("For loop missing 'to' keyword.");
+            toStr = values[2];
+
+            stepStr = values.Length >= 5 && values[3].ToLower() == "step" ? values[4] : "1";
+
+            // Register loop variable in program if it does not exist
+            int idx = base.Program.FindVariable(loopVarName);
+            if (idx != -1)
             {
-                // Handle negative step: might be split as "step" "-" "2"
-                if (array2.Length > 5 && array2[4] == "-")
-                {
-                    stepStr = "-" + array2[5];
-                }
-                else
-                {
-                    stepStr = array2[4];
-                }
-            }
-            else
-            {
-                stepStr = "1";
-            }
-
-            loopVarName = array[0].Trim();
-            int num = base.Program.FindVariable(loopVarName);
-
-            if (num != -1)
-            {
-                loopControlV = base.Program.GetVariable(num);
+                loopControlV = base.Program.GetVariable(idx);
             }
             else
             {
@@ -114,40 +84,28 @@ namespace MYBooseApp
         }
 
         /// <summary>
-        /// Executes the For loop command.
-        /// Evaluates the from, to, and step expressions and initializes the loop
-        /// control variable on the first execution. Subsequent executions are controlled
-        /// by the <see cref="AppEnd"/> command handling loop continuation.
+        /// Compiles the For command.
+        /// Pushes itself to stack for AppEnd linking.
         /// </summary>
-        /// <exception cref="StoredProgramException">
-        /// Thrown when the from, to, or step values cannot be parsed as integers.
-        /// </exception>
+        public override void Compile()
+        {
+            base.Program.Push(this);
+        }
+
+        /// <summary>
+        /// Executes the For loop: evaluates expressions and initializes loop variable.
+        /// </summary>
         public override void Execute()
         {
-            // Evaluate expressions
-            if (base.Program.IsExpression(fromStr))
-            {
-                fromStr = base.Program.EvaluateExpression(fromStr).Trim().ToLower();
-            }
-            bool num = int.TryParse(fromStr, out from);
+            // Evaluate expressions dynamically
+            if (base.Program.IsExpression(fromStr)) fromStr = base.Program.EvaluateExpression(fromStr);
+            if (!int.TryParse(fromStr, out from)) throw new BOOSEException($"Invalid 'from' value: {fromStr}");
 
-            if (base.Program.IsExpression(toStr))
-            {
-                toStr = base.Program.EvaluateExpression(toStr).Trim().ToLower();
-            }
-            bool flag = int.TryParse(toStr, out to);
+            if (base.Program.IsExpression(toStr)) toStr = base.Program.EvaluateExpression(toStr);
+            if (!int.TryParse(toStr, out to)) throw new BOOSEException($"Invalid 'to' value: {toStr}");
 
-            if (base.Program.IsExpression(stepStr))
-            {
-                stepStr = base.Program.EvaluateExpression(stepStr).Trim();
-            }
-
-            bool flag2 = int.TryParse(stepStr, out step);
-
-            if (!num || !flag || !flag2)
-            {
-                throw new StoredProgramException($"Invalid for loop parameters: from='{fromStr}', to='{toStr}', step='{stepStr}'");
-            }
+            if (base.Program.IsExpression(stepStr)) stepStr = base.Program.EvaluateExpression(stepStr);
+            if (!int.TryParse(stepStr, out step)) throw new BOOSEException($"Invalid 'step' value: {stepStr}");
 
             // Initialize loop variable on first execution
             if (firstExecution)

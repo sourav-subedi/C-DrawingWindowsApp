@@ -20,36 +20,11 @@ namespace MYBooseApp
         /// </exception>
         public override void CheckParameters(string[] parameterList)
         {
-            if (parameterList == null || (parameterList.Length != 3 && parameterList.Length != 4))
+            base.Parameters = base.ParameterList.Trim().Split(' ');
+            if (base.Parameters.Length != 3 && base.Parameters.Length != 4)
             {
                 throw new CommandException("Invalid array declaration syntax.");
             }
-        }
-
-        /// <summary>
-        /// Compile the array command parameters using base functionality.
-        /// </summary>
-        public override void Compile()
-        {
-            ProcessArrayParametersCompile(peekOrPoke: false);
-        }
-
-        /// <summary>
-        /// Execute the array command using base functionality.
-        /// </summary>
-        public override void Execute()
-        {
-            ProcessArrayParametersExecute(peekOrPoke: false);
-        }
-
-        /// <summary>
-        /// Sets up the array with the program and parameters.
-        /// </summary>
-        /// <param name="Program">The current stored program.</param>
-        /// <param name="Params">The parameters as a string.</param>
-        public override void Set(StoredProgram Program, string Params)
-        {
-            base.Set(Program, Params);
         }
     }
 }
