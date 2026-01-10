@@ -116,6 +116,11 @@ namespace MYBooseApp
             }
             if (commandType == "for")
                 return new AppFor();
+            if (commandType == "method")
+            {
+                ResetCompoundCounters();
+                return new AppMethod();
+            }
             if (commandType == "end")
             {
                 ResetCompoundCounters();
@@ -129,7 +134,8 @@ namespace MYBooseApp
                 return new AppCircle();
             if (commandType == "rect" || commandType == "rectangle")
                 return new AppRect();
-
+            if (commandType == "call")
+                return new Call();
             return base.MakeCommand(commandType);
         }
     }

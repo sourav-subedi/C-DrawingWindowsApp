@@ -12,6 +12,7 @@ namespace MYBooseApp
         private string stepStr;
         private string loopVarName;
         private Evaluation loopControlV = new Evaluation();
+        private bool firstExecution = true;  // Track first execution
 
         public Evaluation LoopControlV => loopControlV;
 
@@ -35,23 +36,29 @@ namespace MYBooseApp
 
         public AppFor()
         {
-            // Restriction removed
             CondType = conditionalTypes.commFor;
         }
 
         public override void Compile()
         {
             base.Compile();
-
             string[] array = base.Expression.Split('=');
-            string[] array2 = array[1].Trim().Split(' ');
+            string[] array2 = array[1].Trim().Split(' ', StringSplitOptions.RemoveEmptyEntries);
 
             fromStr = array2[0];
             toStr = array2[2];
 
             if (array2.Length > 4)
             {
-                stepStr = array2[4];
+                // Handle negative step: might be split as "step" "-" "2"
+                if (array2.Length > 5 && array2[4] == "-")
+                {
+                    stepStr = "-" + array2[5];
+                }
+                else
+                {
+                    stepStr = array2[4];
+                }
             }
             else
             {
@@ -77,6 +84,7 @@ namespace MYBooseApp
 
         public override void Execute()
         {
+            // Evaluate expressions
             if (base.Program.IsExpression(fromStr))
             {
                 fromStr = base.Program.EvaluateExpression(fromStr).Trim().ToLower();
@@ -93,14 +101,24 @@ namespace MYBooseApp
             {
                 stepStr = base.Program.EvaluateExpression(stepStr).Trim().ToLower();
             }
+
+            // Don't use .ToLower() on stepStr before parsing - it might affect the minus sign
+            stepStr = stepStr.Trim();
             bool flag2 = int.TryParse(stepStr, out step);
 
-            if (num && flag && !flag2)
+            if (!num || !flag || !flag2)
             {
-                throw new StoredProgramException("Invalid step value in for loop");
+                throw new StoredProgramException($"Invalid for loop parameters: from='{fromStr}', to='{toStr}', step='{stepStr}'");
             }
 
-            loopControlV.Value = from;
+            // CRITICAL: Only initialize loop variable on FIRST execution
+            // When PC jumps back from End, this flag will be false
+            if (firstExecution)
+            {
+                loopControlV.Value = from;
+                base.Program.UpdateVariable(loopVarName, from);
+                firstExecution = false;
+            }
         }
     }
 }

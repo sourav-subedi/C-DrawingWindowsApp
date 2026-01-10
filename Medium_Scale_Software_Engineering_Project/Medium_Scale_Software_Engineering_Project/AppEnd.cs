@@ -50,6 +50,12 @@ namespace MYBooseApp
                 throw new CommandException("End for expected");
             }
 
+            if ((base.CorrespondingCommand is Method || base.CorrespondingCommand is AppMethod) &&
+                !base.ParameterList.Contains("method"))
+            {
+                throw new CommandException("End method expected");
+            }
+
             base.LineNumber = base.Program.Count;
             base.CorrespondingCommand.EndLineNumber = base.LineNumber;
         }
@@ -66,19 +72,20 @@ namespace MYBooseApp
             }
             else if (base.CorrespondingCommand is AppFor appForCmd)
             {
-                // Handle AppFor
-                Evaluation loopControlV = appForCmd.LoopControlV;
-
-                int currentValue = loopControlV.Value;
-                int num = currentValue + appForCmd.Step;
-
-                if (!base.Program.VariableExists(loopControlV.VarName))
+                // Get FRESH reference to the loop control variable from Program
+                int varIndex = base.Program.FindVariable(appForCmd.LoopControlV.VarName);
+                if (varIndex == -1)
                 {
                     throw new CommandException("Loop control variable not found");
                 }
 
-                // Update BOTH the LoopControlV object AND the program variable
-                loopControlV.Value = num;  // THIS IS CRITICAL!
+                Evaluation loopControlV = base.Program.GetVariable(varIndex);
+
+                int currentValue = loopControlV.Value;
+                int num = currentValue + appForCmd.Step;
+
+                // Update the value
+                loopControlV.Value = num;
                 base.Program.UpdateVariable(loopControlV.VarName, num);
 
                 if ((appForCmd.From > appForCmd.To && appForCmd.Step >= 0) ||
@@ -96,17 +103,20 @@ namespace MYBooseApp
             }
             else if (base.CorrespondingCommand is For forCmd)
             {
-                // Handle original For
-                Evaluation loopControlV = forCmd.LoopControlV;
-                int num = loopControlV.Value + forCmd.Step;
-
-                if (!base.Program.VariableExists(loopControlV.VarName))
+                // Get FRESH reference to the loop control variable from Program
+                int varIndex = base.Program.FindVariable(forCmd.LoopControlV.VarName);
+                if (varIndex == -1)
                 {
                     throw new CommandException("Loop control variable not found");
                 }
 
-                // Update BOTH
-                loopControlV.Value = num;  // THIS IS CRITICAL!
+                Evaluation loopControlV = base.Program.GetVariable(varIndex);
+
+                int currentValue = loopControlV.Value;
+                int num = currentValue + forCmd.Step;
+
+                // Update the value
+                loopControlV.Value = num;
                 base.Program.UpdateVariable(loopControlV.VarName, num);
 
                 if ((forCmd.From > forCmd.To && forCmd.Step >= 0) ||
@@ -122,8 +132,10 @@ namespace MYBooseApp
                     base.Program.PC = base.CorrespondingCommand.LineNumber;
                 }
             }
-            else if (base.CorrespondingCommand is Method)
+            else if (base.CorrespondingCommand is AppMethod || base.CorrespondingCommand is Method)
             {
+                // For method ends, just return to the caller
+                // The ReturnLineNumber is set by the Call command
                 base.Program.PC = base.CorrespondingCommand.ReturnLineNumber;
             }
         }

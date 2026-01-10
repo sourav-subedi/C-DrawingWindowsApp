@@ -120,6 +120,14 @@ namespace Medium_Scale_Software_Engineering_Project
                     return;
                 }
 
+                // ADD THIS DEBUG OUTPUT HERE:
+                debugWindow.AppendText("=== Program Structure ===\r\n");
+                for (int i = 0; i < program.Count; i++)
+                {
+                    debugWindow.AppendText($"Line {i}: {program[i].GetType().Name}\r\n");
+                }
+                debugWindow.AppendText("=== End Structure ===\r\n");
+
                 // Run the program
                 debugWindow.AppendText("Running program...\r\n");
                 program.Run();

@@ -6,7 +6,7 @@ namespace MYBooseApp
 {
     public class AppParser : Parser
     {
-        private StoredProgram storedProgram;    
+        private StoredProgram storedProgram;
 
         private ICommandFactory factory;
 
@@ -62,6 +62,12 @@ namespace MYBooseApp
 
         public override void ParseProgram(string programText)
         {
+            // Remove BOM if present
+            if (programText.Length > 0 && programText[0] == '\uFEFF')
+            {
+                programText = programText.Substring(1);
+            }
+
             programText += "\n";
             string errorText = "";
             string[] lines = programText.Split('\n');
@@ -79,8 +85,9 @@ namespace MYBooseApp
 
                     if (command != null)
                     {
-                        storedProgram.Add(command);  
+                        storedProgram.Add(command);
 
+                        // Handle both Method and AppMethod
                         if (command is Method method)
                         {
                             _ = method.MethodName;
@@ -90,6 +97,19 @@ namespace MYBooseApp
                             for (int j = 0; j < method.LocalVariables.Length; j++)
                             {
                                 command = ParseCommand(method.LocalVariables[j]);
+                                ((Evaluation)command).Local = true;
+                                storedProgram.Remove(command);
+                            }
+                        }
+                        else if (command is AppMethod appMethod)
+                        {
+                            _ = appMethod.MethodName;
+                            command = ParseCommand(appMethod.Type + " " + appMethod.MethodName);
+                            storedProgram.Remove(command);
+
+                            for (int j = 0; j < appMethod.LocalVariables.Length; j++)
+                            {
+                                command = ParseCommand(appMethod.LocalVariables[j]);
                                 ((Evaluation)command).Local = true;
                                 storedProgram.Remove(command);
                             }
