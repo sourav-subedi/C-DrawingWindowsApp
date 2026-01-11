@@ -286,16 +286,11 @@ aboutBtn.addEventListener('click', () => {
     document.getElementById('aboutContent').innerHTML = `
         <p><strong>BOOSE Interpreter</strong></p>
         <p>Version 2.01</p>
-        <p>Created by Aayam Regmi</p>
+        <p>Created by Sourav Subedi</p>
         <p>Leeds Beckett University | The British College</p>
         <p>A web-based interpreter for the BOOSE drawing language.</p>
     `;
     aboutModal.style.display = 'block';
-});
-
-// Documentation
-documentationBtn.addEventListener('click', () => {
-    window.open('https://aayamregmi.github.io/BOOSE_Interpreter_Documentation/', '_blank');
 });
 
 // Close modals 

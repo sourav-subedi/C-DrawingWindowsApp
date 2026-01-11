@@ -307,29 +307,6 @@ namespace MYBooseApp
         }
 
         /// <summary>
-        /// Opens the documentation URL in the default web browser
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void documentationToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                // Open the documentation URL in the default web browser
-                Process.Start(new ProcessStartInfo
-                {
-                    FileName = "https://aayamregmi.github.io/BOOSE_Interpreter_Documentation/",
-                    UseShellExecute = true
-                });
-            }
-            catch (Exception ex)
-            {
-                // Optional: Show error if opening fails
-                MessageBox.Show($"Unable to open documentation: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        /// <summary>
         /// Opens a new form displaying the list of available commands
         /// </summary>
         /// <param name="sender"></param>
