@@ -56,7 +56,7 @@
             drawingBox.BackColor = SystemColors.ButtonHighlight;
             drawingBox.BorderStyle = BorderStyle.Fixed3D;
             drawingBox.Location = new Point(589, 85);
-            drawingBox.Margin = new Padding(6, 6, 6, 6);
+            drawingBox.Margin = new Padding(6);
             drawingBox.Name = "drawingBox";
             drawingBox.Size = new Size(1079, 850);
             drawingBox.TabIndex = 0;
@@ -66,7 +66,7 @@
             // singleCommandTextBox
             // 
             singleCommandTextBox.Location = new Point(22, 896);
-            singleCommandTextBox.Margin = new Padding(6, 6, 6, 6);
+            singleCommandTextBox.Margin = new Padding(6);
             singleCommandTextBox.Name = "singleCommandTextBox";
             singleCommandTextBox.Size = new Size(524, 39);
             singleCommandTextBox.TabIndex = 2;
@@ -75,7 +75,7 @@
             // 
             runCommand.ForeColor = SystemColors.ControlText;
             runCommand.Location = new Point(173, 958);
-            runCommand.Margin = new Padding(6, 6, 6, 6);
+            runCommand.Margin = new Padding(6);
             runCommand.Name = "runCommand";
             runCommand.Size = new Size(139, 49);
             runCommand.TabIndex = 3;
@@ -87,7 +87,7 @@
             // 
             debugBox.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             debugBox.Location = new Point(22, 1078);
-            debugBox.Margin = new Padding(6, 6, 6, 6);
+            debugBox.Margin = new Padding(6);
             debugBox.Multiline = true;
             debugBox.Name = "debugBox";
             debugBox.ReadOnly = true;
@@ -130,21 +130,21 @@
             // saveToolStripMenuItem
             // 
             saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            saveToolStripMenuItem.Size = new Size(359, 44);
+            saveToolStripMenuItem.Size = new Size(204, 44);
             saveToolStripMenuItem.Text = "Save ";
             saveToolStripMenuItem.Click += saveToolStripMenuItem_Click;
             // 
             // loadToolStripMenuItem
             // 
             loadToolStripMenuItem.Name = "loadToolStripMenuItem";
-            loadToolStripMenuItem.Size = new Size(359, 44);
+            loadToolStripMenuItem.Size = new Size(204, 44);
             loadToolStripMenuItem.Text = "Load";
             loadToolStripMenuItem.Click += loadToolStripMenuItem_Click;
             // 
             // exitToolStripMenuItem
             // 
             exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            exitToolStripMenuItem.Size = new Size(359, 44);
+            exitToolStripMenuItem.Size = new Size(204, 44);
             exitToolStripMenuItem.Text = "Exit";
             exitToolStripMenuItem.Click += exitToolStripMenuItem_Click;
             // 
@@ -158,28 +158,28 @@
             // aboutToolStripMenuItem
             // 
             aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            aboutToolStripMenuItem.Size = new Size(359, 44);
+            aboutToolStripMenuItem.Size = new Size(313, 44);
             aboutToolStripMenuItem.Text = "About";
             aboutToolStripMenuItem.Click += aboutToolStripMenuItem_Click;
             // 
             // commandListToolStripMenuItem
             // 
             commandListToolStripMenuItem.Name = "commandListToolStripMenuItem";
-            commandListToolStripMenuItem.Size = new Size(359, 44);
+            commandListToolStripMenuItem.Size = new Size(313, 44);
             commandListToolStripMenuItem.Text = "Command list";
             commandListToolStripMenuItem.Click += commandListToolStripMenuItem_Click;
             // 
             // documentationToolStripMenuItem
             // 
             documentationToolStripMenuItem.Name = "documentationToolStripMenuItem";
-            documentationToolStripMenuItem.Size = new Size(359, 44);
+            documentationToolStripMenuItem.Size = new Size(313, 44);
             documentationToolStripMenuItem.Text = "Documentation";
             documentationToolStripMenuItem.Click += documentationToolStripMenuItem_Click;
             // 
             // commandTextBox
             // 
             commandTextBox.Location = new Point(22, 85);
-            commandTextBox.Margin = new Padding(6, 6, 6, 6);
+            commandTextBox.Margin = new Padding(6);
             commandTextBox.Multiline = true;
             commandTextBox.Name = "commandTextBox";
             commandTextBox.Size = new Size(524, 793);
@@ -192,7 +192,7 @@
             clearDebug.Font = new Font("Segoe UI Black", 7.125F, FontStyle.Bold, GraphicsUnit.Point, 0);
             clearDebug.ForeColor = SystemColors.MenuText;
             clearDebug.Location = new Point(337, 958);
-            clearDebug.Margin = new Padding(6, 6, 6, 6);
+            clearDebug.Margin = new Padding(6);
             clearDebug.Name = "clearDebug";
             clearDebug.Size = new Size(116, 49);
             clearDebug.TabIndex = 10;
@@ -204,7 +204,7 @@
             // 
             runOneCommandButton.ForeColor = SystemColors.ActiveCaptionText;
             runOneCommandButton.Location = new Point(22, 958);
-            runOneCommandButton.Margin = new Padding(6, 6, 6, 6);
+            runOneCommandButton.Margin = new Padding(6);
             runOneCommandButton.Name = "runOneCommandButton";
             runOneCommandButton.Size = new Size(139, 49);
             runOneCommandButton.TabIndex = 12;
@@ -214,17 +214,17 @@
             // 
             // clearCanvas
             // 
-            clearCanvas.BackColor = Color.Red;
+            clearCanvas.BackColor = Color.IndianRed;
             clearCanvas.FlatStyle = FlatStyle.Flat;
             clearCanvas.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             clearCanvas.ForeColor = Color.Snow;
-            clearCanvas.Location = new Point(1651, 56);
+            clearCanvas.Location = new Point(1497, 972);
             clearCanvas.Margin = new Padding(0);
             clearCanvas.Name = "clearCanvas";
             clearCanvas.RightToLeft = RightToLeft.No;
-            clearCanvas.Size = new Size(43, 49);
+            clearCanvas.Size = new Size(171, 49);
             clearCanvas.TabIndex = 13;
-            clearCanvas.Text = "X";
+            clearCanvas.Text = "Clear Canvas";
             clearCanvas.UseVisualStyleBackColor = false;
             clearCanvas.Click += clearCanvas_Click;
             // 
@@ -246,7 +246,7 @@
             Controls.Add(menuStrip1);
             ForeColor = SystemColors.Window;
             MainMenuStrip = menuStrip1;
-            Margin = new Padding(6, 6, 6, 6);
+            Margin = new Padding(6);
             Name = "drawingApplication";
             Text = "MyBooseApp";
             ((System.ComponentModel.ISupportInitialize)drawingBox).EndInit();

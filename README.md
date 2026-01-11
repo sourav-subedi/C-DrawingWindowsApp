@@ -12,23 +12,23 @@ I will discuss how I implemented the more difficult elements (like the parser, i
 Keep your progress up to date below. Put "DONE" after each section, when you have done it.  
 The number in brackets represents the component that each element contributes to.
 # Checkpoint
-#### 1 Version Control (1) 
+#### 1 Version Control (1) (Done)
 	At least two documented commits to provided on GitHub Classroom BEFORE 12pm 7th October.
 	At least 5 documented commits.
 	Readme.md file filled in correctly.
-#### 2 Unit Tests for basic drawing commands above (1) 
+#### 2 Unit Tests for basic drawing commands above (1) (Done)
 	Unit Test for moveto command (variables storing pen position are correct)
 	Unit Test for drawTo command (variables storing pen position are correct)
 	Unit Test for a multiline program.
-#### 3 XML Comments/documentation produced (1) 
+#### 3 XML Comments/documentation produced (1) (Done)
 	Fully documented with XML comments and Documentation web site produced 
-#### 4 Exception Handling (1) 
-#### 5 Library (DLL) installed and working with reasonable user interface (2)
+#### 4 Exception Handling (1) (Done)
+#### 5 Library (DLL) installed and working with reasonable user interface (2) (Done)
 	Form interface with program window, output window and run button
 	BOOSE DLL library installed 
 	call about method and display returned information in output/debug window
 	you can use System.Diagnostics to output to the debug window
-#### 6 Basic drawing commands of the library are implemented (2)
+#### 6 Basic drawing commands of the library are implemented (2) (Done)
 	Moveto, circle, rect, pencolour, write.
 	Unrestricted drawing programs can be run (1unrestrictedDrawing.boose)
 
@@ -37,30 +37,30 @@ Read the hand in instructions on myBeckett carefully to ensure you are submittin
 
 
 # Final Submission
-#### 1 Further Version Control (1)
+#### 1 Further Version Control (1) (Done)
 	You must continue to use VC to a professional standard with frequent and clear commits
 	Your Readme.md must be up to date
-#### 2 Use of Interfaces (1)
+#### 2 Use of Interfaces (1) (Done)
 	Interfaces to be used for all classes where appropriate
-#### 3 Further Unit Testing (1)
+#### 3 Further Unit Testing (1) (Done)
 	Tests for full program all of the facilities completed in 5,6 and 7 below
 	It is up to you how design your tests (i.e. one test per facility or one test testing many but they must be clearly documented with XML comments)
-#### 4 Design Patterns (1)
+#### 4 Design Patterns (1) (Done)
 	Use of factory Design Pattern for command creation
 	Use of Singleton Design Pattern
 	Demonstrate the use of another design pattern of your choice
 	(for 5,6 and 7 you can click the links to see the example BOOSE programs that must be run, these are in your Portfolio. You must run the unrestricted programs and replace the image already there with an 	image of your BOOSE Interpreter running the BOOSE programs. You may show further programs in your portfolio.)
-#### 5 Replaced variables (2) \*
+#### 5 Replaced variables (2) \* (Done)
 	Int	
 	Real	
 	Array	
-#### 6 Replaced if, while, for (2) \*
+#### 6 Replaced if, while, for (2) \* (Done)
 	While 	
 	For	
 	If else	
-#### 7 Replaced Methods (2) \*
+#### 7 Replaced Methods (2) \* (Done)
 
-#### 8 Additional (web version, text-based version, extension to BOOSE itself, etc, discuss with your tutor) (2) 
+#### 8 Additional (web version, text-based version, extension to BOOSE itself, etc, discuss with your tutor) (2) (Done:- Web Version)
 \* You must rewrite the functionality and not try and "hack the system". I've tried to make it so you can't but who knows, either way, you've been told.
 ### [You MUST fill in this form whilst recording your YouTube Video AND submit it to myBeckett](https://forms.gle/j3eMcVbbjQ3sFrXw7)
 

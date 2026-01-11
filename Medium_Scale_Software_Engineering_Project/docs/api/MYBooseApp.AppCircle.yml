@@ -1,41 +1,45 @@
 ### YamlMime:ManagedReference
 items:
-- uid: MYBooseApp.AppMoveTo
-  commentId: T:MYBooseApp.AppMoveTo
-  id: AppMoveTo
+- uid: MYBooseApp.AppCircle
+  commentId: T:MYBooseApp.AppCircle
+  id: AppCircle
   parent: MYBooseApp
   children:
-  - MYBooseApp.AppMoveTo.#ctor(BOOSE.ICanvas)
-  - MYBooseApp.AppMoveTo.CheckParameters(System.String[])
-  - MYBooseApp.AppMoveTo.Compile
-  - MYBooseApp.AppMoveTo.Execute
-  - MYBooseApp.AppMoveTo.Set(BOOSE.StoredProgram,System.String)
+  - MYBooseApp.AppCircle.#ctor(BOOSE.ICanvas)
+  - MYBooseApp.AppCircle.CheckParameters(System.String[])
+  - MYBooseApp.AppCircle.Compile
+  - MYBooseApp.AppCircle.Execute
+  - MYBooseApp.AppCircle.Set(BOOSE.StoredProgram,System.String)
   langs:
   - csharp
   - vb
-  name: AppMoveTo
-  nameWithType: AppMoveTo
-  fullName: MYBooseApp.AppMoveTo
+  name: AppCircle
+  nameWithType: AppCircle
+  fullName: MYBooseApp.AppCircle
   type: Class
   source:
     remote:
-      path: Medium_Scale_Software_Engineering_Project/Medium_Scale_Software_Engineering_Project/AppMoveTo.cs
+      path: Medium_Scale_Software_Engineering_Project/Medium_Scale_Software_Engineering_Project/AppCircle.cs
       branch: main
       repo: https://github.com/ASE2025repos/ase-boose-assignment-ssubedi-01.git
-    id: AppMoveTo
-    path: ../Medium_Scale_Software_Engineering_Project/AppMoveTo.cs
-    startLine: 8
+    id: AppCircle
+    path: ../Medium_Scale_Software_Engineering_Project/AppCircle.cs
+    startLine: 10
   assemblies:
   - MYBooseApp
   namespace: MYBooseApp
   summary: >-
-    Implements the MoveTo command for moving the pen to specified coordinates.
+    Custom Circle command for the BOOSE language.
 
-    Supports both literal integers and expressions/variables from the stored program.
+    Draws a circle on the canvas using a radius that can be
+
+    a literal value or an evaluated expression at runtime.
+
+    Optionally supports a filled flag.
   example: []
   syntax:
-    content: 'public class AppMoveTo : CommandTwoParameters, ICommand'
-    content.vb: Public Class AppMoveTo Inherits CommandTwoParameters Implements ICommand
+    content: 'public class AppCircle : CommandTwoParameters, ICommand'
+    content.vb: Public Class AppCircle Inherits CommandTwoParameters Implements ICommand
   inheritance:
   - System.Object
   - BOOSE.Command
@@ -71,194 +75,191 @@ items:
   - System.Object.GetType
   - System.Object.MemberwiseClone
   - System.Object.ReferenceEquals(System.Object,System.Object)
-- uid: MYBooseApp.AppMoveTo.#ctor(BOOSE.ICanvas)
-  commentId: M:MYBooseApp.AppMoveTo.#ctor(BOOSE.ICanvas)
+- uid: MYBooseApp.AppCircle.#ctor(BOOSE.ICanvas)
+  commentId: M:MYBooseApp.AppCircle.#ctor(BOOSE.ICanvas)
   id: '#ctor(BOOSE.ICanvas)'
-  parent: MYBooseApp.AppMoveTo
+  parent: MYBooseApp.AppCircle
   langs:
   - csharp
   - vb
-  name: AppMoveTo(ICanvas)
-  nameWithType: AppMoveTo.AppMoveTo(ICanvas)
-  fullName: MYBooseApp.AppMoveTo.AppMoveTo(BOOSE.ICanvas)
+  name: AppCircle(ICanvas)
+  nameWithType: AppCircle.AppCircle(ICanvas)
+  fullName: MYBooseApp.AppCircle.AppCircle(BOOSE.ICanvas)
   type: Constructor
   source:
     remote:
-      path: Medium_Scale_Software_Engineering_Project/Medium_Scale_Software_Engineering_Project/AppMoveTo.cs
+      path: Medium_Scale_Software_Engineering_Project/Medium_Scale_Software_Engineering_Project/AppCircle.cs
       branch: main
       repo: https://github.com/ASE2025repos/ase-boose-assignment-ssubedi-01.git
     id: .ctor
-    path: ../Medium_Scale_Software_Engineering_Project/AppMoveTo.cs
-    startLine: 18
+    path: ../Medium_Scale_Software_Engineering_Project/AppCircle.cs
+    startLine: 21
   assemblies:
   - MYBooseApp
   namespace: MYBooseApp
-  summary: Initializes a new instance with a reference to the canvas.
+  summary: Creates a new AppCircle command using the provided canvas.
   example: []
   syntax:
-    content: public AppMoveTo(ICanvas canvas)
+    content: public AppCircle(ICanvas canvas)
     parameters:
     - id: canvas
       type: BOOSE.ICanvas
-      description: The canvas on which to move the pen
+      description: Canvas used to draw the circle.
     content.vb: Public Sub New(canvas As ICanvas)
-  overload: MYBooseApp.AppMoveTo.#ctor*
-  nameWithType.vb: AppMoveTo.New(ICanvas)
-  fullName.vb: MYBooseApp.AppMoveTo.New(BOOSE.ICanvas)
+  overload: MYBooseApp.AppCircle.#ctor*
+  nameWithType.vb: AppCircle.New(ICanvas)
+  fullName.vb: MYBooseApp.AppCircle.New(BOOSE.ICanvas)
   name.vb: New(ICanvas)
-- uid: MYBooseApp.AppMoveTo.Set(BOOSE.StoredProgram,System.String)
-  commentId: M:MYBooseApp.AppMoveTo.Set(BOOSE.StoredProgram,System.String)
+- uid: MYBooseApp.AppCircle.Set(BOOSE.StoredProgram,System.String)
+  commentId: M:MYBooseApp.AppCircle.Set(BOOSE.StoredProgram,System.String)
   id: Set(BOOSE.StoredProgram,System.String)
-  parent: MYBooseApp.AppMoveTo
+  parent: MYBooseApp.AppCircle
   langs:
   - csharp
   - vb
   name: Set(StoredProgram, string)
-  nameWithType: AppMoveTo.Set(StoredProgram, string)
-  fullName: MYBooseApp.AppMoveTo.Set(BOOSE.StoredProgram, string)
+  nameWithType: AppCircle.Set(StoredProgram, string)
+  fullName: MYBooseApp.AppCircle.Set(BOOSE.StoredProgram, string)
   type: Method
   source:
     remote:
-      path: Medium_Scale_Software_Engineering_Project/Medium_Scale_Software_Engineering_Project/AppMoveTo.cs
+      path: Medium_Scale_Software_Engineering_Project/Medium_Scale_Software_Engineering_Project/AppCircle.cs
       branch: main
       repo: https://github.com/ASE2025repos/ase-boose-assignment-ssubedi-01.git
     id: Set
-    path: ../Medium_Scale_Software_Engineering_Project/AppMoveTo.cs
-    startLine: 28
+    path: ../Medium_Scale_Software_Engineering_Project/AppCircle.cs
+    startLine: 34
   assemblies:
   - MYBooseApp
   namespace: MYBooseApp
-  summary: Sets the stored program reference and splits the parameter string.
+  summary: >-
+    Assigns the current StoredProgram and parses the parameter string.
+
+    Parameters are split by comma to preserve expressions.
   example: []
   syntax:
     content: public override void Set(StoredProgram Program, string Params)
     parameters:
     - id: Program
       type: BOOSE.StoredProgram
-      description: The stored program instance
+      description: The current stored program.
     - id: Params
       type: System.String
-      description: The parameters string, e.g., "100, 200"
+      description: Parameter string containing radius and optional filled flag.
     content.vb: Public Overrides Sub [Set](Program As StoredProgram, Params As String)
   overridden: BOOSE.Command.Set(BOOSE.StoredProgram,System.String)
-  overload: MYBooseApp.AppMoveTo.Set*
+  overload: MYBooseApp.AppCircle.Set*
   implements:
   - BOOSE.ICommand.Set(BOOSE.StoredProgram,System.String)
-  nameWithType.vb: AppMoveTo.Set(StoredProgram, String)
-  fullName.vb: MYBooseApp.AppMoveTo.Set(BOOSE.StoredProgram, String)
+  nameWithType.vb: AppCircle.Set(StoredProgram, String)
+  fullName.vb: MYBooseApp.AppCircle.Set(BOOSE.StoredProgram, String)
   name.vb: Set(StoredProgram, String)
-- uid: MYBooseApp.AppMoveTo.CheckParameters(System.String[])
-  commentId: M:MYBooseApp.AppMoveTo.CheckParameters(System.String[])
+- uid: MYBooseApp.AppCircle.CheckParameters(System.String[])
+  commentId: M:MYBooseApp.AppCircle.CheckParameters(System.String[])
   id: CheckParameters(System.String[])
-  parent: MYBooseApp.AppMoveTo
+  parent: MYBooseApp.AppCircle
   langs:
   - csharp
   - vb
   name: CheckParameters(string[])
-  nameWithType: AppMoveTo.CheckParameters(string[])
-  fullName: MYBooseApp.AppMoveTo.CheckParameters(string[])
+  nameWithType: AppCircle.CheckParameters(string[])
+  fullName: MYBooseApp.AppCircle.CheckParameters(string[])
   type: Method
   source:
     remote:
-      path: Medium_Scale_Software_Engineering_Project/Medium_Scale_Software_Engineering_Project/AppMoveTo.cs
+      path: Medium_Scale_Software_Engineering_Project/Medium_Scale_Software_Engineering_Project/AppCircle.cs
       branch: main
       repo: https://github.com/ASE2025repos/ase-boose-assignment-ssubedi-01.git
     id: CheckParameters
-    path: ../Medium_Scale_Software_Engineering_Project/AppMoveTo.cs
-    startLine: 39
+    path: ../Medium_Scale_Software_Engineering_Project/AppCircle.cs
+    startLine: 58
   assemblies:
   - MYBooseApp
   namespace: MYBooseApp
-  summary: Validates that exactly two parameters are provided.
+  summary: Checks that the number of parameters is valid.
   example: []
   syntax:
-    content: public override void CheckParameters(string[] ParameterList)
+    content: public override void CheckParameters(string[] parameterList)
     parameters:
-    - id: ParameterList
+    - id: parameterList
       type: System.String[]
-      description: Array of parameters
-    content.vb: Public Overrides Sub CheckParameters(ParameterList As String())
+      description: List of parameters passed to the command.
+    content.vb: Public Overrides Sub CheckParameters(parameterList As String())
   overridden: BOOSE.CommandTwoParameters.CheckParameters(System.String[])
-  overload: MYBooseApp.AppMoveTo.CheckParameters*
-  exceptions:
-  - type: BOOSE.CommandException
-    commentId: T:BOOSE.CommandException
-    description: Thrown if the number of parameters is not two
+  overload: MYBooseApp.AppCircle.CheckParameters*
   implements:
   - BOOSE.ICommand.CheckParameters(System.String[])
-  nameWithType.vb: AppMoveTo.CheckParameters(String())
-  fullName.vb: MYBooseApp.AppMoveTo.CheckParameters(String())
+  nameWithType.vb: AppCircle.CheckParameters(String())
+  fullName.vb: MYBooseApp.AppCircle.CheckParameters(String())
   name.vb: CheckParameters(String())
-- uid: MYBooseApp.AppMoveTo.Compile
-  commentId: M:MYBooseApp.AppMoveTo.Compile
+- uid: MYBooseApp.AppCircle.Compile
+  commentId: M:MYBooseApp.AppCircle.Compile
   id: Compile
-  parent: MYBooseApp.AppMoveTo
+  parent: MYBooseApp.AppCircle
   langs:
   - csharp
   - vb
   name: Compile()
-  nameWithType: AppMoveTo.Compile()
-  fullName: MYBooseApp.AppMoveTo.Compile()
+  nameWithType: AppCircle.Compile()
+  fullName: MYBooseApp.AppCircle.Compile()
   type: Method
   source:
     remote:
-      path: Medium_Scale_Software_Engineering_Project/Medium_Scale_Software_Engineering_Project/AppMoveTo.cs
+      path: Medium_Scale_Software_Engineering_Project/Medium_Scale_Software_Engineering_Project/AppCircle.cs
       branch: main
       repo: https://github.com/ASE2025repos/ase-boose-assignment-ssubedi-01.git
     id: Compile
-    path: ../Medium_Scale_Software_Engineering_Project/AppMoveTo.cs
-    startLine: 49
+    path: ../Medium_Scale_Software_Engineering_Project/AppCircle.cs
+    startLine: 72
   assemblies:
   - MYBooseApp
   namespace: MYBooseApp
   summary: >-
-    Compilation phase. MoveTo evaluates expressions at runtime.
+    Compiles the command and determines whether the circle
 
-    Ensures parameter count is correct.
+    should be filled if a second parameter is provided.
   example: []
   syntax:
     content: public override void Compile()
     content.vb: Public Overrides Sub Compile()
   overridden: BOOSE.Command.Compile
-  overload: MYBooseApp.AppMoveTo.Compile*
+  overload: MYBooseApp.AppCircle.Compile*
   implements:
   - BOOSE.ICommand.Compile
-- uid: MYBooseApp.AppMoveTo.Execute
-  commentId: M:MYBooseApp.AppMoveTo.Execute
+- uid: MYBooseApp.AppCircle.Execute
+  commentId: M:MYBooseApp.AppCircle.Execute
   id: Execute
-  parent: MYBooseApp.AppMoveTo
+  parent: MYBooseApp.AppCircle
   langs:
   - csharp
   - vb
   name: Execute()
-  nameWithType: AppMoveTo.Execute()
-  fullName: MYBooseApp.AppMoveTo.Execute()
+  nameWithType: AppCircle.Execute()
+  fullName: MYBooseApp.AppCircle.Execute()
   type: Method
   source:
     remote:
-      path: Medium_Scale_Software_Engineering_Project/Medium_Scale_Software_Engineering_Project/AppMoveTo.cs
+      path: Medium_Scale_Software_Engineering_Project/Medium_Scale_Software_Engineering_Project/AppCircle.cs
       branch: main
       repo: https://github.com/ASE2025repos/ase-boose-assignment-ssubedi-01.git
     id: Execute
-    path: ../Medium_Scale_Software_Engineering_Project/AppMoveTo.cs
-    startLine: 61
+    path: ../Medium_Scale_Software_Engineering_Project/AppCircle.cs
+    startLine: 88
   assemblies:
   - MYBooseApp
   namespace: MYBooseApp
   summary: >-
-    Executes the MoveTo command by evaluating X and Y coordinates
+    Executes the Circle command.
 
-    and moving the pen to the computed position on the canvas.
+    Evaluates the radius expression at runtime and optionally
+
+    evaluates a filled flag before drawing the circle.
   example: []
   syntax:
     content: public override void Execute()
     content.vb: Public Overrides Sub Execute()
   overridden: BOOSE.Command.Execute
-  overload: MYBooseApp.AppMoveTo.Execute*
-  exceptions:
-  - type: BOOSE.CommandException
-    commentId: T:BOOSE.CommandException
-    description: Thrown when the X or Y parameter cannot be evaluated to a valid integer.
+  overload: MYBooseApp.AppCircle.Execute*
   implements:
   - BOOSE.ICommand.Execute
 references:
@@ -698,14 +699,14 @@ references:
   name: BOOSE
   nameWithType: BOOSE
   fullName: BOOSE
-- uid: MYBooseApp.AppMoveTo.#ctor*
-  commentId: Overload:MYBooseApp.AppMoveTo.#ctor
-  href: MYBooseApp.AppMoveTo.html#MYBooseApp_AppMoveTo__ctor_BOOSE_ICanvas_
-  name: AppMoveTo
-  nameWithType: AppMoveTo.AppMoveTo
-  fullName: MYBooseApp.AppMoveTo.AppMoveTo
-  nameWithType.vb: AppMoveTo.New
-  fullName.vb: MYBooseApp.AppMoveTo.New
+- uid: MYBooseApp.AppCircle.#ctor*
+  commentId: Overload:MYBooseApp.AppCircle.#ctor
+  href: MYBooseApp.AppCircle.html#MYBooseApp_AppCircle__ctor_BOOSE_ICanvas_
+  name: AppCircle
+  nameWithType: AppCircle.AppCircle
+  fullName: MYBooseApp.AppCircle.AppCircle
+  nameWithType.vb: AppCircle.New
+  fullName.vb: MYBooseApp.AppCircle.New
   name.vb: New
 - uid: BOOSE.ICanvas
   commentId: T:BOOSE.ICanvas
@@ -755,12 +756,12 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.string
   - name: )
-- uid: MYBooseApp.AppMoveTo.Set*
-  commentId: Overload:MYBooseApp.AppMoveTo.Set
-  href: MYBooseApp.AppMoveTo.html#MYBooseApp_AppMoveTo_Set_BOOSE_StoredProgram_System_String_
+- uid: MYBooseApp.AppCircle.Set*
+  commentId: Overload:MYBooseApp.AppCircle.Set
+  href: MYBooseApp.AppCircle.html#MYBooseApp_AppCircle_Set_BOOSE_StoredProgram_System_String_
   name: Set
-  nameWithType: AppMoveTo.Set
-  fullName: MYBooseApp.AppMoveTo.Set
+  nameWithType: AppCircle.Set
+  fullName: MYBooseApp.AppCircle.Set
 - uid: BOOSE.ICommand.Set(BOOSE.StoredProgram,System.String)
   commentId: M:BOOSE.ICommand.Set(BOOSE.StoredProgram,System.String)
   parent: BOOSE.ICommand
@@ -820,12 +821,6 @@ references:
   nameWithType.vb: String
   fullName.vb: String
   name.vb: String
-- uid: BOOSE.CommandException
-  commentId: T:BOOSE.CommandException
-  isExternal: true
-  name: CommandException
-  nameWithType: CommandException
-  fullName: BOOSE.CommandException
 - uid: BOOSE.CommandTwoParameters.CheckParameters(System.String[])
   commentId: M:BOOSE.CommandTwoParameters.CheckParameters(System.String[])
   parent: BOOSE.CommandTwoParameters
@@ -861,12 +856,12 @@ references:
   - name: (
   - name: )
   - name: )
-- uid: MYBooseApp.AppMoveTo.CheckParameters*
-  commentId: Overload:MYBooseApp.AppMoveTo.CheckParameters
-  href: MYBooseApp.AppMoveTo.html#MYBooseApp_AppMoveTo_CheckParameters_System_String___
+- uid: MYBooseApp.AppCircle.CheckParameters*
+  commentId: Overload:MYBooseApp.AppCircle.CheckParameters
+  href: MYBooseApp.AppCircle.html#MYBooseApp_AppCircle_CheckParameters_System_String___
   name: CheckParameters
-  nameWithType: AppMoveTo.CheckParameters
-  fullName: MYBooseApp.AppMoveTo.CheckParameters
+  nameWithType: AppCircle.CheckParameters
+  fullName: MYBooseApp.AppCircle.CheckParameters
 - uid: BOOSE.ICommand.CheckParameters(System.String[])
   commentId: M:BOOSE.ICommand.CheckParameters(System.String[])
   parent: BOOSE.ICommand
@@ -944,12 +939,12 @@ references:
     isExternal: true
   - name: (
   - name: )
-- uid: MYBooseApp.AppMoveTo.Compile*
-  commentId: Overload:MYBooseApp.AppMoveTo.Compile
-  href: MYBooseApp.AppMoveTo.html#MYBooseApp_AppMoveTo_Compile
+- uid: MYBooseApp.AppCircle.Compile*
+  commentId: Overload:MYBooseApp.AppCircle.Compile
+  href: MYBooseApp.AppCircle.html#MYBooseApp_AppCircle_Compile
   name: Compile
-  nameWithType: AppMoveTo.Compile
-  fullName: MYBooseApp.AppMoveTo.Compile
+  nameWithType: AppCircle.Compile
+  fullName: MYBooseApp.AppCircle.Compile
 - uid: BOOSE.ICommand.Compile
   commentId: M:BOOSE.ICommand.Compile
   parent: BOOSE.ICommand
@@ -988,12 +983,12 @@ references:
     isExternal: true
   - name: (
   - name: )
-- uid: MYBooseApp.AppMoveTo.Execute*
-  commentId: Overload:MYBooseApp.AppMoveTo.Execute
-  href: MYBooseApp.AppMoveTo.html#MYBooseApp_AppMoveTo_Execute
+- uid: MYBooseApp.AppCircle.Execute*
+  commentId: Overload:MYBooseApp.AppCircle.Execute
+  href: MYBooseApp.AppCircle.html#MYBooseApp_AppCircle_Execute
   name: Execute
-  nameWithType: AppMoveTo.Execute
-  fullName: MYBooseApp.AppMoveTo.Execute
+  nameWithType: AppCircle.Execute
+  fullName: MYBooseApp.AppCircle.Execute
 - uid: BOOSE.ICommand.Execute
   commentId: M:BOOSE.ICommand.Execute
   parent: BOOSE.ICommand

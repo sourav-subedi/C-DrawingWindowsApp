@@ -6,6 +6,12 @@ items:
   parent: MYBooseApp
   children:
   - MYBooseApp.AppStoredProgram.#ctor(BOOSE.ICanvas)
+  - MYBooseApp.AppStoredProgram.CommandCount
+  - MYBooseApp.AppStoredProgram.GetCommand(System.Int32)
+  - MYBooseApp.AppStoredProgram.GetMethodStartIndex(System.String)
+  - MYBooseApp.AppStoredProgram.MethodExists(System.String)
+  - MYBooseApp.AppStoredProgram.RegisterMethod(System.String,System.Int32)
+  - MYBooseApp.AppStoredProgram.Run
   langs:
   - csharp
   - vb
@@ -20,11 +26,14 @@ items:
       repo: https://github.com/ASE2025repos/ase-boose-assignment-ssubedi-01.git
     id: AppStoredProgram
     path: ../Medium_Scale_Software_Engineering_Project/AppStoredProgram.cs
-    startLine: 12
+    startLine: 9
   assemblies:
   - MYBooseApp
   namespace: MYBooseApp
-  summary: extends the base stored program
+  summary: >-
+    Extended version of <xref href="BOOSE.StoredProgram" data-throw-if-not-resolved="false"></xref> with support for
+
+    custom method registration and enhanced runtime execution.
   example: []
   syntax:
     content: 'public class AppStoredProgram : StoredProgram, IList, ICollection, IEnumerable, ICloneable, IStoredProgram'
@@ -64,7 +73,6 @@ items:
   - BOOSE.StoredProgram.NextCommand
   - BOOSE.StoredProgram.ResetProgram
   - BOOSE.StoredProgram.Commandsleft
-  - BOOSE.StoredProgram.Run
   - BOOSE.StoredProgram.PC
   - System.Collections.ArrayList.Adapter(System.Collections.IList)
   - System.Collections.ArrayList.Add(System.Object)
@@ -140,21 +148,261 @@ items:
       repo: https://github.com/ASE2025repos/ase-boose-assignment-ssubedi-01.git
     id: .ctor
     path: ../Medium_Scale_Software_Engineering_Project/AppStoredProgram.cs
-    startLine: 14
+    startLine: 21
   assemblies:
   - MYBooseApp
   namespace: MYBooseApp
+  summary: >-
+    Initializes a new instance of the <xref href="MYBooseApp.AppStoredProgram" data-throw-if-not-resolved="false"></xref> class
+
+    with the specified canvas.
+  example: []
   syntax:
     content: public AppStoredProgram(ICanvas canvas)
     parameters:
     - id: canvas
       type: BOOSE.ICanvas
+      description: The canvas on which commands will operate.
     content.vb: Public Sub New(canvas As ICanvas)
   overload: MYBooseApp.AppStoredProgram.#ctor*
   nameWithType.vb: AppStoredProgram.New(ICanvas)
   fullName.vb: MYBooseApp.AppStoredProgram.New(BOOSE.ICanvas)
   name.vb: New(ICanvas)
+- uid: MYBooseApp.AppStoredProgram.CommandCount
+  commentId: P:MYBooseApp.AppStoredProgram.CommandCount
+  id: CommandCount
+  parent: MYBooseApp.AppStoredProgram
+  langs:
+  - csharp
+  - vb
+  name: CommandCount
+  nameWithType: AppStoredProgram.CommandCount
+  fullName: MYBooseApp.AppStoredProgram.CommandCount
+  type: Property
+  source:
+    remote:
+      path: Medium_Scale_Software_Engineering_Project/Medium_Scale_Software_Engineering_Project/AppStoredProgram.cs
+      branch: main
+      repo: https://github.com/ASE2025repos/ase-boose-assignment-ssubedi-01.git
+    id: CommandCount
+    path: ../Medium_Scale_Software_Engineering_Project/AppStoredProgram.cs
+    startLine: 26
+  assemblies:
+  - MYBooseApp
+  namespace: MYBooseApp
+  summary: Gets the total number of commands in the program.
+  example: []
+  syntax:
+    content: public int CommandCount { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public ReadOnly Property CommandCount As Integer
+  overload: MYBooseApp.AppStoredProgram.CommandCount*
+- uid: MYBooseApp.AppStoredProgram.RegisterMethod(System.String,System.Int32)
+  commentId: M:MYBooseApp.AppStoredProgram.RegisterMethod(System.String,System.Int32)
+  id: RegisterMethod(System.String,System.Int32)
+  parent: MYBooseApp.AppStoredProgram
+  langs:
+  - csharp
+  - vb
+  name: RegisterMethod(string, int)
+  nameWithType: AppStoredProgram.RegisterMethod(string, int)
+  fullName: MYBooseApp.AppStoredProgram.RegisterMethod(string, int)
+  type: Method
+  source:
+    remote:
+      path: Medium_Scale_Software_Engineering_Project/Medium_Scale_Software_Engineering_Project/AppStoredProgram.cs
+      branch: main
+      repo: https://github.com/ASE2025repos/ase-boose-assignment-ssubedi-01.git
+    id: RegisterMethod
+    path: ../Medium_Scale_Software_Engineering_Project/AppStoredProgram.cs
+    startLine: 33
+  assemblies:
+  - MYBooseApp
+  namespace: MYBooseApp
+  summary: Registers a custom method by name and the index of its first command.
+  example: []
+  syntax:
+    content: public void RegisterMethod(string methodName, int startIndex)
+    parameters:
+    - id: methodName
+      type: System.String
+      description: The name of the method.
+    - id: startIndex
+      type: System.Int32
+      description: The index of the first command of the method.
+    content.vb: Public Sub RegisterMethod(methodName As String, startIndex As Integer)
+  overload: MYBooseApp.AppStoredProgram.RegisterMethod*
+  nameWithType.vb: AppStoredProgram.RegisterMethod(String, Integer)
+  fullName.vb: MYBooseApp.AppStoredProgram.RegisterMethod(String, Integer)
+  name.vb: RegisterMethod(String, Integer)
+- uid: MYBooseApp.AppStoredProgram.GetMethodStartIndex(System.String)
+  commentId: M:MYBooseApp.AppStoredProgram.GetMethodStartIndex(System.String)
+  id: GetMethodStartIndex(System.String)
+  parent: MYBooseApp.AppStoredProgram
+  langs:
+  - csharp
+  - vb
+  name: GetMethodStartIndex(string)
+  nameWithType: AppStoredProgram.GetMethodStartIndex(string)
+  fullName: MYBooseApp.AppStoredProgram.GetMethodStartIndex(string)
+  type: Method
+  source:
+    remote:
+      path: Medium_Scale_Software_Engineering_Project/Medium_Scale_Software_Engineering_Project/AppStoredProgram.cs
+      branch: main
+      repo: https://github.com/ASE2025repos/ase-boose-assignment-ssubedi-01.git
+    id: GetMethodStartIndex
+    path: ../Medium_Scale_Software_Engineering_Project/AppStoredProgram.cs
+    startLine: 44
+  assemblies:
+  - MYBooseApp
+  namespace: MYBooseApp
+  summary: Retrieves the start index of a registered method.
+  example: []
+  syntax:
+    content: public int GetMethodStartIndex(string methodName)
+    parameters:
+    - id: methodName
+      type: System.String
+      description: The name of the method.
+    return:
+      type: System.Int32
+      description: The start index of the method.
+    content.vb: Public Function GetMethodStartIndex(methodName As String) As Integer
+  overload: MYBooseApp.AppStoredProgram.GetMethodStartIndex*
+  exceptions:
+  - type: BOOSE.BOOSEException
+    commentId: T:BOOSE.BOOSEException
+    description: Thrown if the method does not exist.
+  nameWithType.vb: AppStoredProgram.GetMethodStartIndex(String)
+  fullName.vb: MYBooseApp.AppStoredProgram.GetMethodStartIndex(String)
+  name.vb: GetMethodStartIndex(String)
+- uid: MYBooseApp.AppStoredProgram.MethodExists(System.String)
+  commentId: M:MYBooseApp.AppStoredProgram.MethodExists(System.String)
+  id: MethodExists(System.String)
+  parent: MYBooseApp.AppStoredProgram
+  langs:
+  - csharp
+  - vb
+  name: MethodExists(string)
+  nameWithType: AppStoredProgram.MethodExists(string)
+  fullName: MYBooseApp.AppStoredProgram.MethodExists(string)
+  type: Method
+  source:
+    remote:
+      path: Medium_Scale_Software_Engineering_Project/Medium_Scale_Software_Engineering_Project/AppStoredProgram.cs
+      branch: main
+      repo: https://github.com/ASE2025repos/ase-boose-assignment-ssubedi-01.git
+    id: MethodExists
+    path: ../Medium_Scale_Software_Engineering_Project/AppStoredProgram.cs
+    startLine: 57
+  assemblies:
+  - MYBooseApp
+  namespace: MYBooseApp
+  summary: Determines whether a method with the specified name exists.
+  example: []
+  syntax:
+    content: public bool MethodExists(string methodName)
+    parameters:
+    - id: methodName
+      type: System.String
+      description: The method name to check.
+    return:
+      type: System.Boolean
+      description: True if the method exists; otherwise, false.
+    content.vb: Public Function MethodExists(methodName As String) As Boolean
+  overload: MYBooseApp.AppStoredProgram.MethodExists*
+  nameWithType.vb: AppStoredProgram.MethodExists(String)
+  fullName.vb: MYBooseApp.AppStoredProgram.MethodExists(String)
+  name.vb: MethodExists(String)
+- uid: MYBooseApp.AppStoredProgram.GetCommand(System.Int32)
+  commentId: M:MYBooseApp.AppStoredProgram.GetCommand(System.Int32)
+  id: GetCommand(System.Int32)
+  parent: MYBooseApp.AppStoredProgram
+  langs:
+  - csharp
+  - vb
+  name: GetCommand(int)
+  nameWithType: AppStoredProgram.GetCommand(int)
+  fullName: MYBooseApp.AppStoredProgram.GetCommand(int)
+  type: Method
+  source:
+    remote:
+      path: Medium_Scale_Software_Engineering_Project/Medium_Scale_Software_Engineering_Project/AppStoredProgram.cs
+      branch: main
+      repo: https://github.com/ASE2025repos/ase-boose-assignment-ssubedi-01.git
+    id: GetCommand
+    path: ../Medium_Scale_Software_Engineering_Project/AppStoredProgram.cs
+    startLine: 70
+  assemblies:
+  - MYBooseApp
+  namespace: MYBooseApp
+  summary: Retrieves the command at the specified index.
+  example: []
+  syntax:
+    content: public ICommand GetCommand(int index)
+    parameters:
+    - id: index
+      type: System.Int32
+      description: The command index.
+    return:
+      type: BOOSE.ICommand
+      description: The command at the given index.
+    content.vb: Public Function GetCommand(index As Integer) As ICommand
+  overload: MYBooseApp.AppStoredProgram.GetCommand*
+  exceptions:
+  - type: BOOSE.BOOSEException
+    commentId: T:BOOSE.BOOSEException
+    description: Thrown if the index is out of range or the item is not an <xref href="BOOSE.ICommand" data-throw-if-not-resolved="false"></xref>.
+  nameWithType.vb: AppStoredProgram.GetCommand(Integer)
+  fullName.vb: MYBooseApp.AppStoredProgram.GetCommand(Integer)
+  name.vb: GetCommand(Integer)
+- uid: MYBooseApp.AppStoredProgram.Run
+  commentId: M:MYBooseApp.AppStoredProgram.Run
+  id: Run
+  parent: MYBooseApp.AppStoredProgram
+  langs:
+  - csharp
+  - vb
+  name: Run()
+  nameWithType: AppStoredProgram.Run()
+  fullName: MYBooseApp.AppStoredProgram.Run()
+  type: Method
+  source:
+    remote:
+      path: Medium_Scale_Software_Engineering_Project/Medium_Scale_Software_Engineering_Project/AppStoredProgram.cs
+      branch: main
+      repo: https://github.com/ASE2025repos/ase-boose-assignment-ssubedi-01.git
+    id: Run
+    path: ../Medium_Scale_Software_Engineering_Project/AppStoredProgram.cs
+    startLine: 88
+  assemblies:
+  - MYBooseApp
+  namespace: MYBooseApp
+  summary: >-
+    Executes the stored program, iterating through all commands.
+
+    Detects potential infinite loops and reports syntax or runtime errors.
+  example: []
+  syntax:
+    content: public override void Run()
+    content.vb: Public Overrides Sub Run()
+  overridden: BOOSE.StoredProgram.Run
+  overload: MYBooseApp.AppStoredProgram.Run*
+  exceptions:
+  - type: BOOSE.StoredProgramException
+    commentId: T:BOOSE.StoredProgramException
+    description: Thrown if the program contains syntax errors or a runtime exception occurs.
 references:
+- uid: BOOSE.StoredProgram
+  commentId: T:BOOSE.StoredProgram
+  parent: BOOSE
+  isExternal: true
+  name: StoredProgram
+  nameWithType: StoredProgram
+  fullName: BOOSE.StoredProgram
 - uid: MYBooseApp
   commentId: N:MYBooseApp
   href: MYBooseApp.html
@@ -180,13 +428,6 @@ references:
   name: ArrayList
   nameWithType: ArrayList
   fullName: System.Collections.ArrayList
-- uid: BOOSE.StoredProgram
-  commentId: T:BOOSE.StoredProgram
-  parent: BOOSE
-  isExternal: true
-  name: StoredProgram
-  nameWithType: StoredProgram
-  fullName: BOOSE.StoredProgram
 - uid: System.Collections.IList
   commentId: T:System.Collections.IList
   parent: System.Collections
@@ -913,25 +1154,6 @@ references:
   spec.vb:
   - uid: BOOSE.StoredProgram.Commandsleft
     name: Commandsleft
-    isExternal: true
-  - name: (
-  - name: )
-- uid: BOOSE.StoredProgram.Run
-  commentId: M:BOOSE.StoredProgram.Run
-  parent: BOOSE.StoredProgram
-  isExternal: true
-  name: Run()
-  nameWithType: StoredProgram.Run()
-  fullName: BOOSE.StoredProgram.Run()
-  spec.csharp:
-  - uid: BOOSE.StoredProgram.Run
-    name: Run
-    isExternal: true
-  - name: (
-  - name: )
-  spec.vb:
-  - uid: BOOSE.StoredProgram.Run
-    name: Run
     isExternal: true
   - name: (
   - name: )
@@ -2803,6 +3025,12 @@ references:
     href: https://learn.microsoft.com/dotnet/api/system.object.tostring
   - name: (
   - name: )
+- uid: BOOSE
+  commentId: N:BOOSE
+  isExternal: true
+  name: BOOSE
+  nameWithType: BOOSE
+  fullName: BOOSE
 - uid: System
   commentId: N:System
   isExternal: true
@@ -2837,12 +3065,12 @@ references:
     name: Collections
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.collections
-- uid: BOOSE
-  commentId: N:BOOSE
-  isExternal: true
-  name: BOOSE
-  nameWithType: BOOSE
-  fullName: BOOSE
+- uid: MYBooseApp.AppStoredProgram
+  commentId: T:MYBooseApp.AppStoredProgram
+  href: MYBooseApp.AppStoredProgram.html
+  name: AppStoredProgram
+  nameWithType: AppStoredProgram
+  fullName: MYBooseApp.AppStoredProgram
 - uid: MYBooseApp.AppStoredProgram.#ctor*
   commentId: Overload:MYBooseApp.AppStoredProgram.#ctor
   href: MYBooseApp.AppStoredProgram.html#MYBooseApp_AppStoredProgram__ctor_BOOSE_ICanvas_
@@ -2859,3 +3087,110 @@ references:
   name: ICanvas
   nameWithType: ICanvas
   fullName: BOOSE.ICanvas
+- uid: MYBooseApp.AppStoredProgram.CommandCount*
+  commentId: Overload:MYBooseApp.AppStoredProgram.CommandCount
+  href: MYBooseApp.AppStoredProgram.html#MYBooseApp_AppStoredProgram_CommandCount
+  name: CommandCount
+  nameWithType: AppStoredProgram.CommandCount
+  fullName: MYBooseApp.AppStoredProgram.CommandCount
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: MYBooseApp.AppStoredProgram.RegisterMethod*
+  commentId: Overload:MYBooseApp.AppStoredProgram.RegisterMethod
+  href: MYBooseApp.AppStoredProgram.html#MYBooseApp_AppStoredProgram_RegisterMethod_System_String_System_Int32_
+  name: RegisterMethod
+  nameWithType: AppStoredProgram.RegisterMethod
+  fullName: MYBooseApp.AppStoredProgram.RegisterMethod
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: BOOSE.BOOSEException
+  commentId: T:BOOSE.BOOSEException
+  isExternal: true
+  name: BOOSEException
+  nameWithType: BOOSEException
+  fullName: BOOSE.BOOSEException
+- uid: MYBooseApp.AppStoredProgram.GetMethodStartIndex*
+  commentId: Overload:MYBooseApp.AppStoredProgram.GetMethodStartIndex
+  href: MYBooseApp.AppStoredProgram.html#MYBooseApp_AppStoredProgram_GetMethodStartIndex_System_String_
+  name: GetMethodStartIndex
+  nameWithType: AppStoredProgram.GetMethodStartIndex
+  fullName: MYBooseApp.AppStoredProgram.GetMethodStartIndex
+- uid: MYBooseApp.AppStoredProgram.MethodExists*
+  commentId: Overload:MYBooseApp.AppStoredProgram.MethodExists
+  href: MYBooseApp.AppStoredProgram.html#MYBooseApp_AppStoredProgram_MethodExists_System_String_
+  name: MethodExists
+  nameWithType: AppStoredProgram.MethodExists
+  fullName: MYBooseApp.AppStoredProgram.MethodExists
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: BOOSE.ICommand
+  commentId: T:BOOSE.ICommand
+  parent: BOOSE
+  isExternal: true
+  name: ICommand
+  nameWithType: ICommand
+  fullName: BOOSE.ICommand
+- uid: MYBooseApp.AppStoredProgram.GetCommand*
+  commentId: Overload:MYBooseApp.AppStoredProgram.GetCommand
+  href: MYBooseApp.AppStoredProgram.html#MYBooseApp_AppStoredProgram_GetCommand_System_Int32_
+  name: GetCommand
+  nameWithType: AppStoredProgram.GetCommand
+  fullName: MYBooseApp.AppStoredProgram.GetCommand
+- uid: BOOSE.StoredProgramException
+  commentId: T:BOOSE.StoredProgramException
+  isExternal: true
+  name: StoredProgramException
+  nameWithType: StoredProgramException
+  fullName: BOOSE.StoredProgramException
+- uid: BOOSE.StoredProgram.Run
+  commentId: M:BOOSE.StoredProgram.Run
+  parent: BOOSE.StoredProgram
+  isExternal: true
+  name: Run()
+  nameWithType: StoredProgram.Run()
+  fullName: BOOSE.StoredProgram.Run()
+  spec.csharp:
+  - uid: BOOSE.StoredProgram.Run
+    name: Run
+    isExternal: true
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: BOOSE.StoredProgram.Run
+    name: Run
+    isExternal: true
+  - name: (
+  - name: )
+- uid: MYBooseApp.AppStoredProgram.Run*
+  commentId: Overload:MYBooseApp.AppStoredProgram.Run
+  href: MYBooseApp.AppStoredProgram.html#MYBooseApp_AppStoredProgram_Run
+  name: Run
+  nameWithType: AppStoredProgram.Run
+  fullName: MYBooseApp.AppStoredProgram.Run

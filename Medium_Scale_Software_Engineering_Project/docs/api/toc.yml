@@ -4,26 +4,94 @@ items:
   name: MYBooseApp
   type: Namespace
   items:
+  - uid: MYBooseApp.AppArray
+    name: AppArray
+    type: Class
+  - uid: MYBooseApp.AppAsign
+    name: AppAsign
+    type: Class
+  - uid: MYBooseApp.AppBoolean
+    name: AppBoolean
+    type: Class
+  - uid: MYBooseApp.AppCall
+    name: AppCall
+    type: Class
   - uid: MYBooseApp.AppCanvas
     name: AppCanvas
+    type: Class
+  - uid: MYBooseApp.AppCircle
+    name: AppCircle
+    type: Class
+  - uid: MYBooseApp.AppClear
+    name: AppClear
     type: Class
   - uid: MYBooseApp.AppCommandFactory
     name: AppCommandFactory
     type: Class
-  - uid: MYBooseApp.AppMoveto
-    name: AppMoveto
+  - uid: MYBooseApp.AppDrawTo
+    name: AppDrawTo
     type: Class
-  - uid: MYBooseApp.AppParser
-    name: AppParser
+  - uid: MYBooseApp.AppElse
+    name: AppElse
+    type: Class
+  - uid: MYBooseApp.AppEndFor
+    name: AppEndFor
+    type: Class
+  - uid: MYBooseApp.AppEndIf
+    name: AppEndIf
+    type: Class
+  - uid: MYBooseApp.AppEndMethod
+    name: AppEndMethod
+    type: Class
+  - uid: MYBooseApp.AppEndWhile
+    name: AppEndWhile
+    type: Class
+  - uid: MYBooseApp.AppFor
+    name: AppFor
+    type: Class
+  - uid: MYBooseApp.AppIf
+    name: AppIf
+    type: Class
+  - uid: MYBooseApp.AppMethod
+    name: AppMethod
+    type: Class
+  - uid: MYBooseApp.AppMoveTo
+    name: AppMoveTo
+    type: Class
+  - uid: MYBooseApp.AppPeek
+    name: AppPeek
+    type: Class
+  - uid: MYBooseApp.AppPen
+    name: AppPen
+    type: Class
+  - uid: MYBooseApp.AppPenSize
+    name: AppPenSize
+    type: Class
+  - uid: MYBooseApp.AppPoke
+    name: AppPoke
+    type: Class
+  - uid: MYBooseApp.AppReal
+    name: AppReal
+    type: Class
+  - uid: MYBooseApp.AppRect
+    name: AppRect
+    type: Class
+  - uid: MYBooseApp.AppReset
+    name: AppReset
     type: Class
   - uid: MYBooseApp.AppStoredProgram
     name: AppStoredProgram
     type: Class
-- uid: Medium_Scale_Software_Engineering_Project
-  name: Medium_Scale_Software_Engineering_Project
-  type: Namespace
-  items:
-  - uid: Medium_Scale_Software_Engineering_Project.OutputForm
-    name: OutputForm
+  - uid: MYBooseApp.AppTri
+    name: AppTri
+    type: Class
+  - uid: MYBooseApp.AppWhile
+    name: AppWhile
+    type: Class
+  - uid: MYBooseApp.AppWrite
+    name: AppWrite
+    type: Class
+  - uid: MYBooseApp.drawingApplication
+    name: drawingApplication
     type: Class
 memberLayout: SamePage

@@ -1,58 +1,66 @@
 ### YamlMime:ManagedReference
 items:
-- uid: MYBooseApp.AppMoveTo
-  commentId: T:MYBooseApp.AppMoveTo
-  id: AppMoveTo
+- uid: MYBooseApp.AppBoolean
+  commentId: T:MYBooseApp.AppBoolean
+  id: AppBoolean
   parent: MYBooseApp
   children:
-  - MYBooseApp.AppMoveTo.#ctor(BOOSE.ICanvas)
-  - MYBooseApp.AppMoveTo.CheckParameters(System.String[])
-  - MYBooseApp.AppMoveTo.Compile
-  - MYBooseApp.AppMoveTo.Execute
-  - MYBooseApp.AppMoveTo.Set(BOOSE.StoredProgram,System.String)
+  - MYBooseApp.AppBoolean.#ctor
+  - MYBooseApp.AppBoolean.BoolValue
+  - MYBooseApp.AppBoolean.CheckParameters(System.String[])
+  - MYBooseApp.AppBoolean.Compile
+  - MYBooseApp.AppBoolean.Execute
+  - MYBooseApp.AppBoolean.Set(BOOSE.StoredProgram,System.String)
+  - MYBooseApp.AppBoolean.Value
   langs:
   - csharp
   - vb
-  name: AppMoveTo
-  nameWithType: AppMoveTo
-  fullName: MYBooseApp.AppMoveTo
+  name: AppBoolean
+  nameWithType: AppBoolean
+  fullName: MYBooseApp.AppBoolean
   type: Class
   source:
     remote:
-      path: Medium_Scale_Software_Engineering_Project/Medium_Scale_Software_Engineering_Project/AppMoveTo.cs
+      path: Medium_Scale_Software_Engineering_Project/Medium_Scale_Software_Engineering_Project/AppBoolean.cs
       branch: main
       repo: https://github.com/ASE2025repos/ase-boose-assignment-ssubedi-01.git
-    id: AppMoveTo
-    path: ../Medium_Scale_Software_Engineering_Project/AppMoveTo.cs
-    startLine: 8
+    id: AppBoolean
+    path: ../Medium_Scale_Software_Engineering_Project/AppBoolean.cs
+    startLine: 14
   assemblies:
   - MYBooseApp
   namespace: MYBooseApp
   summary: >-
-    Implements the MoveTo command for moving the pen to specified coordinates.
+    Custom Boolean implementation that avoids the default BOOSE Boolean limitations
 
-    Supports both literal integers and expressions/variables from the stored program.
+    by extending the Evaluation class.
+
+    Supports declaration and optional initialization using true/false literals
+
+    or evaluatable expressions.
+
+    Expression results are interpreted numerically, where non-zero represents true
+
+    and zero represents false.
   example: []
   syntax:
-    content: 'public class AppMoveTo : CommandTwoParameters, ICommand'
-    content.vb: Public Class AppMoveTo Inherits CommandTwoParameters Implements ICommand
+    content: 'public class AppBoolean : Evaluation, ICommand'
+    content.vb: Public Class AppBoolean Inherits Evaluation Implements ICommand
   inheritance:
   - System.Object
   - BOOSE.Command
-  - BOOSE.CanvasCommand
-  - BOOSE.CommandOneParameter
-  - BOOSE.CommandTwoParameters
+  - BOOSE.Evaluation
   implements:
   - BOOSE.ICommand
   inheritedMembers:
-  - BOOSE.CommandTwoParameters.param2
-  - BOOSE.CommandTwoParameters.param2unprocessed
-  - BOOSE.CommandOneParameter.param1
-  - BOOSE.CommandOneParameter.param1unprocessed
-  - BOOSE.CanvasCommand.yPos
-  - BOOSE.CanvasCommand.xPos
-  - BOOSE.CanvasCommand.canvas
-  - BOOSE.CanvasCommand.Canvas
+  - BOOSE.Evaluation.expression
+  - BOOSE.Evaluation.evaluatedExpression
+  - BOOSE.Evaluation.varName
+  - BOOSE.Evaluation.value
+  - BOOSE.Evaluation.ProcessExpression(System.String)
+  - BOOSE.Evaluation.Expression
+  - BOOSE.Evaluation.VarName
+  - BOOSE.Evaluation.Local
   - BOOSE.Command.IsDouble
   - BOOSE.Command.program
   - BOOSE.Command.parameterList
@@ -71,196 +79,261 @@ items:
   - System.Object.GetType
   - System.Object.MemberwiseClone
   - System.Object.ReferenceEquals(System.Object,System.Object)
-- uid: MYBooseApp.AppMoveTo.#ctor(BOOSE.ICanvas)
-  commentId: M:MYBooseApp.AppMoveTo.#ctor(BOOSE.ICanvas)
-  id: '#ctor(BOOSE.ICanvas)'
-  parent: MYBooseApp.AppMoveTo
+- uid: MYBooseApp.AppBoolean.#ctor
+  commentId: M:MYBooseApp.AppBoolean.#ctor
+  id: '#ctor'
+  parent: MYBooseApp.AppBoolean
   langs:
   - csharp
   - vb
-  name: AppMoveTo(ICanvas)
-  nameWithType: AppMoveTo.AppMoveTo(ICanvas)
-  fullName: MYBooseApp.AppMoveTo.AppMoveTo(BOOSE.ICanvas)
+  name: AppBoolean()
+  nameWithType: AppBoolean.AppBoolean()
+  fullName: MYBooseApp.AppBoolean.AppBoolean()
   type: Constructor
   source:
     remote:
-      path: Medium_Scale_Software_Engineering_Project/Medium_Scale_Software_Engineering_Project/AppMoveTo.cs
+      path: Medium_Scale_Software_Engineering_Project/Medium_Scale_Software_Engineering_Project/AppBoolean.cs
       branch: main
       repo: https://github.com/ASE2025repos/ase-boose-assignment-ssubedi-01.git
     id: .ctor
-    path: ../Medium_Scale_Software_Engineering_Project/AppMoveTo.cs
-    startLine: 18
+    path: ../Medium_Scale_Software_Engineering_Project/AppBoolean.cs
+    startLine: 22
   assemblies:
   - MYBooseApp
   namespace: MYBooseApp
-  summary: Initializes a new instance with a reference to the canvas.
+  summary: >-
+    Initializes a new instance of the AppBoolean class.
+
+    Required for creation via the command factory.
   example: []
   syntax:
-    content: public AppMoveTo(ICanvas canvas)
-    parameters:
-    - id: canvas
-      type: BOOSE.ICanvas
-      description: The canvas on which to move the pen
-    content.vb: Public Sub New(canvas As ICanvas)
-  overload: MYBooseApp.AppMoveTo.#ctor*
-  nameWithType.vb: AppMoveTo.New(ICanvas)
-  fullName.vb: MYBooseApp.AppMoveTo.New(BOOSE.ICanvas)
-  name.vb: New(ICanvas)
-- uid: MYBooseApp.AppMoveTo.Set(BOOSE.StoredProgram,System.String)
-  commentId: M:MYBooseApp.AppMoveTo.Set(BOOSE.StoredProgram,System.String)
-  id: Set(BOOSE.StoredProgram,System.String)
-  parent: MYBooseApp.AppMoveTo
+    content: public AppBoolean()
+    content.vb: Public Sub New()
+  overload: MYBooseApp.AppBoolean.#ctor*
+  nameWithType.vb: AppBoolean.New()
+  fullName.vb: MYBooseApp.AppBoolean.New()
+  name.vb: New()
+- uid: MYBooseApp.AppBoolean.BoolValue
+  commentId: P:MYBooseApp.AppBoolean.BoolValue
+  id: BoolValue
+  parent: MYBooseApp.AppBoolean
   langs:
   - csharp
   - vb
-  name: Set(StoredProgram, string)
-  nameWithType: AppMoveTo.Set(StoredProgram, string)
-  fullName: MYBooseApp.AppMoveTo.Set(BOOSE.StoredProgram, string)
-  type: Method
+  name: BoolValue
+  nameWithType: AppBoolean.BoolValue
+  fullName: MYBooseApp.AppBoolean.BoolValue
+  type: Property
   source:
     remote:
-      path: Medium_Scale_Software_Engineering_Project/Medium_Scale_Software_Engineering_Project/AppMoveTo.cs
+      path: Medium_Scale_Software_Engineering_Project/Medium_Scale_Software_Engineering_Project/AppBoolean.cs
       branch: main
       repo: https://github.com/ASE2025repos/ase-boose-assignment-ssubedi-01.git
-    id: Set
-    path: ../Medium_Scale_Software_Engineering_Project/AppMoveTo.cs
-    startLine: 28
+    id: BoolValue
+    path: ../Medium_Scale_Software_Engineering_Project/AppBoolean.cs
+    startLine: 29
   assemblies:
   - MYBooseApp
   namespace: MYBooseApp
-  summary: Sets the stored program reference and splits the parameter string.
+  summary: Gets or assigns the underlying boolean value.
   example: []
   syntax:
-    content: public override void Set(StoredProgram Program, string Params)
-    parameters:
-    - id: Program
-      type: BOOSE.StoredProgram
-      description: The stored program instance
-    - id: Params
-      type: System.String
-      description: The parameters string, e.g., "100, 200"
-    content.vb: Public Overrides Sub [Set](Program As StoredProgram, Params As String)
-  overridden: BOOSE.Command.Set(BOOSE.StoredProgram,System.String)
-  overload: MYBooseApp.AppMoveTo.Set*
-  implements:
-  - BOOSE.ICommand.Set(BOOSE.StoredProgram,System.String)
-  nameWithType.vb: AppMoveTo.Set(StoredProgram, String)
-  fullName.vb: MYBooseApp.AppMoveTo.Set(BOOSE.StoredProgram, String)
-  name.vb: Set(StoredProgram, String)
-- uid: MYBooseApp.AppMoveTo.CheckParameters(System.String[])
-  commentId: M:MYBooseApp.AppMoveTo.CheckParameters(System.String[])
-  id: CheckParameters(System.String[])
-  parent: MYBooseApp.AppMoveTo
+    content: public bool BoolValue { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property BoolValue As Boolean
+  overload: MYBooseApp.AppBoolean.BoolValue*
+- uid: MYBooseApp.AppBoolean.Value
+  commentId: P:MYBooseApp.AppBoolean.Value
+  id: Value
+  parent: MYBooseApp.AppBoolean
   langs:
   - csharp
   - vb
-  name: CheckParameters(string[])
-  nameWithType: AppMoveTo.CheckParameters(string[])
-  fullName: MYBooseApp.AppMoveTo.CheckParameters(string[])
-  type: Method
+  name: Value
+  nameWithType: AppBoolean.Value
+  fullName: MYBooseApp.AppBoolean.Value
+  type: Property
   source:
     remote:
-      path: Medium_Scale_Software_Engineering_Project/Medium_Scale_Software_Engineering_Project/AppMoveTo.cs
+      path: Medium_Scale_Software_Engineering_Project/Medium_Scale_Software_Engineering_Project/AppBoolean.cs
       branch: main
       repo: https://github.com/ASE2025repos/ase-boose-assignment-ssubedi-01.git
-    id: CheckParameters
-    path: ../Medium_Scale_Software_Engineering_Project/AppMoveTo.cs
+    id: Value
+    path: ../Medium_Scale_Software_Engineering_Project/AppBoolean.cs
     startLine: 39
   assemblies:
   - MYBooseApp
   namespace: MYBooseApp
-  summary: Validates that exactly two parameters are provided.
+  summary: >-
+    Provides integer compatibility for the base Evaluation class.
+
+    True is represented as 1, while false is represented as 0.
   example: []
   syntax:
-    content: public override void CheckParameters(string[] ParameterList)
+    content: public override int Value { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Overrides Property Value As Integer
+  overridden: BOOSE.Evaluation.Value
+  overload: MYBooseApp.AppBoolean.Value*
+- uid: MYBooseApp.AppBoolean.Set(BOOSE.StoredProgram,System.String)
+  commentId: M:MYBooseApp.AppBoolean.Set(BOOSE.StoredProgram,System.String)
+  id: Set(BOOSE.StoredProgram,System.String)
+  parent: MYBooseApp.AppBoolean
+  langs:
+  - csharp
+  - vb
+  name: Set(StoredProgram, string)
+  nameWithType: AppBoolean.Set(StoredProgram, string)
+  fullName: MYBooseApp.AppBoolean.Set(BOOSE.StoredProgram, string)
+  type: Method
+  source:
+    remote:
+      path: Medium_Scale_Software_Engineering_Project/Medium_Scale_Software_Engineering_Project/AppBoolean.cs
+      branch: main
+      repo: https://github.com/ASE2025repos/ase-boose-assignment-ssubedi-01.git
+    id: Set
+    path: ../Medium_Scale_Software_Engineering_Project/AppBoolean.cs
+    startLine: 50
+  assemblies:
+  - MYBooseApp
+  namespace: MYBooseApp
+  summary: >-
+    Interprets the declaration parameters.
+
+    Supports both simple declarations (e.g., "flag")
+
+    and initialized declarations (e.g., "flag = true", "flag = expression").
+  example: []
+  syntax:
+    content: public void Set(StoredProgram Program, string Params)
     parameters:
-    - id: ParameterList
-      type: System.String[]
-      description: Array of parameters
-    content.vb: Public Overrides Sub CheckParameters(ParameterList As String())
-  overridden: BOOSE.CommandTwoParameters.CheckParameters(System.String[])
-  overload: MYBooseApp.AppMoveTo.CheckParameters*
-  exceptions:
-  - type: BOOSE.CommandException
-    commentId: T:BOOSE.CommandException
-    description: Thrown if the number of parameters is not two
+    - id: Program
+      type: BOOSE.StoredProgram
+    - id: Params
+      type: System.String
+    content.vb: Public Sub [Set](Program As StoredProgram, Params As String)
+  overload: MYBooseApp.AppBoolean.Set*
   implements:
-  - BOOSE.ICommand.CheckParameters(System.String[])
-  nameWithType.vb: AppMoveTo.CheckParameters(String())
-  fullName.vb: MYBooseApp.AppMoveTo.CheckParameters(String())
-  name.vb: CheckParameters(String())
-- uid: MYBooseApp.AppMoveTo.Compile
-  commentId: M:MYBooseApp.AppMoveTo.Compile
+  - BOOSE.ICommand.Set(BOOSE.StoredProgram,System.String)
+  nameWithType.vb: AppBoolean.Set(StoredProgram, String)
+  fullName.vb: MYBooseApp.AppBoolean.Set(BOOSE.StoredProgram, String)
+  name.vb: Set(StoredProgram, String)
+- uid: MYBooseApp.AppBoolean.Compile
+  commentId: M:MYBooseApp.AppBoolean.Compile
   id: Compile
-  parent: MYBooseApp.AppMoveTo
+  parent: MYBooseApp.AppBoolean
   langs:
   - csharp
   - vb
   name: Compile()
-  nameWithType: AppMoveTo.Compile()
-  fullName: MYBooseApp.AppMoveTo.Compile()
+  nameWithType: AppBoolean.Compile()
+  fullName: MYBooseApp.AppBoolean.Compile()
   type: Method
   source:
     remote:
-      path: Medium_Scale_Software_Engineering_Project/Medium_Scale_Software_Engineering_Project/AppMoveTo.cs
+      path: Medium_Scale_Software_Engineering_Project/Medium_Scale_Software_Engineering_Project/AppBoolean.cs
       branch: main
       repo: https://github.com/ASE2025repos/ase-boose-assignment-ssubedi-01.git
     id: Compile
-    path: ../Medium_Scale_Software_Engineering_Project/AppMoveTo.cs
-    startLine: 49
+    path: ../Medium_Scale_Software_Engineering_Project/AppBoolean.cs
+    startLine: 72
   assemblies:
   - MYBooseApp
   namespace: MYBooseApp
   summary: >-
-    Compilation phase. MoveTo evaluates expressions at runtime.
+    Registers the boolean variable during compilation and evaluates
 
-    Ensures parameter count is correct.
+    any provided initializer.
   example: []
   syntax:
     content: public override void Compile()
     content.vb: Public Overrides Sub Compile()
-  overridden: BOOSE.Command.Compile
-  overload: MYBooseApp.AppMoveTo.Compile*
+  overridden: BOOSE.Evaluation.Compile
+  overload: MYBooseApp.AppBoolean.Compile*
   implements:
   - BOOSE.ICommand.Compile
-- uid: MYBooseApp.AppMoveTo.Execute
-  commentId: M:MYBooseApp.AppMoveTo.Execute
+- uid: MYBooseApp.AppBoolean.Execute
+  commentId: M:MYBooseApp.AppBoolean.Execute
   id: Execute
-  parent: MYBooseApp.AppMoveTo
+  parent: MYBooseApp.AppBoolean
   langs:
   - csharp
   - vb
   name: Execute()
-  nameWithType: AppMoveTo.Execute()
-  fullName: MYBooseApp.AppMoveTo.Execute()
+  nameWithType: AppBoolean.Execute()
+  fullName: MYBooseApp.AppBoolean.Execute()
   type: Method
   source:
     remote:
-      path: Medium_Scale_Software_Engineering_Project/Medium_Scale_Software_Engineering_Project/AppMoveTo.cs
+      path: Medium_Scale_Software_Engineering_Project/Medium_Scale_Software_Engineering_Project/AppBoolean.cs
       branch: main
       repo: https://github.com/ASE2025repos/ase-boose-assignment-ssubedi-01.git
     id: Execute
-    path: ../Medium_Scale_Software_Engineering_Project/AppMoveTo.cs
-    startLine: 61
+    path: ../Medium_Scale_Software_Engineering_Project/AppBoolean.cs
+    startLine: 122
   assemblies:
   - MYBooseApp
   namespace: MYBooseApp
   summary: >-
-    Executes the MoveTo command by evaluating X and Y coordinates
+    Executes boolean expression evaluation and converts the result
 
-    and moving the pen to the computed position on the canvas.
+    into a boolean value.
+
+    Numeric results are interpreted such that non-zero values are true
+
+    and zero represents false.
   example: []
   syntax:
     content: public override void Execute()
     content.vb: Public Overrides Sub Execute()
-  overridden: BOOSE.Command.Execute
-  overload: MYBooseApp.AppMoveTo.Execute*
-  exceptions:
-  - type: BOOSE.CommandException
-    commentId: T:BOOSE.CommandException
-    description: Thrown when the X or Y parameter cannot be evaluated to a valid integer.
+  overridden: BOOSE.Evaluation.Execute
+  overload: MYBooseApp.AppBoolean.Execute*
   implements:
   - BOOSE.ICommand.Execute
+- uid: MYBooseApp.AppBoolean.CheckParameters(System.String[])
+  commentId: M:MYBooseApp.AppBoolean.CheckParameters(System.String[])
+  id: CheckParameters(System.String[])
+  parent: MYBooseApp.AppBoolean
+  langs:
+  - csharp
+  - vb
+  name: CheckParameters(string[])
+  nameWithType: AppBoolean.CheckParameters(string[])
+  fullName: MYBooseApp.AppBoolean.CheckParameters(string[])
+  type: Method
+  source:
+    remote:
+      path: Medium_Scale_Software_Engineering_Project/Medium_Scale_Software_Engineering_Project/AppBoolean.cs
+      branch: main
+      repo: https://github.com/ASE2025repos/ase-boose-assignment-ssubedi-01.git
+    id: CheckParameters
+    path: ../Medium_Scale_Software_Engineering_Project/AppBoolean.cs
+    startLine: 167
+  assemblies:
+  - MYBooseApp
+  namespace: MYBooseApp
+  summary: >-
+    Parameter validation is not required for this command.
+
+    Method is implemented to satisfy interface requirements.
+  example: []
+  syntax:
+    content: public override void CheckParameters(string[] p)
+    parameters:
+    - id: p
+      type: System.String[]
+    content.vb: Public Overrides Sub CheckParameters(p As String())
+  overridden: BOOSE.Evaluation.CheckParameters(System.String[])
+  overload: MYBooseApp.AppBoolean.CheckParameters*
+  implements:
+  - BOOSE.ICommand.CheckParameters(System.String[])
+  nameWithType.vb: AppBoolean.CheckParameters(String())
+  fullName.vb: MYBooseApp.AppBoolean.CheckParameters(String())
+  name.vb: CheckParameters(String())
 references:
 - uid: MYBooseApp
   commentId: N:MYBooseApp
@@ -286,27 +359,13 @@ references:
   name: Command
   nameWithType: Command
   fullName: BOOSE.Command
-- uid: BOOSE.CanvasCommand
-  commentId: T:BOOSE.CanvasCommand
+- uid: BOOSE.Evaluation
+  commentId: T:BOOSE.Evaluation
   parent: BOOSE
   isExternal: true
-  name: CanvasCommand
-  nameWithType: CanvasCommand
-  fullName: BOOSE.CanvasCommand
-- uid: BOOSE.CommandOneParameter
-  commentId: T:BOOSE.CommandOneParameter
-  parent: BOOSE
-  isExternal: true
-  name: CommandOneParameter
-  nameWithType: CommandOneParameter
-  fullName: BOOSE.CommandOneParameter
-- uid: BOOSE.CommandTwoParameters
-  commentId: T:BOOSE.CommandTwoParameters
-  parent: BOOSE
-  isExternal: true
-  name: CommandTwoParameters
-  nameWithType: CommandTwoParameters
-  fullName: BOOSE.CommandTwoParameters
+  name: Evaluation
+  nameWithType: Evaluation
+  fullName: BOOSE.Evaluation
 - uid: BOOSE.ICommand
   commentId: T:BOOSE.ICommand
   parent: BOOSE
@@ -314,62 +373,86 @@ references:
   name: ICommand
   nameWithType: ICommand
   fullName: BOOSE.ICommand
-- uid: BOOSE.CommandTwoParameters.param2
-  commentId: F:BOOSE.CommandTwoParameters.param2
-  parent: BOOSE.CommandTwoParameters
+- uid: BOOSE.Evaluation.expression
+  commentId: F:BOOSE.Evaluation.expression
+  parent: BOOSE.Evaluation
   isExternal: true
-  name: param2
-  nameWithType: CommandTwoParameters.param2
-  fullName: BOOSE.CommandTwoParameters.param2
-- uid: BOOSE.CommandTwoParameters.param2unprocessed
-  commentId: F:BOOSE.CommandTwoParameters.param2unprocessed
-  parent: BOOSE.CommandTwoParameters
+  name: expression
+  nameWithType: Evaluation.expression
+  fullName: BOOSE.Evaluation.expression
+- uid: BOOSE.Evaluation.evaluatedExpression
+  commentId: F:BOOSE.Evaluation.evaluatedExpression
+  parent: BOOSE.Evaluation
   isExternal: true
-  name: param2unprocessed
-  nameWithType: CommandTwoParameters.param2unprocessed
-  fullName: BOOSE.CommandTwoParameters.param2unprocessed
-- uid: BOOSE.CommandOneParameter.param1
-  commentId: F:BOOSE.CommandOneParameter.param1
-  parent: BOOSE.CommandOneParameter
+  name: evaluatedExpression
+  nameWithType: Evaluation.evaluatedExpression
+  fullName: BOOSE.Evaluation.evaluatedExpression
+- uid: BOOSE.Evaluation.varName
+  commentId: F:BOOSE.Evaluation.varName
+  parent: BOOSE.Evaluation
   isExternal: true
-  name: param1
-  nameWithType: CommandOneParameter.param1
-  fullName: BOOSE.CommandOneParameter.param1
-- uid: BOOSE.CommandOneParameter.param1unprocessed
-  commentId: F:BOOSE.CommandOneParameter.param1unprocessed
-  parent: BOOSE.CommandOneParameter
+  name: varName
+  nameWithType: Evaluation.varName
+  fullName: BOOSE.Evaluation.varName
+- uid: BOOSE.Evaluation.value
+  commentId: F:BOOSE.Evaluation.value
+  parent: BOOSE.Evaluation
   isExternal: true
-  name: param1unprocessed
-  nameWithType: CommandOneParameter.param1unprocessed
-  fullName: BOOSE.CommandOneParameter.param1unprocessed
-- uid: BOOSE.CanvasCommand.yPos
-  commentId: F:BOOSE.CanvasCommand.yPos
-  parent: BOOSE.CanvasCommand
+  name: value
+  nameWithType: Evaluation.value
+  fullName: BOOSE.Evaluation.value
+- uid: BOOSE.Evaluation.ProcessExpression(System.String)
+  commentId: M:BOOSE.Evaluation.ProcessExpression(System.String)
+  parent: BOOSE.Evaluation
   isExternal: true
-  name: yPos
-  nameWithType: CanvasCommand.yPos
-  fullName: BOOSE.CanvasCommand.yPos
-- uid: BOOSE.CanvasCommand.xPos
-  commentId: F:BOOSE.CanvasCommand.xPos
-  parent: BOOSE.CanvasCommand
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: ProcessExpression(string)
+  nameWithType: Evaluation.ProcessExpression(string)
+  fullName: BOOSE.Evaluation.ProcessExpression(string)
+  nameWithType.vb: Evaluation.ProcessExpression(String)
+  fullName.vb: BOOSE.Evaluation.ProcessExpression(String)
+  name.vb: ProcessExpression(String)
+  spec.csharp:
+  - uid: BOOSE.Evaluation.ProcessExpression(System.String)
+    name: ProcessExpression
+    isExternal: true
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: BOOSE.Evaluation.ProcessExpression(System.String)
+    name: ProcessExpression
+    isExternal: true
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: BOOSE.Evaluation.Expression
+  commentId: P:BOOSE.Evaluation.Expression
+  parent: BOOSE.Evaluation
   isExternal: true
-  name: xPos
-  nameWithType: CanvasCommand.xPos
-  fullName: BOOSE.CanvasCommand.xPos
-- uid: BOOSE.CanvasCommand.canvas
-  commentId: F:BOOSE.CanvasCommand.canvas
-  parent: BOOSE.CanvasCommand
+  name: Expression
+  nameWithType: Evaluation.Expression
+  fullName: BOOSE.Evaluation.Expression
+- uid: BOOSE.Evaluation.VarName
+  commentId: P:BOOSE.Evaluation.VarName
+  parent: BOOSE.Evaluation
   isExternal: true
-  name: canvas
-  nameWithType: CanvasCommand.canvas
-  fullName: BOOSE.CanvasCommand.canvas
-- uid: BOOSE.CanvasCommand.Canvas
-  commentId: P:BOOSE.CanvasCommand.Canvas
-  parent: BOOSE.CanvasCommand
+  name: VarName
+  nameWithType: Evaluation.VarName
+  fullName: BOOSE.Evaluation.VarName
+- uid: BOOSE.Evaluation.Local
+  commentId: P:BOOSE.Evaluation.Local
+  parent: BOOSE.Evaluation
   isExternal: true
-  name: Canvas
-  nameWithType: CanvasCommand.Canvas
-  fullName: BOOSE.CanvasCommand.Canvas
+  name: Local
+  nameWithType: Evaluation.Local
+  fullName: BOOSE.Evaluation.Local
 - uid: BOOSE.Command.IsDouble
   commentId: F:BOOSE.Command.IsDouble
   parent: BOOSE.Command
@@ -698,69 +781,62 @@ references:
   name: BOOSE
   nameWithType: BOOSE
   fullName: BOOSE
-- uid: MYBooseApp.AppMoveTo.#ctor*
-  commentId: Overload:MYBooseApp.AppMoveTo.#ctor
-  href: MYBooseApp.AppMoveTo.html#MYBooseApp_AppMoveTo__ctor_BOOSE_ICanvas_
-  name: AppMoveTo
-  nameWithType: AppMoveTo.AppMoveTo
-  fullName: MYBooseApp.AppMoveTo.AppMoveTo
-  nameWithType.vb: AppMoveTo.New
-  fullName.vb: MYBooseApp.AppMoveTo.New
+- uid: MYBooseApp.AppBoolean.#ctor*
+  commentId: Overload:MYBooseApp.AppBoolean.#ctor
+  href: MYBooseApp.AppBoolean.html#MYBooseApp_AppBoolean__ctor
+  name: AppBoolean
+  nameWithType: AppBoolean.AppBoolean
+  fullName: MYBooseApp.AppBoolean.AppBoolean
+  nameWithType.vb: AppBoolean.New
+  fullName.vb: MYBooseApp.AppBoolean.New
   name.vb: New
-- uid: BOOSE.ICanvas
-  commentId: T:BOOSE.ICanvas
-  parent: BOOSE
+- uid: MYBooseApp.AppBoolean.BoolValue*
+  commentId: Overload:MYBooseApp.AppBoolean.BoolValue
+  href: MYBooseApp.AppBoolean.html#MYBooseApp_AppBoolean_BoolValue
+  name: BoolValue
+  nameWithType: AppBoolean.BoolValue
+  fullName: MYBooseApp.AppBoolean.BoolValue
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
   isExternal: true
-  name: ICanvas
-  nameWithType: ICanvas
-  fullName: BOOSE.ICanvas
-- uid: BOOSE.Command.Set(BOOSE.StoredProgram,System.String)
-  commentId: M:BOOSE.Command.Set(BOOSE.StoredProgram,System.String)
-  parent: BOOSE.Command
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: BOOSE.Evaluation.Value
+  commentId: P:BOOSE.Evaluation.Value
+  parent: BOOSE.Evaluation
   isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system.string
-  name: Set(StoredProgram, string)
-  nameWithType: Command.Set(StoredProgram, string)
-  fullName: BOOSE.Command.Set(BOOSE.StoredProgram, string)
-  nameWithType.vb: Command.Set(StoredProgram, String)
-  fullName.vb: BOOSE.Command.Set(BOOSE.StoredProgram, String)
-  name.vb: Set(StoredProgram, String)
-  spec.csharp:
-  - uid: BOOSE.Command.Set(BOOSE.StoredProgram,System.String)
-    name: Set
-    isExternal: true
-  - name: (
-  - uid: BOOSE.StoredProgram
-    name: StoredProgram
-    isExternal: true
-  - name: ','
-  - name: " "
-  - uid: System.String
-    name: string
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.string
-  - name: )
-  spec.vb:
-  - uid: BOOSE.Command.Set(BOOSE.StoredProgram,System.String)
-    name: Set
-    isExternal: true
-  - name: (
-  - uid: BOOSE.StoredProgram
-    name: StoredProgram
-    isExternal: true
-  - name: ','
-  - name: " "
-  - uid: System.String
-    name: String
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.string
-  - name: )
-- uid: MYBooseApp.AppMoveTo.Set*
-  commentId: Overload:MYBooseApp.AppMoveTo.Set
-  href: MYBooseApp.AppMoveTo.html#MYBooseApp_AppMoveTo_Set_BOOSE_StoredProgram_System_String_
+  name: Value
+  nameWithType: Evaluation.Value
+  fullName: BOOSE.Evaluation.Value
+- uid: MYBooseApp.AppBoolean.Value*
+  commentId: Overload:MYBooseApp.AppBoolean.Value
+  href: MYBooseApp.AppBoolean.html#MYBooseApp_AppBoolean_Value
+  name: Value
+  nameWithType: AppBoolean.Value
+  fullName: MYBooseApp.AppBoolean.Value
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: MYBooseApp.AppBoolean.Set*
+  commentId: Overload:MYBooseApp.AppBoolean.Set
+  href: MYBooseApp.AppBoolean.html#MYBooseApp_AppBoolean_Set_BOOSE_StoredProgram_System_String_
   name: Set
-  nameWithType: AppMoveTo.Set
-  fullName: MYBooseApp.AppMoveTo.Set
+  nameWithType: AppBoolean.Set
+  fullName: MYBooseApp.AppBoolean.Set
 - uid: BOOSE.ICommand.Set(BOOSE.StoredProgram,System.String)
   commentId: M:BOOSE.ICommand.Set(BOOSE.StoredProgram,System.String)
   parent: BOOSE.ICommand
@@ -820,25 +896,107 @@ references:
   nameWithType.vb: String
   fullName.vb: String
   name.vb: String
-- uid: BOOSE.CommandException
-  commentId: T:BOOSE.CommandException
+- uid: BOOSE.Evaluation.Compile
+  commentId: M:BOOSE.Evaluation.Compile
+  parent: BOOSE.Evaluation
   isExternal: true
-  name: CommandException
-  nameWithType: CommandException
-  fullName: BOOSE.CommandException
-- uid: BOOSE.CommandTwoParameters.CheckParameters(System.String[])
-  commentId: M:BOOSE.CommandTwoParameters.CheckParameters(System.String[])
-  parent: BOOSE.CommandTwoParameters
+  name: Compile()
+  nameWithType: Evaluation.Compile()
+  fullName: BOOSE.Evaluation.Compile()
+  spec.csharp:
+  - uid: BOOSE.Evaluation.Compile
+    name: Compile
+    isExternal: true
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: BOOSE.Evaluation.Compile
+    name: Compile
+    isExternal: true
+  - name: (
+  - name: )
+- uid: MYBooseApp.AppBoolean.Compile*
+  commentId: Overload:MYBooseApp.AppBoolean.Compile
+  href: MYBooseApp.AppBoolean.html#MYBooseApp_AppBoolean_Compile
+  name: Compile
+  nameWithType: AppBoolean.Compile
+  fullName: MYBooseApp.AppBoolean.Compile
+- uid: BOOSE.ICommand.Compile
+  commentId: M:BOOSE.ICommand.Compile
+  parent: BOOSE.ICommand
+  isExternal: true
+  name: Compile()
+  nameWithType: ICommand.Compile()
+  fullName: BOOSE.ICommand.Compile()
+  spec.csharp:
+  - uid: BOOSE.ICommand.Compile
+    name: Compile
+    isExternal: true
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: BOOSE.ICommand.Compile
+    name: Compile
+    isExternal: true
+  - name: (
+  - name: )
+- uid: BOOSE.Evaluation.Execute
+  commentId: M:BOOSE.Evaluation.Execute
+  parent: BOOSE.Evaluation
+  isExternal: true
+  name: Execute()
+  nameWithType: Evaluation.Execute()
+  fullName: BOOSE.Evaluation.Execute()
+  spec.csharp:
+  - uid: BOOSE.Evaluation.Execute
+    name: Execute
+    isExternal: true
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: BOOSE.Evaluation.Execute
+    name: Execute
+    isExternal: true
+  - name: (
+  - name: )
+- uid: MYBooseApp.AppBoolean.Execute*
+  commentId: Overload:MYBooseApp.AppBoolean.Execute
+  href: MYBooseApp.AppBoolean.html#MYBooseApp_AppBoolean_Execute
+  name: Execute
+  nameWithType: AppBoolean.Execute
+  fullName: MYBooseApp.AppBoolean.Execute
+- uid: BOOSE.ICommand.Execute
+  commentId: M:BOOSE.ICommand.Execute
+  parent: BOOSE.ICommand
+  isExternal: true
+  name: Execute()
+  nameWithType: ICommand.Execute()
+  fullName: BOOSE.ICommand.Execute()
+  spec.csharp:
+  - uid: BOOSE.ICommand.Execute
+    name: Execute
+    isExternal: true
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: BOOSE.ICommand.Execute
+    name: Execute
+    isExternal: true
+  - name: (
+  - name: )
+- uid: BOOSE.Evaluation.CheckParameters(System.String[])
+  commentId: M:BOOSE.Evaluation.CheckParameters(System.String[])
+  parent: BOOSE.Evaluation
   isExternal: true
   href: https://learn.microsoft.com/dotnet/api/system.string
   name: CheckParameters(string[])
-  nameWithType: CommandTwoParameters.CheckParameters(string[])
-  fullName: BOOSE.CommandTwoParameters.CheckParameters(string[])
-  nameWithType.vb: CommandTwoParameters.CheckParameters(String())
-  fullName.vb: BOOSE.CommandTwoParameters.CheckParameters(String())
+  nameWithType: Evaluation.CheckParameters(string[])
+  fullName: BOOSE.Evaluation.CheckParameters(string[])
+  nameWithType.vb: Evaluation.CheckParameters(String())
+  fullName.vb: BOOSE.Evaluation.CheckParameters(String())
   name.vb: CheckParameters(String())
   spec.csharp:
-  - uid: BOOSE.CommandTwoParameters.CheckParameters(System.String[])
+  - uid: BOOSE.Evaluation.CheckParameters(System.String[])
     name: CheckParameters
     isExternal: true
   - name: (
@@ -850,7 +1008,7 @@ references:
   - name: ']'
   - name: )
   spec.vb:
-  - uid: BOOSE.CommandTwoParameters.CheckParameters(System.String[])
+  - uid: BOOSE.Evaluation.CheckParameters(System.String[])
     name: CheckParameters
     isExternal: true
   - name: (
@@ -861,12 +1019,12 @@ references:
   - name: (
   - name: )
   - name: )
-- uid: MYBooseApp.AppMoveTo.CheckParameters*
-  commentId: Overload:MYBooseApp.AppMoveTo.CheckParameters
-  href: MYBooseApp.AppMoveTo.html#MYBooseApp_AppMoveTo_CheckParameters_System_String___
+- uid: MYBooseApp.AppBoolean.CheckParameters*
+  commentId: Overload:MYBooseApp.AppBoolean.CheckParameters
+  href: MYBooseApp.AppBoolean.html#MYBooseApp_AppBoolean_CheckParameters_System_String___
   name: CheckParameters
-  nameWithType: AppMoveTo.CheckParameters
-  fullName: MYBooseApp.AppMoveTo.CheckParameters
+  nameWithType: AppBoolean.CheckParameters
+  fullName: MYBooseApp.AppBoolean.CheckParameters
 - uid: BOOSE.ICommand.CheckParameters(System.String[])
   commentId: M:BOOSE.ICommand.CheckParameters(System.String[])
   parent: BOOSE.ICommand
@@ -923,93 +1081,5 @@ references:
     name: String
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.string
-  - name: (
-  - name: )
-- uid: BOOSE.Command.Compile
-  commentId: M:BOOSE.Command.Compile
-  parent: BOOSE.Command
-  isExternal: true
-  name: Compile()
-  nameWithType: Command.Compile()
-  fullName: BOOSE.Command.Compile()
-  spec.csharp:
-  - uid: BOOSE.Command.Compile
-    name: Compile
-    isExternal: true
-  - name: (
-  - name: )
-  spec.vb:
-  - uid: BOOSE.Command.Compile
-    name: Compile
-    isExternal: true
-  - name: (
-  - name: )
-- uid: MYBooseApp.AppMoveTo.Compile*
-  commentId: Overload:MYBooseApp.AppMoveTo.Compile
-  href: MYBooseApp.AppMoveTo.html#MYBooseApp_AppMoveTo_Compile
-  name: Compile
-  nameWithType: AppMoveTo.Compile
-  fullName: MYBooseApp.AppMoveTo.Compile
-- uid: BOOSE.ICommand.Compile
-  commentId: M:BOOSE.ICommand.Compile
-  parent: BOOSE.ICommand
-  isExternal: true
-  name: Compile()
-  nameWithType: ICommand.Compile()
-  fullName: BOOSE.ICommand.Compile()
-  spec.csharp:
-  - uid: BOOSE.ICommand.Compile
-    name: Compile
-    isExternal: true
-  - name: (
-  - name: )
-  spec.vb:
-  - uid: BOOSE.ICommand.Compile
-    name: Compile
-    isExternal: true
-  - name: (
-  - name: )
-- uid: BOOSE.Command.Execute
-  commentId: M:BOOSE.Command.Execute
-  parent: BOOSE.Command
-  isExternal: true
-  name: Execute()
-  nameWithType: Command.Execute()
-  fullName: BOOSE.Command.Execute()
-  spec.csharp:
-  - uid: BOOSE.Command.Execute
-    name: Execute
-    isExternal: true
-  - name: (
-  - name: )
-  spec.vb:
-  - uid: BOOSE.Command.Execute
-    name: Execute
-    isExternal: true
-  - name: (
-  - name: )
-- uid: MYBooseApp.AppMoveTo.Execute*
-  commentId: Overload:MYBooseApp.AppMoveTo.Execute
-  href: MYBooseApp.AppMoveTo.html#MYBooseApp_AppMoveTo_Execute
-  name: Execute
-  nameWithType: AppMoveTo.Execute
-  fullName: MYBooseApp.AppMoveTo.Execute
-- uid: BOOSE.ICommand.Execute
-  commentId: M:BOOSE.ICommand.Execute
-  parent: BOOSE.ICommand
-  isExternal: true
-  name: Execute()
-  nameWithType: ICommand.Execute()
-  fullName: BOOSE.ICommand.Execute()
-  spec.csharp:
-  - uid: BOOSE.ICommand.Execute
-    name: Execute
-    isExternal: true
-  - name: (
-  - name: )
-  spec.vb:
-  - uid: BOOSE.ICommand.Execute
-    name: Execute
-    isExternal: true
   - name: (
   - name: )

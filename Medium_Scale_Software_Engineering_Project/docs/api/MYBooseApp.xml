@@ -1,0 +1,1915 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>MYBooseApp</name>
+    </assembly>
+    <members>
+        <member name="T:MYBooseApp.AppArray">
+            <summary>
+            Defines a one-dimensional array capable of storing integer or real values.
+            Declaration syntax: array int|real arrayName size
+            </summary>
+        </member>
+        <member name="M:MYBooseApp.AppArray.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:MYBooseApp.AppArray"/> class.
+            </summary>
+        </member>
+        <member name="P:MYBooseApp.AppArray.Size">
+            <summary>
+            Returns the total number of elements in the array.
+            </summary>
+        </member>
+        <member name="M:MYBooseApp.AppArray.Set(BOOSE.StoredProgram,System.String)">
+            <summary>
+            Extracts and assigns the array declaration details from the command parameters.
+            </summary>
+            <param name="Program">The stored program this array belongs to</param>
+            <param name="Params">The argument string following the array keyword</param>
+        </member>
+        <member name="M:MYBooseApp.AppArray.CheckParameters(System.String[])">
+            <summary>
+            Parameter validation is not required for this command.
+            </summary>
+        </member>
+        <member name="M:MYBooseApp.AppArray.Compile">
+            <summary>
+            Allocates memory for the array and registers it within the program.
+            </summary>
+        </member>
+        <member name="M:MYBooseApp.AppArray.Execute">
+            <summary>
+            Arrays do not require runtime execution.
+            </summary>
+        </member>
+        <member name="M:MYBooseApp.AppArray.GetIntArray(System.Int32)">
+            <summary>
+            Retrieves an integer element from the array at the specified index.
+            </summary>
+        </member>
+        <member name="M:MYBooseApp.AppArray.GetRealArray(System.Int32)">
+            <summary>
+            Retrieves a real (double) element from the array at the specified index.
+            </summary>
+        </member>
+        <member name="M:MYBooseApp.AppArray.SetIntArray(System.Int32,System.Int32)">
+            <summary>
+            Assigns an integer value to the array at the given index.
+            </summary>
+        </member>
+        <member name="M:MYBooseApp.AppArray.SetRealArray(System.Double,System.Int32)">
+            <summary>
+            Assigns a real (double) value to the array at the given index.
+            </summary>
+        </member>
+        <member name="M:MYBooseApp.AppArray.IsIntArray">
+            <summary>
+            Indicates whether the array stores integer values.
+            </summary>
+        </member>
+        <member name="M:MYBooseApp.AppArray.IsRealArray">
+            <summary>
+            Indicates whether the array stores real (double) values.
+            </summary>
+        </member>
+        <member name="T:MYBooseApp.AppAsign">
+            <summary>
+            Implements assignment functionality for variables that have already been declared.
+            Supported syntax: "set varName = expression" or "varName = expression".
+            Example usages include "set x = 10" and "x = y + 5".
+            This command modifies the value of an existing variable without creating a new one.
+            </summary>
+        </member>
+        <member name="M:MYBooseApp.AppAsign.#ctor">
+            <summary>
+            Creates a new instance of the assignment command.
+            Required for instantiation via the CommandFactory.
+            </summary>
+        </member>
+        <member name="M:MYBooseApp.AppAsign.Set(BOOSE.StoredProgram,System.String)">
+            <summary>
+            Associates the command with the current stored program and parses the assignment input.
+            Separates the variable name and the expression from the assignment statement.
+            </summary>
+            <param name="Program">The stored program currently being executed</param>
+            <param name="Params">Assignment text in the form "varName = expression"</param>
+            <exception cref="T:BOOSE.CommandException">
+            Thrown when the assignment statement does not follow the expected format
+            </exception>
+        </member>
+        <member name="M:MYBooseApp.AppAsign.CheckParameters(System.String[])">
+            <summary>
+            Parameter checking is not required for this command.
+            Method is implemented to satisfy the ICommand interface.
+            </summary>
+            <param name="parameterList">Parameter list (not used)</param>
+        </member>
+        <member name="M:MYBooseApp.AppAsign.Compile">
+            <summary>
+            Compilation stage for the assignment command.
+            No compilation logic is required as validation occurs during execution.
+            </summary>
+        </member>
+        <member name="M:MYBooseApp.AppAsign.Execute">
+            <summary>
+            Executes the assignment by evaluating the expression and updating the target variable.
+            Supports both literal values and computed expressions, with appropriate type validation.
+            </summary>
+            <exception cref="T:BOOSE.CommandException">
+            Thrown when the target variable does not exist, the expression is invalid,
+            or the evaluated value cannot be assigned due to a type mismatch
+            </exception>
+        </member>
+        <member name="T:MYBooseApp.AppBoolean">
+            <summary>
+            Custom Boolean implementation that avoids the default BOOSE Boolean limitations
+            by extending the Evaluation class.
+            Supports declaration and optional initialization using true/false literals
+            or evaluatable expressions.
+            Expression results are interpreted numerically, where non-zero represents true
+            and zero represents false.
+            </summary>
+        </member>
+        <member name="M:MYBooseApp.AppBoolean.#ctor">
+            <summary>
+            Initializes a new instance of the AppBoolean class.
+            Required for creation via the command factory.
+            </summary>
+        </member>
+        <member name="P:MYBooseApp.AppBoolean.BoolValue">
+            <summary>
+            Gets or assigns the underlying boolean value.
+            </summary>
+        </member>
+        <member name="P:MYBooseApp.AppBoolean.Value">
+            <summary>
+            Provides integer compatibility for the base Evaluation class.
+            True is represented as 1, while false is represented as 0.
+            </summary>
+        </member>
+        <member name="M:MYBooseApp.AppBoolean.Set(BOOSE.StoredProgram,System.String)">
+            <summary>
+            Interprets the declaration parameters.
+            Supports both simple declarations (e.g., "flag")
+            and initialized declarations (e.g., "flag = true", "flag = expression").
+            </summary>
+        </member>
+        <member name="M:MYBooseApp.AppBoolean.Compile">
+            <summary>
+            Registers the boolean variable during compilation and evaluates
+            any provided initializer.
+            </summary>
+        </member>
+        <member name="M:MYBooseApp.AppBoolean.Execute">
+            <summary>
+            Executes boolean expression evaluation and converts the result
+            into a boolean value.
+            Numeric results are interpreted such that non-zero values are true
+            and zero represents false.
+            </summary>
+        </member>
+        <member name="M:MYBooseApp.AppBoolean.CheckParameters(System.String[])">
+            <summary>
+            Parameter validation is not required for this command.
+            Method is implemented to satisfy interface requirements.
+            </summary>
+        </member>
+        <member name="T:MYBooseApp.AppCall">
+            <summary>
+            Provides support for invoking user-defined methods with argument passing
+            and optional return value handling.
+            Call syntax: "call methodName [arg1 arg2 ...]".
+            Example usage: "call mulMethod 10 5".
+            This command manages parameter binding, return variable setup,
+            and program counter redirection to simulate a standard function call.
+            </summary>
+        </member>
+        <member name="M:MYBooseApp.AppCall.#ctor">
+            <summary>
+            Creates a new instance of the AppCall command.
+            Required for instantiation through the CommandFactory.
+            </summary>
+        </member>
+        <member name="M:MYBooseApp.AppCall.Set(BOOSE.StoredProgram,System.String)">
+            <summary>
+            Associates the command with the active stored program and parses
+            the method name and argument list from the call statement.
+            </summary>
+            <param name="Program">The stored program currently being executed</param>
+            <param name="Params">Call arguments in the form "methodName arg1 arg2 ..."</param>
+            <exception cref="T:BOOSE.CommandException">
+            Thrown when the call statement does not include a method name
+            </exception>
+        </member>
+        <member name="M:MYBooseApp.AppCall.CheckParameters(System.String[])">
+            <summary>
+            Parameter validation is not required for the call command.
+            This method exists to satisfy the ICommand interface.
+            </summary>
+            <param name="parameterList">Parameter list (not used)</param>
+        </member>
+        <member name="M:MYBooseApp.AppCall.Compile">
+            <summary>
+            No compilation logic is required for method calls.
+            Method existence and argument validation occur at runtime.
+            </summary>
+        </member>
+        <member name="M:MYBooseApp.AppCall.Execute">
+            <summary>
+            Executes the method call by resolving the target method,
+            creating local parameter variables, preparing a return location,
+            and transferring control to the method body.
+            This mirrors the behavior of a function call in conventional languages.
+            </summary>
+            <exception cref="T:BOOSE.BOOSEException">
+            Thrown when the stored program is not an AppStoredProgram
+            or when the specified method cannot be found
+            </exception>
+            <exception cref="T:BOOSE.CommandException">
+            Thrown when the number of supplied arguments does not match
+            the method's parameter definition
+            </exception>
+        </member>
+        <member name="M:MYBooseApp.AppCall.EvaluateExpression(System.String)">
+            <summary>
+            Evaluates an argument expression by substituting variable references
+            with their current values prior to evaluation.
+            Returns the final evaluated result as a string.
+            </summary>
+            <param name="expr">
+            The argument expression (e.g., "10", "x + 5", "variableName")
+            </param>
+            <returns>The evaluated expression result</returns>
+        </member>
+        <member name="T:MYBooseApp.AppCanvas">
+            <summary>
+            Implements the ICanvas interface to provide drawing functionality.
+            This class uses the Singleton design pattern to guarantee that
+            only one canvas instance is created and shared across the application.
+            </summary>
+        </member>
+        <member name="F:MYBooseApp.AppCanvas._instance">
+            <summary>
+            Holds the single shared instance of the AppCanvas.
+            </summary>
+        </member>
+        <member name="F:MYBooseApp.AppCanvas._lock">
+            <summary>
+            Synchronization object used to ensure thread-safe
+            creation of the singleton instance.
+            </summary>
+        </member>
+        <member name="F:MYBooseApp.AppCanvas.displayControl">
+            <summary>
+            Reference to the PictureBox control responsible for displaying the canvas.
+            </summary>
+        </member>
+        <member name="M:MYBooseApp.AppCanvas.#ctor(System.Int32,System.Int32)">
+            <summary>
+            Initializes a new AppCanvas instance.
+            The constructor is private to prevent external instantiation
+            and enforce the Singleton pattern.
+            </summary>
+            <param name="xsize">Initial width of the canvas</param>
+            <param name="ysize">Initial height of the canvas</param>
+        </member>
+        <member name="M:MYBooseApp.AppCanvas.Instance(System.Int32,System.Int32)">
+            <summary>
+            Returns the global AppCanvas instance, creating it if necessary.
+            </summary>
+            <param name="width">Canvas width (used only on first creation)</param>
+            <param name="height">Canvas height (used only on first creation)</param>
+            <returns>The singleton AppCanvas instance</returns>
+        </member>
+        <member name="M:MYBooseApp.AppCanvas.LinkToPictureBox(System.Windows.Forms.PictureBox)">
+            <summary>
+            Associates the canvas bitmap with a PictureBox for rendering.
+            </summary>
+            <param name="pictureBox">PictureBox used to display the canvas</param>
+        </member>
+        <member name="M:MYBooseApp.AppCanvas.RefreshDisplay">
+            <summary>
+            Forces the display control to repaint and show the latest drawing updates.
+            </summary>
+        </member>
+        <member name="P:MYBooseApp.AppCanvas.Xpos">
+            <summary>
+            Gets or sets the current horizontal position of the drawing cursor.
+            </summary>
+        </member>
+        <member name="P:MYBooseApp.AppCanvas.Ypos">
+            <summary>
+            Gets or sets the current vertical position of the drawing cursor.
+            </summary>
+        </member>
+        <member name="P:MYBooseApp.AppCanvas.PenColour">
+            <summary>
+            Gets or sets the current pen colour.
+            </summary>
+        </member>
+        <member name="M:MYBooseApp.AppCanvas.Circle(System.Int32,System.Boolean)">
+            <summary>
+            Draws a circle centred at the current cursor position.
+            </summary>
+            <param name="radius">Radius of the circle</param>
+            <param name="filled">Indicates whether the circle should be filled</param>
+        </member>
+        <member name="M:MYBooseApp.AppCanvas.Reset">
+            <summary>
+            Resets the canvas to its initial state, clearing all drawings
+            and restoring default cursor and pen settings.
+            </summary>
+        </member>
+        <member name="M:MYBooseApp.AppCanvas.Clear">
+            <summary>
+            Clears all drawings from the canvas.
+            </summary>
+        </member>
+        <member name="M:MYBooseApp.AppCanvas.DrawTo(System.Int32,System.Int32)">
+            <summary>
+            Draws a line from the current cursor position to the specified point.
+            </summary>
+            <param name="x">Target X coordinate</param>
+            <param name="y">Target Y coordinate</param>
+        </member>
+        <member name="M:MYBooseApp.AppCanvas.MoveTo(System.Int32,System.Int32)">
+            <summary>
+            Moves the drawing cursor to the specified location without drawing.
+            </summary>
+            <param name="x">New X coordinate</param>
+            <param name="y">New Y coordinate</param>
+        </member>
+        <member name="M:MYBooseApp.AppCanvas.Rect(System.Int32,System.Int32,System.Boolean)">
+            <summary>
+            Draws a rectangle using the current cursor position as the top-left corner.
+            </summary>
+            <param name="width">Width of the rectangle</param>
+            <param name="height">Height of the rectangle</param>
+            <param name="filled">Indicates whether the rectangle should be filled</param>
+        </member>
+        <member name="M:MYBooseApp.AppCanvas.Set(System.Int32,System.Int32)">
+            <summary>
+            Resizes the canvas and reinitializes the drawing surface.
+            </summary>
+            <param name="width">New canvas width</param>
+            <param name="height">New canvas height</param>
+        </member>
+        <member name="M:MYBooseApp.AppCanvas.SetColour(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Sets the pen colour using individual RGB components.
+            </summary>
+            <param name="red">Red value (0–255)</param>
+            <param name="green">Green value (0–255)</param>
+            <param name="blue">Blue value (0–255)</param>
+        </member>
+        <member name="M:MYBooseApp.AppCanvas.Tri(System.Int32,System.Int32)">
+            <summary>
+            Draws an outlined triangle at the current cursor position.
+            </summary>
+            <param name="width">Base width of the triangle</param>
+            <param name="height">Height of the triangle</param>
+        </member>
+        <member name="M:MYBooseApp.AppCanvas.WriteText(System.String)">
+            <summary>
+            Renders text at the current cursor position.
+            </summary>
+            <param name="text">Text to be drawn</param>
+        </member>
+        <member name="M:MYBooseApp.AppCanvas.penSize(System.Int32)">
+            <summary>
+            Updates the pen thickness used for drawing operations.
+            </summary>
+            <param name="size">New pen width</param>
+        </member>
+        <member name="M:MYBooseApp.AppCanvas.getBitmap">
+            <summary>
+            Retrieves the current bitmap representing the canvas contents.
+            </summary>
+            <returns>The canvas bitmap</returns>
+        </member>
+        <member name="M:MYBooseApp.AppCanvas.ResetInstance">
+            <summary>
+            Resets the singleton instance, allowing a new canvas
+            to be created on the next request.
+            </summary>
+        </member>
+        <member name="T:MYBooseApp.AppCircle">
+            <summary>
+            Custom Circle command for the BOOSE language.
+            Draws a circle on the canvas using a radius that can be
+            a literal value or an evaluated expression at runtime.
+            Optionally supports a filled flag.
+            </summary>
+        </member>
+        <member name="M:MYBooseApp.AppCircle.#ctor(BOOSE.ICanvas)">
+            <summary>
+            Creates a new AppCircle command using the provided canvas.
+            </summary>
+            <param name="canvas">Canvas used to draw the circle.</param>
+        </member>
+        <member name="M:MYBooseApp.AppCircle.Set(BOOSE.StoredProgram,System.String)">
+            <summary>
+            Assigns the current StoredProgram and parses the parameter string.
+            Parameters are split by comma to preserve expressions.
+            </summary>
+            <param name="Program">The current stored program.</param>
+            <param name="Params">
+            Parameter string containing radius and optional filled flag.
+            </param>
+        </member>
+        <member name="M:MYBooseApp.AppCircle.CheckParameters(System.String[])">
+            <summary>
+            Checks that the number of parameters is valid.
+            </summary>
+            <param name="parameterList">List of parameters passed to the command.</param>
+        </member>
+        <member name="M:MYBooseApp.AppCircle.Compile">
+            <summary>
+            Compiles the command and determines whether the circle
+            should be filled if a second parameter is provided.
+            </summary>
+        </member>
+        <member name="M:MYBooseApp.AppCircle.Execute">
+            <summary>
+            Executes the Circle command.
+            Evaluates the radius expression at runtime and optionally
+            evaluates a filled flag before drawing the circle.
+            </summary>
+        </member>
+        <member name="T:MYBooseApp.AppClear">
+            <summary>
+            Implements the Clear command for the BOOSE language.
+            Clears the entire canvas and removes all drawn content.
+            </summary>
+        </member>
+        <member name="M:MYBooseApp.AppClear.#ctor(BOOSE.ICanvas)">
+            <summary>
+            Creates a new AppClear command using the specified canvas.
+            </summary>
+            <param name="canvas">Canvas to be cleared when the command executes.</param>
+        </member>
+        <member name="M:MYBooseApp.AppClear.Set(BOOSE.StoredProgram,System.String)">
+            <summary>
+            Assigns the StoredProgram reference for the command.
+            The Clear command does not accept any parameters.
+            </summary>
+            <param name="Program">The current stored program.</param>
+            <param name="Params">Unused parameter string.</param>
+        </member>
+        <member name="M:MYBooseApp.AppClear.CheckParameters(System.String[])">
+            <summary>
+            Validates that no parameters are supplied to the Clear command.
+            </summary>
+            <param name="Parameters">Array of parsed parameters.</param>
+        </member>
+        <member name="M:MYBooseApp.AppClear.Compile">
+            <summary>
+            Compiles the Clear command.
+            No compilation logic is required.
+            </summary>
+        </member>
+        <member name="M:MYBooseApp.AppClear.Execute">
+            <summary>
+            Executes the Clear command by clearing the canvas.
+            </summary>
+        </member>
+        <member name="T:MYBooseApp.AppCommandFactory">
+            <summary>
+            Application-specific command factory.
+            Responsible for creating BOOSE commands supported by MYBooseApp.
+            Extends the base CommandFactory to register custom drawing,
+            variable, control-flow, and method-related commands.
+            </summary>
+        </member>
+        <member name="M:MYBooseApp.AppCommandFactory.#ctor(BOOSE.ICanvas)">
+            <summary>
+            Initializes a new instance of the AppCommandFactory.
+            </summary>
+            <param name="canvas">
+            Reference to the application canvas used by drawing commands.
+            </param>
+        </member>
+        <member name="M:MYBooseApp.AppCommandFactory.MakeCommand(System.String)">
+            <summary>
+            Creates and returns an ICommand instance based on the supplied command type.
+            </summary>
+            <param name="CommandType">
+            The command keyword parsed from the BOOSE program (e.g. "circle", "if", "call").
+            </param>
+            <returns>
+            A new ICommand instance corresponding to the specified command.
+            </returns>
+            <exception cref="T:System.ArgumentException">
+            Thrown when the command type is not recognised.
+            </exception>
+        </member>
+        <member name="T:MYBooseApp.AppDrawTo">
+            <summary>
+            Implements the DrawTo command for the BOOSE language.
+            Draws a straight line from the current pen position
+            to the specified X and Y coordinates on the canvas.
+            </summary>
+            <remarks>
+            Coordinate values are evaluated at runtime and may be
+            numeric literals, variables, or arithmetic expressions.
+            </remarks>
+        </member>
+        <member name="F:MYBooseApp.AppDrawTo.Canvas">
+            <summary>
+            Canvas used to perform drawing operations.
+            </summary>
+        </member>
+        <member name="F:MYBooseApp.AppDrawTo.program">
+            <summary>
+            Reference to the stored program for expression evaluation.
+            </summary>
+        </member>
+        <member name="F:MYBooseApp.AppDrawTo.Parameters">
+            <summary>
+            Array containing the raw command parameters.
+            </summary>
+        </member>
+        <member name="M:MYBooseApp.AppDrawTo.#ctor(BOOSE.ICanvas)">
+            <summary>
+            Initializes a new instance of the <see cref="T:MYBooseApp.AppDrawTo"/> command.
+            </summary>
+            <param name="canvas">
+            The canvas on which the line will be drawn.
+            </param>
+        </member>
+        <member name="M:MYBooseApp.AppDrawTo.Set(BOOSE.StoredProgram,System.String)">
+            <summary>
+            Assigns the stored program reference and parses command parameters.
+            </summary>
+            <param name="Program">
+            The current stored program instance.
+            </param>
+            <param name="Params">
+            A parameter string containing X and Y coordinate expressions.
+            </param>
+        </member>
+        <member name="M:MYBooseApp.AppDrawTo.CheckParameters(System.String[])">
+            <summary>
+            Validates that exactly two parameters are supplied.
+            </summary>
+            <param name="parameterList">
+            The parsed parameter list.
+            </param>
+            <exception cref="T:BOOSE.CommandException">
+            Thrown when the command does not receive exactly two parameters.
+            </exception>
+        </member>
+        <member name="M:MYBooseApp.AppDrawTo.Compile">
+            <summary>
+            Compiles the DrawTo command.
+            </summary>
+            <remarks>
+            Parameter evaluation is deferred until execution time.
+            </remarks>
+        </member>
+        <member name="M:MYBooseApp.AppDrawTo.Execute">
+            <summary>
+            Executes the DrawTo command by evaluating the X and Y expressions
+            and drawing a line to the resulting coordinates.
+            </summary>
+            <exception cref="T:BOOSE.CommandException">
+            Thrown when coordinate expressions cannot be evaluated
+            or do not result in valid integer values.
+            </exception>
+        </member>
+        <member name="T:MYBooseApp.AppElse">
+            <summary>
+            Represents the 'else' branch in an if-else conditional statement.
+            </summary>
+            <remarks>
+            Syntax: "else". This command is executed when the preceding 'if' condition is FALSE.
+            When executed, it skips over the else block to the matching 'end if' command.
+            Supports nested if-else statements by tracking nesting levels.
+            </remarks>
+        </member>
+        <member name="M:MYBooseApp.AppElse.#ctor">
+            <summary>
+            Default constructor for the <see cref="T:MYBooseApp.AppElse"/> command.
+            </summary>
+        </member>
+        <member name="M:MYBooseApp.AppElse.Set(BOOSE.StoredProgram,System.String)">
+            <summary>
+            Sets the stored program reference and validates that no parameters are provided.
+            </summary>
+            <param name="Program">Reference to the stored program being executed.</param>
+            <param name="Params">Command parameters (should be empty for 'else').</param>
+            <exception cref="T:BOOSE.CommandException">Thrown if any parameters are provided.</exception>
+        </member>
+        <member name="M:MYBooseApp.AppElse.CheckParameters(System.String[])">
+            <summary>
+            Validates command parameters.
+            </summary>
+            <param name="parameterList">Array of parameters to validate.</param>
+            <remarks>Not used for the 'else' command.</remarks>
+        </member>
+        <member name="M:MYBooseApp.AppElse.Compile">
+            <summary>
+            Compiles the 'else' command.
+            </summary>
+            <remarks>No compilation steps are required for this command.</remarks>
+        </member>
+        <member name="M:MYBooseApp.AppElse.Execute">
+            <summary>
+            Executes the 'else' command by skipping to the corresponding 'end if'.
+            </summary>
+            <remarks>
+            Handles nested if-else structures by tracking nesting levels.
+            </remarks>
+            <exception cref="T:BOOSE.BOOSEException">
+            Thrown if the command is not running under <see cref="T:MYBooseApp.AppStoredProgram"/>
+            or if no matching 'end if' is found.
+            </exception>
+        </member>
+        <member name="T:MYBooseApp.AppEndFor">
+            <summary>
+            Represents the end of a for loop and manages loop iteration.
+            </summary>
+            <remarks>
+            Syntax: "end for" or "endfor". 
+            Increments the loop variable and returns execution to the corresponding for statement
+            to evaluate the loop condition and continue iteration.
+            </remarks>
+        </member>
+        <member name="F:MYBooseApp.AppEndFor.correspondingFor">
+            <summary>
+            Reference to the matching <see cref="T:MYBooseApp.AppFor"/> command.
+            </summary>
+        </member>
+        <member name="M:MYBooseApp.AppEndFor.#ctor">
+            <summary>
+            Default constructor required for instantiation via <see cref="T:MYBooseApp.AppCommandFactory"/>.
+            </summary>
+        </member>
+        <member name="M:MYBooseApp.AppEndFor.Set(BOOSE.StoredProgram,System.String)">
+            <summary>
+            Sets the stored program reference and validates parameters.
+            Only accepts an empty string or "for" (split from "end for").
+            </summary>
+            <param name="Program">Reference to the stored program being executed.</param>
+            <param name="Params">Command parameters (should be empty or "for").</param>
+            <exception cref="T:BOOSE.CommandException">Thrown if invalid parameters are provided.</exception>
+        </member>
+        <member name="M:MYBooseApp.AppEndFor.CheckParameters(System.String[])">
+            <summary>
+            Validates command parameters.
+            </summary>
+            <param name="parameterList">Array of parameters (not used).</param>
+            <remarks>No action required for the 'end for' command.</remarks>
+        </member>
+        <member name="M:MYBooseApp.AppEndFor.Compile">
+            <summary>
+            Links this EndFor command to its corresponding <see cref="T:MYBooseApp.AppFor"/> during compilation.
+            Pops the AppFor from the program stack and stores the link.
+            </summary>
+            <exception cref="T:BOOSE.CommandException">Thrown if the popped command is not a valid <see cref="T:MYBooseApp.AppFor"/>.</exception>
+        </member>
+        <member name="M:MYBooseApp.AppEndFor.Execute">
+            <summary>
+            Executes the end for command by incrementing the loop variable
+            and jumping back to the corresponding for statement for iteration.
+            </summary>
+            <exception cref="T:BOOSE.BOOSEException">Thrown if the command was not properly compiled.</exception>
+        </member>
+        <member name="M:MYBooseApp.AppEndFor.GetLoopVariableName">
+            <summary>
+            Retrieves the loop variable name from the corresponding <see cref="T:MYBooseApp.AppFor"/>.
+            </summary>
+            <returns>The loop variable name.</returns>
+        </member>
+        <member name="M:MYBooseApp.AppEndFor.GetIncrementValue">
+            <summary>
+            Retrieves the increment value from the corresponding <see cref="T:MYBooseApp.AppFor"/>.
+            </summary>
+            <returns>The increment value.</returns>
+        </member>
+        <member name="T:MYBooseApp.AppEndIf">
+            <summary>
+            Represents the end of an if/else block in the BOOSE language.
+            Serves as a marker to indicate where an if/else statement finishes.
+            Execution of this command has no effect; it is only used for control flow.
+            </summary>
+        </member>
+        <member name="M:MYBooseApp.AppEndIf.#ctor">
+            <summary>
+            Default constructor required for instantiation via <see cref="T:MYBooseApp.AppCommandFactory"/>.
+            </summary>
+        </member>
+        <member name="M:MYBooseApp.AppEndIf.Set(BOOSE.StoredProgram,System.String)">
+            <summary>
+            Sets the stored program reference and validates parameters.
+            Accepts an empty string or "if" (when parser splits "end if" into "end" + "if").
+            </summary>
+            <param name="Program">Reference to the stored program being executed.</param>
+            <param name="Params">Command parameters (should be empty or "if").</param>
+            <exception cref="T:BOOSE.CommandException">Thrown if invalid parameters are provided.</exception>
+        </member>
+        <member name="M:MYBooseApp.AppEndIf.CheckParameters(System.String[])">
+            <summary>
+            Parameter validation (not required for AppEndIf).
+            </summary>
+            <param name="parameterList">Array of parameters (not used).</param>
+        </member>
+        <member name="M:MYBooseApp.AppEndIf.Compile">
+            <summary>
+            Compilation step (not required for AppEndIf).
+            </summary>
+        </member>
+        <member name="M:MYBooseApp.AppEndIf.Execute">
+            <summary>
+            Execution step (not required for AppEndIf).
+            This command is used as a marker for control flow only.
+            </summary>
+        </member>
+        <member name="T:MYBooseApp.AppEndMethod">
+            <summary>
+            Represents the end of a method declaration in the BOOSE language.
+            Serves as a marker indicating the method body has finished.
+            When executed, it removes local parameters and returns control to the calling instruction.
+            Syntax: "end method" or "end".
+            </summary>
+        </member>
+        <member name="F:MYBooseApp.AppEndMethod.correspondingMethod">
+            <summary>
+            Reference to the corresponding AppMethod command for this EndMethod.
+            </summary>
+        </member>
+        <member name="F:MYBooseApp.AppEndMethod.returnAddress">
+            <summary>
+            The program counter (PC) address to return to after method execution.
+            </summary>
+        </member>
+        <member name="M:MYBooseApp.AppEndMethod.#ctor">
+            <summary>
+            Default constructor required for instantiation via <see cref="T:MYBooseApp.AppCommandFactory"/>.
+            </summary>
+        </member>
+        <member name="M:MYBooseApp.AppEndMethod.Set(BOOSE.StoredProgram,System.String)">
+            <summary>
+            Sets the stored program reference and validates parameters.
+            Accepts an empty string or "method" (when parser splits "end method" into "end" + "method").
+            </summary>
+            <param name="Program">Reference to the stored program being executed.</param>
+            <param name="Params">Command parameters (should be empty or "method").</param>
+            <exception cref="T:BOOSE.CommandException">Thrown if invalid parameters are provided.</exception>
+        </member>
+        <member name="M:MYBooseApp.AppEndMethod.CheckParameters(System.String[])">
+            <summary>
+            Parameter validation (not required for AppEndMethod).
+            </summary>
+            <param name="parameterList">Array of parameters (not used).</param>
+        </member>
+        <member name="M:MYBooseApp.AppEndMethod.Compile">
+            <summary>
+            Compilation step: Links this EndMethod with its corresponding AppMethod.
+            Pops the method from the BOOSE compilation stack and stores the reference.
+            </summary>
+            <exception cref="T:BOOSE.CommandException">Thrown if no matching method is found or type mismatch occurs.</exception>
+        </member>
+        <member name="M:MYBooseApp.AppEndMethod.SetReturnAddress(System.Int32)">
+            <summary>
+            Sets the program counter address to return to after method execution.
+            Called by <see cref="T:MYBooseApp.AppCall"/> when invoking the method.
+            </summary>
+            <param name="address">Program counter (PC) of the instruction after the call.</param>
+        </member>
+        <member name="M:MYBooseApp.AppEndMethod.Execute">
+            <summary>
+            Executes the EndMethod command.
+            Cleans up method parameters (local variables) and returns control to the calling instruction.
+            </summary>
+            <exception cref="T:BOOSE.BOOSEException">Thrown if EndMethod is executed without a return address.</exception>
+        </member>
+        <member name="T:MYBooseApp.AppEndWhile">
+            <summary>
+            Represents the end of a while loop in the BOOSE language.
+            Serves as a marker to return control to the corresponding <see cref="T:MYBooseApp.AppWhile"/> for condition evaluation.
+            Syntax: "end while" or "endwhile".
+            Uses a forward-scanning mechanism—no backward linking is required.
+            </summary>
+        </member>
+        <member name="F:MYBooseApp.AppEndWhile.correspondingWhile">
+            <summary>
+            Reference to the corresponding <see cref="T:MYBooseApp.AppWhile"/> command.
+            Established during compilation.
+            </summary>
+        </member>
+        <member name="M:MYBooseApp.AppEndWhile.#ctor">
+            <summary>
+            Default constructor required for instantiation via <see cref="T:MYBooseApp.AppCommandFactory"/>.
+            </summary>
+        </member>
+        <member name="M:MYBooseApp.AppEndWhile.Set(BOOSE.StoredProgram,System.String)">
+            <summary>
+            Sets the stored program reference and validates parameters.
+            Only allows an empty string or "while" (when parser splits "end while").
+            </summary>
+            <param name="Program">Reference to the stored program being executed.</param>
+            <param name="Params">Optional parameter, should be empty or "while".</param>
+            <exception cref="T:BOOSE.CommandException">Thrown if invalid parameters are provided.</exception>
+        </member>
+        <member name="M:MYBooseApp.AppEndWhile.CheckParameters(System.String[])">
+            <summary>
+            Parameter validation is not required for EndWhile.
+            </summary>
+            <param name="parameterList">Array of parameters (not used).</param>
+        </member>
+        <member name="M:MYBooseApp.AppEndWhile.Compile">
+            <summary>
+            Compilation phase: Pops the corresponding <see cref="T:MYBooseApp.AppWhile"/> from the stack
+            and stores a reference for execution.
+            </summary>
+            <exception cref="T:BOOSE.CommandException">Thrown if no matching while statement is found.</exception>
+        </member>
+        <member name="M:MYBooseApp.AppEndWhile.Execute">
+            <summary>
+            Execution phase: Sets the program counter (PC) to the corresponding <see cref="T:MYBooseApp.AppWhile"/>
+            so the loop condition can be re-evaluated.
+            </summary>
+            <exception cref="T:BOOSE.BOOSEException">Thrown if EndWhile was not properly compiled or linked.</exception>
+        </member>
+        <member name="T:MYBooseApp.AppFor">
+            <summary>
+            Represents a "for" loop in the BOOSE language with initialization, condition checking, and automatic increment.
+            Syntax: "for varName = start to end [step increment]".
+            Example usage: "for i = 0 to 10 step 1" or "for i = 0 to 10" (step defaults to 1).
+            </summary>
+        </member>
+        <member name="F:MYBooseApp.AppFor.varName">
+            <summary>
+            Name of the loop variable (e.g., "i").
+            </summary>
+        </member>
+        <member name="F:MYBooseApp.AppFor.startValue">
+            <summary>
+            Expression representing the starting value of the loop variable.
+            </summary>
+        </member>
+        <member name="F:MYBooseApp.AppFor.endValue">
+            <summary>
+            Expression representing the end value of the loop variable.
+            </summary>
+        </member>
+        <member name="F:MYBooseApp.AppFor.increment">
+            <summary>
+            Expression representing the increment/step value (defaults to "1" if omitted).
+            </summary>
+        </member>
+        <member name="F:MYBooseApp.AppFor.forIndex">
+            <summary>
+            Index of this for loop command in the stored program.
+            </summary>
+        </member>
+        <member name="F:MYBooseApp.AppFor.endForIndex">
+            <summary>
+            Index of the corresponding EndFor command in the stored program.
+            </summary>
+        </member>
+        <member name="M:MYBooseApp.AppFor.#ctor">
+            <summary>
+            Default constructor required for instantiation via <see cref="T:MYBooseApp.AppCommandFactory"/>.
+            </summary>
+        </member>
+        <member name="M:MYBooseApp.AppFor.GetVarName">
+            <summary>
+            Gets the name of the loop variable for use by <see cref="T:MYBooseApp.AppEndFor"/>.
+            </summary>
+            <returns>The loop variable name.</returns>
+        </member>
+        <member name="M:MYBooseApp.AppFor.GetIncrement">
+            <summary>
+            Gets the evaluated increment value for use by <see cref="T:MYBooseApp.AppEndFor"/>.
+            </summary>
+            <returns>The integer increment value.</returns>
+        </member>
+        <member name="M:MYBooseApp.AppFor.Set(BOOSE.StoredProgram,System.String)">
+            <summary>
+            Initializes the for loop by parsing the loop parameters.
+            Expected format: "for varName = start to end [step increment]".
+            </summary>
+            <param name="Program">Reference to the stored program being executed.</param>
+            <param name="Params">String containing loop parameters including variable, start, end, and optional step.</param>
+            <exception cref="T:BOOSE.CommandException">Thrown if parameters are invalid or missing.</exception>
+        </member>
+        <member name="M:MYBooseApp.AppFor.CheckParameters(System.String[])">
+            <summary>
+            Parameter validation is not needed for the for loop command.
+            </summary>
+            <param name="parameterList">Array of parameters (not used).</param>
+        </member>
+        <member name="M:MYBooseApp.AppFor.Compile">
+            <summary>
+            Compilation phase: Records the position of this for loop in the program and pushes it onto the stack.
+            The corresponding <see cref="T:MYBooseApp.AppEndFor"/> will pop this command to establish a bidirectional link.
+            </summary>
+        </member>
+        <member name="M:MYBooseApp.AppFor.SetEndForIndex(System.Int32)">
+            <summary>
+            Sets the position of the corresponding <see cref="T:MYBooseApp.AppEndFor"/> during compilation.
+            </summary>
+            <param name="index">Index of the EndFor command.</param>
+        </member>
+        <member name="M:MYBooseApp.AppFor.GetForIndex">
+            <summary>
+            Returns the position of this for loop in the stored program.
+            Used by <see cref="T:MYBooseApp.AppEndFor"/> for jumping back to the loop start.
+            </summary>
+            <returns>Index of this for loop.</returns>
+        </member>
+        <member name="M:MYBooseApp.AppFor.Execute">
+            <summary>
+            Executes the for loop: initializes the loop variable, evaluates the loop condition,
+            and either continues to the loop body or jumps past the loop if the condition is false.
+            </summary>
+            <exception cref="T:BOOSE.BOOSEException">Thrown if the program is not an <see cref="T:MYBooseApp.AppStoredProgram"/>.</exception>
+            <exception cref="T:BOOSE.CommandException">Thrown if the step value is zero.</exception>
+        </member>
+        <member name="M:MYBooseApp.AppFor.EvaluateIntExpression(System.String)">
+            <summary>
+            Evaluates an integer expression with variable substitution.
+            </summary>
+            <param name="expr">Expression string (e.g., "x + 5").</param>
+            <returns>Evaluated integer result.</returns>
+            <exception cref="T:BOOSE.CommandException">Thrown if evaluation fails.</exception>
+        </member>
+        <member name="T:MYBooseApp.AppIf">
+            <summary>
+            Represents an 'if' conditional command in BOOSE.
+            Evaluates a boolean condition and controls execution flow accordingly.
+            Supports nested if-else structures when used with <see cref="T:MYBooseApp.AppStoredProgram"/>.
+            </summary>
+        </member>
+        <member name="F:MYBooseApp.AppIf.condition">
+            <summary>
+            Stores the condition expression provided by the user.
+            </summary>
+        </member>
+        <member name="M:MYBooseApp.AppIf.#ctor">
+            <summary>
+            Default constructor for instantiation via <see cref="T:MYBooseApp.AppCommandFactory"/>.
+            </summary>
+        </member>
+        <member name="M:MYBooseApp.AppIf.Set(BOOSE.StoredProgram,System.String)">
+            <summary>
+            Initializes the command with the stored program and captures the condition expression.
+            </summary>
+            <param name="Program">The current <see cref="T:BOOSE.StoredProgram"/> instance.</param>
+            <param name="Params">The condition string, e.g., "x > 5".</param>
+            <exception cref="T:BOOSE.CommandException">Thrown if the condition is empty or null.</exception>
+        </member>
+        <member name="M:MYBooseApp.AppIf.CheckParameters(System.String[])">
+            <summary>
+            No additional parameter validation required beyond <see cref="M:MYBooseApp.AppIf.Set(BOOSE.StoredProgram,System.String)"/>.
+            </summary>
+            <param name="parameterList">Array of parameters (not used).</param>
+        </member>
+        <member name="M:MYBooseApp.AppIf.Compile">
+            <summary>
+            Compilation phase does not require special actions for <c>if</c>.
+            </summary>
+        </member>
+        <member name="M:MYBooseApp.AppIf.Execute">
+            <summary>
+            Executes the 'if' command by evaluating the condition.
+            If true, execution continues normally.
+            If false, jumps to the matching <see cref="T:MYBooseApp.AppElse"/> (if present) or <see cref="T:MYBooseApp.AppEndIf"/>.
+            </summary>
+            <exception cref="T:BOOSE.BOOSEException">Thrown if no matching end-if is found.</exception>
+        </member>
+        <member name="M:MYBooseApp.AppIf.EvaluateCondition(System.String)">
+            <summary>
+            Evaluates the boolean condition string using variable substitution.
+            </summary>
+            <param name="cond">The raw condition expression.</param>
+            <returns>True if the condition evaluates to true, otherwise false.</returns>
+            <exception cref="T:BOOSE.CommandException">Thrown if evaluation fails.</exception>
+        </member>
+        <member name="T:MYBooseApp.AppMethod">
+            <summary>
+            Represents a custom method declaration in BOOSE.
+            Handles parsing of return type, method name, parameters, and supports control flow management.
+            Example syntax: "method int mulMethod int one, int two"
+            </summary>
+        </member>
+        <member name="F:MYBooseApp.AppMethod.returnType">
+            <summary>
+            The return type of the method ("int", "real", or empty for void)
+            </summary>
+        </member>
+        <member name="F:MYBooseApp.AppMethod.methodName">
+            <summary>
+            The name of the method
+            </summary>
+        </member>
+        <member name="F:MYBooseApp.AppMethod.parameters">
+            <summary>
+            List of parameters as tuples of (type, name)
+            </summary>
+        </member>
+        <member name="F:MYBooseApp.AppMethod.methodStartIndex">
+            <summary>
+            Index of the method declaration in the program
+            </summary>
+        </member>
+        <member name="F:MYBooseApp.AppMethod.methodEndIndex">
+            <summary>
+            Index of the corresponding end of the method
+            </summary>
+        </member>
+        <member name="M:MYBooseApp.AppMethod.#ctor">
+            <summary>
+            Default constructor for CommandFactory
+            </summary>
+        </member>
+        <member name="M:MYBooseApp.AppMethod.Set(BOOSE.StoredProgram,System.String)">
+            <summary>
+            Initializes the method declaration by parsing the provided string.
+            Extracts optional return type, required method name, and optional parameters.
+            </summary>
+            <param name="Program">The current StoredProgram</param>
+            <param name="Params">Method declaration string in the format "[returnType] methodName [type param1, type param2, ...]"</param>
+            <exception cref="T:BOOSE.CommandException">Thrown if method name is missing or parameters are invalid</exception>
+        </member>
+        <member name="M:MYBooseApp.AppMethod.ParseParameters(System.String)">
+            <summary>
+            Parses the parameter string into typed variables.
+            </summary>
+            <param name="paramString">Parameter string in the format "type name, type name, ..."</param>
+            <exception cref="T:BOOSE.CommandException">Thrown if any parameter is incorrectly formatted</exception>
+        </member>
+        <member name="M:MYBooseApp.AppMethod.CheckParameters(System.String[])">
+            <summary>
+            Parameter validation (not used for methods)
+            </summary>
+            <param name="parameterList">Array of parameters (not used)</param>
+        </member>
+        <member name="M:MYBooseApp.AppMethod.Compile">
+            <summary>
+            Compilation phase: records position, registers method in AppStoredProgram, and pushes to stack
+            </summary>
+            <exception cref="T:BOOSE.CommandException">Thrown if AppStoredProgram is not used</exception>
+        </member>
+        <member name="M:MYBooseApp.AppMethod.SetEndMethodIndex(System.Int32)">
+            <summary>
+            Sets the index of the corresponding end of the method
+            </summary>
+            <param name="index">Program index of AppEndMethod</param>
+        </member>
+        <member name="M:MYBooseApp.AppMethod.GetMethodStartIndex">
+            <summary>
+            Returns the method's starting position in the program
+            </summary>
+        </member>
+        <member name="M:MYBooseApp.AppMethod.GetMethodName">
+            <summary>
+            Returns the method's name
+            </summary>
+        </member>
+        <member name="M:MYBooseApp.AppMethod.GetReturnType">
+            <summary>
+            Returns the return type of the method
+            </summary>
+        </member>
+        <member name="M:MYBooseApp.AppMethod.GetParameters">
+            <summary>
+            Returns the method's parameter list
+            </summary>
+        </member>
+        <member name="M:MYBooseApp.AppMethod.Execute">
+            <summary>
+            Execution phase: skips method body if reached directly; should only execute via AppCall
+            </summary>
+            <exception cref="T:BOOSE.BOOSEException">Thrown if end position is not set</exception>
+        </member>
+        <member name="T:MYBooseApp.AppMoveTo">
+            <summary>
+            Implements the MoveTo command for moving the pen to specified coordinates.
+            Supports both literal integers and expressions/variables from the stored program.
+            </summary>
+        </member>
+        <member name="M:MYBooseApp.AppMoveTo.#ctor(BOOSE.ICanvas)">
+            <summary>
+            Initializes a new instance with a reference to the canvas.
+            </summary>
+            <param name="canvas">The canvas on which to move the pen</param>
+        </member>
+        <member name="M:MYBooseApp.AppMoveTo.Set(BOOSE.StoredProgram,System.String)">
+            <summary>
+            Sets the stored program reference and splits the parameter string.
+            </summary>
+            <param name="Program">The stored program instance</param>
+            <param name="Params">The parameters string, e.g., "100, 200"</param>
+        </member>
+        <member name="M:MYBooseApp.AppMoveTo.CheckParameters(System.String[])">
+            <summary>
+            Validates that exactly two parameters are provided.
+            </summary>
+            <param name="ParameterList">Array of parameters</param>
+            <exception cref="T:BOOSE.CommandException">Thrown if the number of parameters is not two</exception>
+        </member>
+        <member name="M:MYBooseApp.AppMoveTo.Compile">
+            <summary>
+            Compilation phase. MoveTo evaluates expressions at runtime.
+            Ensures parameter count is correct.
+            </summary>
+        </member>
+        <member name="M:MYBooseApp.AppMoveTo.Execute">
+            <summary>
+            Executes the MoveTo command by evaluating X and Y coordinates
+            and moving the pen to the computed position on the canvas.
+            </summary>
+            <exception cref="T:BOOSE.CommandException">
+            Thrown when the X or Y parameter cannot be evaluated to a valid integer.
+            </exception>
+        </member>
+        <member name="T:MYBooseApp.AppPeek">
+            <summary>
+            Implements the 'peek' command for reading a value from a 1D array into a variable.
+            Syntax: peek targetVar = arrayName index
+            Supports both integer and real arrays.
+            </summary>
+        </member>
+        <member name="M:MYBooseApp.AppPeek.#ctor">
+            <summary>
+            Default constructor required by CommandFactory.
+            </summary>
+        </member>
+        <member name="M:MYBooseApp.AppPeek.Set(BOOSE.StoredProgram,System.String)">
+            <summary>
+            Parses the peek command parameters.
+            Expects format: targetVar = arrayName index
+            </summary>
+            <param name="Program">Reference to the stored program</param>
+            <param name="Params">Command string containing target variable, array name, and index</param>
+            <exception cref="T:BOOSE.CommandException">Thrown if the format is invalid</exception>
+        </member>
+        <member name="M:MYBooseApp.AppPeek.CheckParameters(System.String[])">
+            <summary>
+            No additional parameter validation required.
+            </summary>
+            <param name="parameter">Parameter array (not used)</param>
+        </member>
+        <member name="M:MYBooseApp.AppPeek.Compile">
+            <summary>
+            Compilation phase: Validates that the array and target variable exist and types are compatible.
+            </summary>
+            <exception cref="T:BOOSE.CommandException">Thrown if variables are missing or types mismatch</exception>
+        </member>
+        <member name="M:MYBooseApp.AppPeek.Execute">
+            <summary>
+            Execution phase: Evaluates the index and reads the value from the array into the target variable.
+            </summary>
+            <exception cref="T:BOOSE.CommandException">
+            Thrown if the index cannot be evaluated to an integer or there is a type mismatch.
+            </exception>
+        </member>
+        <member name="T:MYBooseApp.AppPen">
+            <summary>
+            Implements the 'Pen' command to set the drawing color on the canvas.
+            Accepts three parameters (R, G, B) which can be literals or expressions.
+            RGB values must be integers in the 0–255 range.
+            </summary>
+        </member>
+        <member name="M:MYBooseApp.AppPen.#ctor(BOOSE.ICanvas)">
+            <summary>
+            Creates a new AppPen command linked to a specific canvas.
+            </summary>
+            <param name="canvas">The canvas where the pen color will be applied.</param>
+        </member>
+        <member name="M:MYBooseApp.AppPen.Set(BOOSE.StoredProgram,System.String)">
+            <summary>
+            Sets the stored program reference and splits the parameters into R, G, B.
+            </summary>
+            <param name="Program">Reference to the stored program</param>
+            <param name="Params">RGB parameters separated by comma or space</param>
+        </member>
+        <member name="M:MYBooseApp.AppPen.CheckParameters(System.String[])">
+            <summary>
+            Validates that exactly three parameters are provided for the command.
+            </summary>
+            <param name="ParameterList">Parameter array to check (not used)</param>
+            <exception cref="T:BOOSE.CommandException">Thrown if parameter count is not exactly 3</exception>
+        </member>
+        <member name="M:MYBooseApp.AppPen.Compile">
+            <summary>
+            Compiles the command by verifying parameter count.
+            </summary>
+            <exception cref="T:BOOSE.CommandException">Thrown if parameter count is not exactly 3</exception>
+        </member>
+        <member name="M:MYBooseApp.AppPen.Execute">
+            <summary>
+            Executes the Pen command by evaluating each parameter expression
+            and setting the pen color on the canvas.
+            </summary>
+            <exception cref="T:BOOSE.CommandException">
+            Thrown if a parameter is invalid, cannot be converted to an integer, 
+            is out of the 0–255 range, or if setting the color fails.
+            </exception>
+        </member>
+        <member name="M:MYBooseApp.AppPen.EvaluateColorParameter(System.String,System.String)">
+            <summary>
+            Helper method to evaluate a single color parameter.
+            </summary>
+            <param name="param">Parameter string</param>
+            <param name="colorName">Color name for error messages</param>
+            <returns>Integer RGB value</returns>
+            <exception cref="T:BOOSE.CommandException">Thrown if evaluation fails or value is invalid</exception>
+        </member>
+        <member name="T:MYBooseApp.AppPenSize">
+            <summary>
+            Implements the 'PenSize' command to set the width of the pen on the canvas.
+            Accepts a single parameter, which can be a literal integer or a BOOSE expression.
+            </summary>
+        </member>
+        <member name="M:MYBooseApp.AppPenSize.#ctor(BOOSE.ICanvas)">
+            <summary>
+            Initializes a new instance of the <see cref="T:MYBooseApp.AppPenSize"/> class with a canvas reference.
+            </summary>
+            <param name="canvas">The canvas where the pen width will be applied.</param>
+        </member>
+        <member name="M:MYBooseApp.AppPenSize.Set(BOOSE.StoredProgram,System.String)">
+            <summary>
+            Sets the stored program reference and splits the parameter string into an array.
+            </summary>
+            <param name="Program">Reference to the current stored program.</param>
+            <param name="Params">Parameter string specifying pen width.</param>
+        </member>
+        <member name="M:MYBooseApp.AppPenSize.CheckParameters(System.String[])">
+            <summary>
+            Validates that exactly one parameter is provided.
+            </summary>
+            <param name="parameterList">Parameter array to validate (not used)</param>
+            <exception cref="T:BOOSE.CommandException">Thrown if parameter count is not exactly one.</exception>
+        </member>
+        <member name="M:MYBooseApp.AppPenSize.Compile">
+            <summary>
+            Compiles the command by checking parameter count.
+            Evaluation of the pen width is deferred to runtime.
+            </summary>
+        </member>
+        <member name="M:MYBooseApp.AppPenSize.Execute">
+            <summary>
+            Executes the PenSize command by evaluating the parameter and applying it to the canvas.
+            </summary>
+            <exception cref="T:BOOSE.CommandException">
+            Thrown if:
+            <list type="bullet">
+            <item>The expression cannot be evaluated</item>
+            <item>The evaluated value is not an integer</item>
+            <item>The pen size is less than or equal to zero</item>
+            </list>
+            </exception>
+        </member>
+        <member name="M:MYBooseApp.AppPenSize.EvaluatePenWidth(System.String)">
+            <summary>
+            Helper method to evaluate the pen width parameter.
+            </summary>
+            <param name="param">Parameter string to evaluate</param>
+            <returns>Integer pen width</returns>
+            <exception cref="T:BOOSE.CommandException">Thrown if the parameter cannot be evaluated to a valid integer</exception>
+        </member>
+        <member name="T:MYBooseApp.AppPoke">
+            <summary>
+            Implements the 'poke' command to assign a value to a 1D array element.
+            Syntax: poke arrayName index = value
+            Supports integer and real arrays, with index and value evaluated as expressions if needed.
+            </summary>
+        </member>
+        <member name="M:MYBooseApp.AppPoke.#ctor">
+            <summary>
+            Default constructor.
+            </summary>
+        </member>
+        <member name="M:MYBooseApp.AppPoke.Set(BOOSE.StoredProgram,System.String)">
+            <summary>
+            Parses the 'poke' command parameters.
+            Splits the left-hand side into array name and index, right-hand side into value.
+            </summary>
+            <param name="Program">Reference to the stored program</param>
+            <param name="Params">Parameter string in the form: "arrayName index = value"</param>
+            <exception cref="T:BOOSE.CommandException">Thrown if syntax is invalid</exception>
+        </member>
+        <member name="M:MYBooseApp.AppPoke.Compile">
+            <summary>
+            Validates array existence and type during compilation.
+            </summary>
+            <exception cref="T:BOOSE.CommandException">Thrown if array does not exist or is not an AppArray</exception>
+        </member>
+        <member name="M:MYBooseApp.AppPoke.Execute">
+            <summary>
+            Executes the 'poke' command at runtime.
+            Evaluates index and value expressions and assigns the value to the array.
+            </summary>
+            <exception cref="T:BOOSE.CommandException">Thrown for invalid index, value, or array type</exception>
+        </member>
+        <member name="M:MYBooseApp.AppPoke.EvaluateIndex(System.String)">
+            <summary>
+            Helper method to evaluate the index expression to an integer.
+            </summary>
+        </member>
+        <member name="M:MYBooseApp.AppPoke.EvaluateValue(System.String)">
+            <summary>
+            Helper method to evaluate the value expression to a double.
+            </summary>
+        </member>
+        <member name="T:MYBooseApp.AppReal">
+            <summary>
+            Represents a real (double-precision) variable in the BOOSE language.
+            Supports declaration with optional initialization and runtime expression evaluation.
+            </summary>
+        </member>
+        <member name="M:MYBooseApp.AppReal.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:MYBooseApp.AppReal"/> class.
+            </summary>
+        </member>
+        <member name="P:MYBooseApp.AppReal.RealValue">
+            <summary>
+            Gets or sets the actual double value of the variable.
+            </summary>
+        </member>
+        <member name="P:MYBooseApp.AppReal.Value">
+            <summary>
+            Gets or sets the integer representation of the variable.
+            Provides compatibility with BOOSE's <see cref="T:BOOSE.Evaluation"/> base class.
+            </summary>
+        </member>
+        <member name="M:MYBooseApp.AppReal.ToString">
+            <summary>
+            Returns the string representation of the variable suitable for expression evaluation.
+            Uses up to 15 significant digits in general format.
+            </summary>
+            <returns>The string representation of the real value.</returns>
+        </member>
+        <member name="M:MYBooseApp.AppReal.Set(BOOSE.StoredProgram,System.String)">
+            <summary>
+            Sets the program reference and parses the variable declaration.
+            Supports optional initialization via an expression.
+            </summary>
+            <param name="Program">The stored program managing this variable.</param>
+            <param name="Params">Declaration string (e.g., "pi" or "pi = 3.14").</param>
+        </member>
+        <member name="M:MYBooseApp.AppReal.Compile">
+            <summary>
+            Registers the variable with the program and evaluates any initializer expression.
+            Called during compilation.
+            </summary>
+        </member>
+        <member name="M:MYBooseApp.AppReal.Execute">
+            <summary>
+            Re-evaluates the variable's expression and updates its value at runtime.
+            Only executes if an expression was defined.
+            </summary>
+        </member>
+        <member name="M:MYBooseApp.AppReal.CheckParameters(System.String[])">
+            <summary>
+            No additional parameter validation is required for <see cref="T:MYBooseApp.AppReal"/>.
+            </summary>
+            <param name="parameterList">Array of parameters (not used).</param>
+        </member>
+        <member name="T:MYBooseApp.AppRect">
+            <summary>
+            Represents a rectangle drawing command in the BOOSE language.
+            Draws a rectangle on the canvas using width and height expressions,
+            and optionally supports a filled flag.
+            </summary>
+        </member>
+        <member name="M:MYBooseApp.AppRect.#ctor(BOOSE.ICanvas)">
+            <summary>
+            Initializes a new instance of the <see cref="T:MYBooseApp.AppRect"/> class
+            with a reference to the application canvas.
+            </summary>
+            <param name="canvas">The canvas used for rendering the rectangle.</param>
+        </member>
+        <member name="M:MYBooseApp.AppRect.Set(BOOSE.StoredProgram,System.String)">
+            <summary>
+            Sets the stored program reference and splits the parameter string.
+            </summary>
+            <param name="Program">The stored program associated with this command.</param>
+            <param name="Params">Comma or space-separated parameters: width height [filled].</param>
+        </member>
+        <member name="M:MYBooseApp.AppRect.CheckParameters(System.String[])">
+            <summary>
+            Validates the parameter count for the rectangle command.
+            </summary>
+            <param name="parameterList">Array of parameters to validate.</param>
+            <exception cref="T:BOOSE.CommandException">
+            Thrown if the number of parameters is less than 2 or greater than 3.
+            </exception>
+        </member>
+        <member name="M:MYBooseApp.AppRect.Compile">
+            <summary>
+            Compiles the rectangle command and determines the filled flag if provided.
+            </summary>
+        </member>
+        <member name="M:MYBooseApp.AppRect.Execute">
+            <summary>
+            Executes the rectangle command.
+            Evaluates width, height, and optional filled flag, then draws the rectangle.
+            </summary>
+            <exception cref="T:BOOSE.CommandException">
+            Thrown if width or height expressions are invalid,
+            dimensions are non-positive, filled flag is invalid,
+            or if the canvas fails to render the rectangle.
+            </exception>
+        </member>
+        <member name="T:MYBooseApp.AppReset">
+            <summary>
+            Represents the Reset command for the BOOSE language.
+            Resets the canvas state to its default settings.
+            </summary>
+        </member>
+        <member name="M:MYBooseApp.AppReset.#ctor(BOOSE.ICanvas)">
+            <summary>
+            Initializes a new instance of the <see cref="T:MYBooseApp.AppReset"/> class
+            with the specified canvas.
+            </summary>
+            <param name="canvas">The canvas to reset.</param>
+        </member>
+        <member name="M:MYBooseApp.AppReset.Set(BOOSE.StoredProgram,System.String)">
+            <summary>
+            Sets the stored program reference and initializes parameters.
+            Reset does not require any parameters.
+            </summary>
+            <param name="Program">The stored program associated with this command.</param>
+            <param name="Params">Command parameters (ignored).</param>
+        </member>
+        <member name="M:MYBooseApp.AppReset.CheckParameters(System.String[])">
+            <summary>
+            Validates parameters for the Reset command.
+            Ensures that no extra parameters are provided.
+            </summary>
+            <param name="Parameters">Array of parameters to validate.</param>
+            <exception cref="T:System.ArgumentException">
+            Thrown if any parameters are provided to the Reset command.
+            </exception>
+        </member>
+        <member name="M:MYBooseApp.AppReset.Compile">
+            <summary>
+            Compiles the Reset command.
+            No compilation logic is required for this command.
+            </summary>
+        </member>
+        <member name="M:MYBooseApp.AppReset.Execute">
+            <summary>
+            Executes the Reset command by resetting the canvas to its default state.
+            </summary>
+        </member>
+        <member name="T:MYBooseApp.AppStoredProgram">
+            <summary>
+            Extended version of <see cref="T:BOOSE.StoredProgram"/> with support for
+            custom method registration and enhanced runtime execution.
+            </summary>
+        </member>
+        <member name="F:MYBooseApp.AppStoredProgram.methodRegistry">
+            <summary>
+            Registry of method names to their start indices in the command list.
+            </summary>
+        </member>
+        <member name="M:MYBooseApp.AppStoredProgram.#ctor(BOOSE.ICanvas)">
+            <summary>
+            Initializes a new instance of the <see cref="T:MYBooseApp.AppStoredProgram"/> class
+            with the specified canvas.
+            </summary>
+            <param name="canvas">The canvas on which commands will operate.</param>
+        </member>
+        <member name="P:MYBooseApp.AppStoredProgram.CommandCount">
+            <summary>
+            Gets the total number of commands in the program.
+            </summary>
+        </member>
+        <member name="M:MYBooseApp.AppStoredProgram.RegisterMethod(System.String,System.Int32)">
+            <summary>
+            Registers a custom method by name and the index of its first command.
+            </summary>
+            <param name="methodName">The name of the method.</param>
+            <param name="startIndex">The index of the first command of the method.</param>
+        </member>
+        <member name="M:MYBooseApp.AppStoredProgram.GetMethodStartIndex(System.String)">
+            <summary>
+            Retrieves the start index of a registered method.
+            </summary>
+            <param name="methodName">The name of the method.</param>
+            <returns>The start index of the method.</returns>
+            <exception cref="T:BOOSE.BOOSEException">Thrown if the method does not exist.</exception>
+        </member>
+        <member name="M:MYBooseApp.AppStoredProgram.MethodExists(System.String)">
+            <summary>
+            Determines whether a method with the specified name exists.
+            </summary>
+            <param name="methodName">The method name to check.</param>
+            <returns>True if the method exists; otherwise, false.</returns>
+        </member>
+        <member name="M:MYBooseApp.AppStoredProgram.GetCommand(System.Int32)">
+            <summary>
+            Retrieves the command at the specified index.
+            </summary>
+            <param name="index">The command index.</param>
+            <returns>The command at the given index.</returns>
+            <exception cref="T:BOOSE.BOOSEException">
+            Thrown if the index is out of range or the item is not an <see cref="T:BOOSE.ICommand"/>.
+            </exception>
+        </member>
+        <member name="M:MYBooseApp.AppStoredProgram.Run">
+            <summary>
+            Executes the stored program, iterating through all commands.
+            Detects potential infinite loops and reports syntax or runtime errors.
+            </summary>
+            <exception cref="T:BOOSE.StoredProgramException">
+            Thrown if the program contains syntax errors or a runtime exception occurs.
+            </exception>
+        </member>
+        <member name="T:MYBooseApp.AppTri">
+            <summary>
+            Command class for drawing a triangle on the canvas.
+            Evaluates width and height at runtime, allowing the use of
+            literal integers or expressions involving BOOSE variables.
+            </summary>
+        </member>
+        <member name="F:MYBooseApp.AppTri.Parameters">
+            <summary>
+            Parameters provided to the triangle command.
+            </summary>
+        </member>
+        <member name="F:MYBooseApp.AppTri.Canvas">
+            <summary>
+            Reference to the canvas on which the triangle is drawn.
+            </summary>
+        </member>
+        <member name="M:MYBooseApp.AppTri.#ctor(BOOSE.ICanvas)">
+            <summary>
+            Initializes a new instance of the <see cref="T:MYBooseApp.AppTri"/> class.
+            </summary>
+            <param name="canvas">The canvas to draw on.</param>
+        </member>
+        <member name="M:MYBooseApp.AppTri.Set(BOOSE.StoredProgram,System.String)">
+            <summary>
+            Sets the stored program reference and splits the command parameters.
+            </summary>
+            <param name="Program">The current <see cref="T:BOOSE.StoredProgram"/> instance.</param>
+            <param name="Params">The parameter string (e.g., "50 80").</param>
+        </member>
+        <member name="M:MYBooseApp.AppTri.CheckParameters(System.String[])">
+            <summary>
+            Validates that exactly two parameters (width and height) are provided.
+            </summary>
+            <param name="Parameters">The array of parameters.</param>
+            <exception cref="T:BOOSE.CommandException">Thrown if the parameter count is not exactly two.</exception>
+        </member>
+        <member name="M:MYBooseApp.AppTri.Compile">
+            <summary>
+            Compiles the triangle command.
+            Runtime evaluation of width and height occurs in <see cref="M:MYBooseApp.AppTri.Execute"/>.
+            </summary>
+            <exception cref="T:BOOSE.CommandException">Thrown if parameters are missing or invalid.</exception>
+        </member>
+        <member name="M:MYBooseApp.AppTri.Execute">
+            <summary>
+            Executes the triangle drawing command.
+            Evaluates width and height expressions and draws the triangle on the canvas.
+            </summary>
+            <exception cref="T:BOOSE.BOOSEException">
+            Thrown if width or height is invalid or non-positive.
+            </exception>
+        </member>
+        <member name="T:MYBooseApp.AppWhile">
+            <summary>
+            Implements a while loop command for BOOSE.
+            Repeatedly executes the loop body as long as the condition expression evaluates to true.
+            Supports nested loops using forward-scanning and an internal counter variable.
+            Syntax: "while condition"
+            </summary>
+        </member>
+        <member name="F:MYBooseApp.AppWhile.condition">
+            <summary>
+            The condition expression to evaluate for continuing the loop.
+            </summary>
+        </member>
+        <member name="F:MYBooseApp.AppWhile.whileIndex">
+            <summary>
+            The index of this AppWhile command in the program.
+            Used by AppEndWhile to jump back to the loop start.
+            </summary>
+        </member>
+        <member name="F:MYBooseApp.AppWhile.internalCounterVar">
+            <summary>
+            Unique internal counter variable name for this loop instance.
+            </summary>
+        </member>
+        <member name="M:MYBooseApp.AppWhile.#ctor">
+            <summary>
+            Default constructor required for CommandFactory instantiation.
+            </summary>
+        </member>
+        <member name="M:MYBooseApp.AppWhile.Set(BOOSE.StoredProgram,System.String)">
+            <summary>
+            Sets the stored program reference and parses the loop condition.
+            Creates a unique internal counter variable for this instance.
+            </summary>
+            <param name="Program">Reference to the stored program.</param>
+            <param name="Params">Condition expression for the while loop.</param>
+            <exception cref="T:BOOSE.CommandException">Thrown if the condition is missing or empty.</exception>
+        </member>
+        <member name="M:MYBooseApp.AppWhile.CheckParameters(System.String[])">
+            <summary>
+            Parameter validation for ICommand interface. No parameters are required for while.
+            </summary>
+            <param name="parameterList">Array of parameters (not used).</param>
+        </member>
+        <member name="M:MYBooseApp.AppWhile.Compile">
+            <summary>
+            Compilation phase: Records this command's index in the program.
+            Pushes this command onto the stack for linking with AppEndWhile.
+            </summary>
+        </member>
+        <member name="M:MYBooseApp.AppWhile.Execute">
+            <summary>
+            Executes the while loop by evaluating the condition and managing loop iterations.
+            Handles nested loops with forward-scanning to the matching EndWhile command.
+            </summary>
+            <exception cref="T:BOOSE.BOOSEException">
+            Thrown if AppStoredProgram is not used or no matching EndWhile is found.
+            </exception>
+        </member>
+        <member name="M:MYBooseApp.AppWhile.GetWhileIndex">
+            <summary>
+            Gets the program index of this while command.
+            Used by AppEndWhile for loop control.
+            </summary>
+            <returns>The index of this AppWhile in the program.</returns>
+        </member>
+        <member name="M:MYBooseApp.AppWhile.EvaluateCondition(System.String)">
+            <summary>
+            Evaluates a boolean condition expression with variable substitution.
+            Supports comparison and logical operators.
+            </summary>
+            <param name="cond">The condition expression to evaluate.</param>
+            <returns>True if the condition evaluates to true, otherwise false.</returns>
+            <exception cref="T:BOOSE.CommandException">Thrown if the condition cannot be evaluated.</exception>
+        </member>
+        <member name="T:MYBooseApp.AppWrite">
+            <summary>
+            Command to write text or variable values on the canvas.
+            Supports string literals, int and real variables, and expressions.
+            Concatenates multiple parts using the '+' operator.
+            </summary>
+        </member>
+        <member name="F:MYBooseApp.AppWrite.Canvas">
+            <summary>
+            Reference to the canvas where text will be drawn.
+            </summary>
+        </member>
+        <member name="F:MYBooseApp.AppWrite.program">
+            <summary>
+            Reference to the stored program to evaluate expressions and fetch variable values.
+            </summary>
+        </member>
+        <member name="F:MYBooseApp.AppWrite.Parameter">
+            <summary>
+            The raw parameter string passed to the write command.
+            </summary>
+        </member>
+        <member name="M:MYBooseApp.AppWrite.#ctor(BOOSE.ICanvas)">
+            <summary>
+            Initializes a new instance of the <see cref="T:MYBooseApp.AppWrite"/> class.
+            </summary>
+            <param name="canvas">The canvas on which text will be written.</param>
+        </member>
+        <member name="M:MYBooseApp.AppWrite.Set(BOOSE.StoredProgram,System.String)">
+            <summary>
+            Sets the stored program reference and parameter string for this command.
+            </summary>
+            <param name="Program">The program executing this command.</param>
+            <param name="Params">The parameter string, which can be a literal, variable, or expression.</param>
+        </member>
+        <member name="M:MYBooseApp.AppWrite.CheckParameters(System.String[])">
+            <summary>
+            Validates that the parameter string is not empty.
+            </summary>
+            <param name="parameterList">Array of parameters (not used in this command).</param>
+            <exception cref="T:BOOSE.CommandException">Thrown if the parameter is null or empty.</exception>
+        </member>
+        <member name="M:MYBooseApp.AppWrite.Compile">
+            <summary>
+            Compiles the command by trimming leading and trailing spaces from the parameter.
+            </summary>
+        </member>
+        <member name="M:MYBooseApp.AppWrite.Execute">
+            <summary>
+            Executes the write command.
+            Evaluates expressions and variables, handles string literals, 
+            and concatenates parts with the '+' operator.
+            </summary>
+        </member>
+        <member name="T:MYBooseApp.drawingApplication">
+            <summary>
+            WinForms drawing application form class with canvas, command factory, stored program and parser
+            </summary>
+        </member>
+        <member name="M:MYBooseApp.drawingApplication.#ctor">
+            <summary>
+            Constructor for drawingApplication form. Initializes canvas and sets canvas refernce to commandfactory, program
+            makes parser work with command factory and stored program
+            </summary>
+        </member>
+        <member name="M:MYBooseApp.drawingApplication.drawingBox_Paint(System.Object,System.Windows.Forms.PaintEventArgs)">
+            <summary>
+            Paint event of drawing panel
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:MYBooseApp.drawingApplication.ExecuteCommands">
+            <summary>
+            Executes all commands in the main textbox first, then the single command textbox if it has content.
+            Each command is parsed and added to the stored program, then executed.
+            </summary>
+        </member>
+        <member name="M:MYBooseApp.drawingApplication.ExecuteSingleCommand(System.String)">
+            <summary>
+            Executes single command from the single command textbox
+            </summary>
+            <param name="commandLine">the command written on the text box</param>
+        </member>
+        <member name="M:MYBooseApp.drawingApplication.runCommand_Click(System.Object,System.EventArgs)">
+            <summary>
+            run button for textbox which calls the execute command method
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:MYBooseApp.drawingApplication.commandTextBox_KeyPress(System.Object,System.Windows.Forms.KeyPressEventArgs)">
+            <summary>
+            Event handler for key press in command text box shift + enter to execute commands
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:MYBooseApp.drawingApplication.clearDebug_Click(System.Object,System.EventArgs)">
+            <summary>
+            clears the debug text box
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:MYBooseApp.drawingApplication.runOneCommand_Click(System.Object,System.EventArgs)">
+            <summary>
+            button command for single textbox
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:MYBooseApp.drawingApplication.aboutToolStripMenuItem_Click(System.Object,System.EventArgs)">
+            <summary>
+            Displays about BOOSE information in the debug box
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:MYBooseApp.drawingApplication.documentationToolStripMenuItem_Click(System.Object,System.EventArgs)">
+            <summary>
+            Opens the documentation URL in the default web browser
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:MYBooseApp.drawingApplication.commandListToolStripMenuItem_Click(System.Object,System.EventArgs)">
+            <summary>
+            Opens a new form displaying the list of available commands
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:MYBooseApp.drawingApplication.exitToolStripMenuItem_Click(System.Object,System.EventArgs)">
+            <summary>
+            Exits the application when the Exit menu item is clicked
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:MYBooseApp.drawingApplication.saveToolStripMenuItem_Click(System.Object,System.EventArgs)">
+            <summary>
+            Opens a save file dialog to save the current canvas as PNG and commands as BOOSE file
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:MYBooseApp.drawingApplication.loadToolStripMenuItem_Click(System.Object,System.EventArgs)">
+            <summary>
+            Saves the current canvas png and commands to a BOOSE file
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:MYBooseApp.drawingApplication.commandTextBox_TextChanged(System.Object,System.EventArgs)">
+            <summary>
+            displays similar commands as user types in the command textbox
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:MYBooseApp.drawingApplication.clearCanvas_Click(System.Object,System.EventArgs)">
+            <summary>
+            Resets the canvas and stored program when clear canvas button is clicked
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:MYBooseApp.drawingApplication.IsAssignmentLine(System.String)">
+            <summary>
+            detects direct assignment
+            </summary>
+            <param name="line"></param>
+            <returns></returns>
+        </member>
+        <member name="F:MYBooseApp.drawingApplication.components">
+            <summary>
+             Required designer variable.
+            </summary>
+        </member>
+        <member name="M:MYBooseApp.drawingApplication.Dispose(System.Boolean)">
+            <summary>
+             Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:MYBooseApp.drawingApplication.InitializeComponent">
+            <summary>
+             Required method for Designer support - do not modify
+             the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="M:MYBooseApp.Program.Main">
+            <summary>
+             The main entry point for the application.
+            </summary>
+        </member>
+        <member name="T:MYBooseApp.ApplicationConfiguration">
+            <summary>
+             Bootstrap the application configuration.
+            </summary>
+        </member>
+        <member name="M:MYBooseApp.ApplicationConfiguration.Initialize">
+            <summary>
+             Bootstrap the application as follows:
+             <code>
+             global::System.Windows.Forms.Application.EnableVisualStyles();
+             global::System.Windows.Forms.Application.SetCompatibleTextRenderingDefault(false);
+             global::System.Windows.Forms.Application.SetHighDpiMode(HighDpiMode.SystemAware);
+            </code>
+            </summary>
+        </member>
+        <member name="T:AppInt">
+            <summary>
+            Represents an integer variable in BOOSE with support for declaration and assignment.
+            Supports "int x", "int x = 50", and "x = expression" forms.
+            </summary>
+        </member>
+        <member name="F:AppInt.intValue">
+            <summary>
+            Stores the integer value of this variable.
+            </summary>
+        </member>
+        <member name="M:AppInt.#ctor">
+            <summary>
+            Default constructor for use by <see cref="!:AppCommandFactory"/>.
+            </summary>
+        </member>
+        <member name="P:AppInt.Value">
+            <summary>
+            Gets or sets the integer value stored in this command.
+            </summary>
+        </member>
+        <member name="M:AppInt.Set(BOOSE.StoredProgram,System.String)">
+            <summary>
+            Initializes the variable by parsing the name and optional assignment expression.
+            </summary>
+            <param name="Program">The current <see cref="T:BOOSE.StoredProgram"/> instance.</param>
+            <param name="Params">The declaration string, e.g., "x = 50" or "x".</param>
+        </member>
+        <member name="M:AppInt.Compile">
+            <summary>
+            Compilation phase: Registers the variable in the program and evaluates the initial expression.
+            </summary>
+            <exception cref="T:BOOSE.BOOSEException">Thrown if variable or program state is invalid.</exception>
+            <exception cref="T:BOOSE.CommandException">Thrown if the initial expression cannot be evaluated as an integer.</exception>
+        </member>
+        <member name="M:AppInt.Execute">
+            <summary>
+            Executes the assignment of a value to the variable at runtime.
+            Evaluates the expression and updates the program variable.
+            </summary>
+            <exception cref="T:BOOSE.CommandException">Thrown if expression cannot be evaluated as an integer.</exception>
+        </member>
+        <member name="M:AppInt.CheckParameters(System.String[])">
+            <summary>
+            No parameter validation is required for this command.
+            </summary>
+            <param name="parameterList">Array of parameters (not used).</param>
+        </member>
+    </members>
+</doc>

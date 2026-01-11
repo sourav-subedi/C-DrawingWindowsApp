@@ -1,41 +1,47 @@
 ### YamlMime:ManagedReference
 items:
-- uid: MYBooseApp.AppMoveTo
-  commentId: T:MYBooseApp.AppMoveTo
-  id: AppMoveTo
+- uid: MYBooseApp.AppDrawTo
+  commentId: T:MYBooseApp.AppDrawTo
+  id: AppDrawTo
   parent: MYBooseApp
   children:
-  - MYBooseApp.AppMoveTo.#ctor(BOOSE.ICanvas)
-  - MYBooseApp.AppMoveTo.CheckParameters(System.String[])
-  - MYBooseApp.AppMoveTo.Compile
-  - MYBooseApp.AppMoveTo.Execute
-  - MYBooseApp.AppMoveTo.Set(BOOSE.StoredProgram,System.String)
+  - MYBooseApp.AppDrawTo.#ctor(BOOSE.ICanvas)
+  - MYBooseApp.AppDrawTo.CheckParameters(System.String[])
+  - MYBooseApp.AppDrawTo.Compile
+  - MYBooseApp.AppDrawTo.Execute
+  - MYBooseApp.AppDrawTo.Set(BOOSE.StoredProgram,System.String)
   langs:
   - csharp
   - vb
-  name: AppMoveTo
-  nameWithType: AppMoveTo
-  fullName: MYBooseApp.AppMoveTo
+  name: AppDrawTo
+  nameWithType: AppDrawTo
+  fullName: MYBooseApp.AppDrawTo
   type: Class
   source:
     remote:
-      path: Medium_Scale_Software_Engineering_Project/Medium_Scale_Software_Engineering_Project/AppMoveTo.cs
+      path: Medium_Scale_Software_Engineering_Project/Medium_Scale_Software_Engineering_Project/AppDrawTo.cs
       branch: main
       repo: https://github.com/ASE2025repos/ase-boose-assignment-ssubedi-01.git
-    id: AppMoveTo
-    path: ../Medium_Scale_Software_Engineering_Project/AppMoveTo.cs
-    startLine: 8
+    id: AppDrawTo
+    path: ../Medium_Scale_Software_Engineering_Project/AppDrawTo.cs
+    startLine: 14
   assemblies:
   - MYBooseApp
   namespace: MYBooseApp
   summary: >-
-    Implements the MoveTo command for moving the pen to specified coordinates.
+    Implements the DrawTo command for the BOOSE language.
 
-    Supports both literal integers and expressions/variables from the stored program.
+    Draws a straight line from the current pen position
+
+    to the specified X and Y coordinates on the canvas.
+  remarks: >-
+    Coordinate values are evaluated at runtime and may be
+
+    numeric literals, variables, or arithmetic expressions.
   example: []
   syntax:
-    content: 'public class AppMoveTo : CommandTwoParameters, ICommand'
-    content.vb: Public Class AppMoveTo Inherits CommandTwoParameters Implements ICommand
+    content: 'public class AppDrawTo : CommandTwoParameters, ICommand'
+    content.vb: Public Class AppDrawTo Inherits CommandTwoParameters Implements ICommand
   inheritance:
   - System.Object
   - BOOSE.Command
@@ -71,194 +77,195 @@ items:
   - System.Object.GetType
   - System.Object.MemberwiseClone
   - System.Object.ReferenceEquals(System.Object,System.Object)
-- uid: MYBooseApp.AppMoveTo.#ctor(BOOSE.ICanvas)
-  commentId: M:MYBooseApp.AppMoveTo.#ctor(BOOSE.ICanvas)
+- uid: MYBooseApp.AppDrawTo.#ctor(BOOSE.ICanvas)
+  commentId: M:MYBooseApp.AppDrawTo.#ctor(BOOSE.ICanvas)
   id: '#ctor(BOOSE.ICanvas)'
-  parent: MYBooseApp.AppMoveTo
+  parent: MYBooseApp.AppDrawTo
   langs:
   - csharp
   - vb
-  name: AppMoveTo(ICanvas)
-  nameWithType: AppMoveTo.AppMoveTo(ICanvas)
-  fullName: MYBooseApp.AppMoveTo.AppMoveTo(BOOSE.ICanvas)
+  name: AppDrawTo(ICanvas)
+  nameWithType: AppDrawTo.AppDrawTo(ICanvas)
+  fullName: MYBooseApp.AppDrawTo.AppDrawTo(BOOSE.ICanvas)
   type: Constructor
   source:
     remote:
-      path: Medium_Scale_Software_Engineering_Project/Medium_Scale_Software_Engineering_Project/AppMoveTo.cs
+      path: Medium_Scale_Software_Engineering_Project/Medium_Scale_Software_Engineering_Project/AppDrawTo.cs
       branch: main
       repo: https://github.com/ASE2025repos/ase-boose-assignment-ssubedi-01.git
     id: .ctor
-    path: ../Medium_Scale_Software_Engineering_Project/AppMoveTo.cs
-    startLine: 18
+    path: ../Medium_Scale_Software_Engineering_Project/AppDrawTo.cs
+    startLine: 37
   assemblies:
   - MYBooseApp
   namespace: MYBooseApp
-  summary: Initializes a new instance with a reference to the canvas.
+  summary: Initializes a new instance of the <xref href="MYBooseApp.AppDrawTo" data-throw-if-not-resolved="false"></xref> command.
   example: []
   syntax:
-    content: public AppMoveTo(ICanvas canvas)
+    content: public AppDrawTo(ICanvas canvas)
     parameters:
     - id: canvas
       type: BOOSE.ICanvas
-      description: The canvas on which to move the pen
+      description: The canvas on which the line will be drawn.
     content.vb: Public Sub New(canvas As ICanvas)
-  overload: MYBooseApp.AppMoveTo.#ctor*
-  nameWithType.vb: AppMoveTo.New(ICanvas)
-  fullName.vb: MYBooseApp.AppMoveTo.New(BOOSE.ICanvas)
+  overload: MYBooseApp.AppDrawTo.#ctor*
+  nameWithType.vb: AppDrawTo.New(ICanvas)
+  fullName.vb: MYBooseApp.AppDrawTo.New(BOOSE.ICanvas)
   name.vb: New(ICanvas)
-- uid: MYBooseApp.AppMoveTo.Set(BOOSE.StoredProgram,System.String)
-  commentId: M:MYBooseApp.AppMoveTo.Set(BOOSE.StoredProgram,System.String)
+- uid: MYBooseApp.AppDrawTo.Set(BOOSE.StoredProgram,System.String)
+  commentId: M:MYBooseApp.AppDrawTo.Set(BOOSE.StoredProgram,System.String)
   id: Set(BOOSE.StoredProgram,System.String)
-  parent: MYBooseApp.AppMoveTo
+  parent: MYBooseApp.AppDrawTo
   langs:
   - csharp
   - vb
   name: Set(StoredProgram, string)
-  nameWithType: AppMoveTo.Set(StoredProgram, string)
-  fullName: MYBooseApp.AppMoveTo.Set(BOOSE.StoredProgram, string)
+  nameWithType: AppDrawTo.Set(StoredProgram, string)
+  fullName: MYBooseApp.AppDrawTo.Set(BOOSE.StoredProgram, string)
   type: Method
   source:
     remote:
-      path: Medium_Scale_Software_Engineering_Project/Medium_Scale_Software_Engineering_Project/AppMoveTo.cs
+      path: Medium_Scale_Software_Engineering_Project/Medium_Scale_Software_Engineering_Project/AppDrawTo.cs
       branch: main
       repo: https://github.com/ASE2025repos/ase-boose-assignment-ssubedi-01.git
     id: Set
-    path: ../Medium_Scale_Software_Engineering_Project/AppMoveTo.cs
-    startLine: 28
+    path: ../Medium_Scale_Software_Engineering_Project/AppDrawTo.cs
+    startLine: 51
   assemblies:
   - MYBooseApp
   namespace: MYBooseApp
-  summary: Sets the stored program reference and splits the parameter string.
+  summary: Assigns the stored program reference and parses command parameters.
   example: []
   syntax:
     content: public override void Set(StoredProgram Program, string Params)
     parameters:
     - id: Program
       type: BOOSE.StoredProgram
-      description: The stored program instance
+      description: The current stored program instance.
     - id: Params
       type: System.String
-      description: The parameters string, e.g., "100, 200"
+      description: A parameter string containing X and Y coordinate expressions.
     content.vb: Public Overrides Sub [Set](Program As StoredProgram, Params As String)
   overridden: BOOSE.Command.Set(BOOSE.StoredProgram,System.String)
-  overload: MYBooseApp.AppMoveTo.Set*
+  overload: MYBooseApp.AppDrawTo.Set*
   implements:
   - BOOSE.ICommand.Set(BOOSE.StoredProgram,System.String)
-  nameWithType.vb: AppMoveTo.Set(StoredProgram, String)
-  fullName.vb: MYBooseApp.AppMoveTo.Set(BOOSE.StoredProgram, String)
+  nameWithType.vb: AppDrawTo.Set(StoredProgram, String)
+  fullName.vb: MYBooseApp.AppDrawTo.Set(BOOSE.StoredProgram, String)
   name.vb: Set(StoredProgram, String)
-- uid: MYBooseApp.AppMoveTo.CheckParameters(System.String[])
-  commentId: M:MYBooseApp.AppMoveTo.CheckParameters(System.String[])
+- uid: MYBooseApp.AppDrawTo.CheckParameters(System.String[])
+  commentId: M:MYBooseApp.AppDrawTo.CheckParameters(System.String[])
   id: CheckParameters(System.String[])
-  parent: MYBooseApp.AppMoveTo
+  parent: MYBooseApp.AppDrawTo
   langs:
   - csharp
   - vb
   name: CheckParameters(string[])
-  nameWithType: AppMoveTo.CheckParameters(string[])
-  fullName: MYBooseApp.AppMoveTo.CheckParameters(string[])
+  nameWithType: AppDrawTo.CheckParameters(string[])
+  fullName: MYBooseApp.AppDrawTo.CheckParameters(string[])
   type: Method
   source:
     remote:
-      path: Medium_Scale_Software_Engineering_Project/Medium_Scale_Software_Engineering_Project/AppMoveTo.cs
+      path: Medium_Scale_Software_Engineering_Project/Medium_Scale_Software_Engineering_Project/AppDrawTo.cs
       branch: main
       repo: https://github.com/ASE2025repos/ase-boose-assignment-ssubedi-01.git
     id: CheckParameters
-    path: ../Medium_Scale_Software_Engineering_Project/AppMoveTo.cs
-    startLine: 39
+    path: ../Medium_Scale_Software_Engineering_Project/AppDrawTo.cs
+    startLine: 66
   assemblies:
   - MYBooseApp
   namespace: MYBooseApp
-  summary: Validates that exactly two parameters are provided.
+  summary: Validates that exactly two parameters are supplied.
   example: []
   syntax:
-    content: public override void CheckParameters(string[] ParameterList)
+    content: public override void CheckParameters(string[] parameterList)
     parameters:
-    - id: ParameterList
+    - id: parameterList
       type: System.String[]
-      description: Array of parameters
-    content.vb: Public Overrides Sub CheckParameters(ParameterList As String())
+      description: The parsed parameter list.
+    content.vb: Public Overrides Sub CheckParameters(parameterList As String())
   overridden: BOOSE.CommandTwoParameters.CheckParameters(System.String[])
-  overload: MYBooseApp.AppMoveTo.CheckParameters*
+  overload: MYBooseApp.AppDrawTo.CheckParameters*
   exceptions:
   - type: BOOSE.CommandException
     commentId: T:BOOSE.CommandException
-    description: Thrown if the number of parameters is not two
+    description: Thrown when the command does not receive exactly two parameters.
   implements:
   - BOOSE.ICommand.CheckParameters(System.String[])
-  nameWithType.vb: AppMoveTo.CheckParameters(String())
-  fullName.vb: MYBooseApp.AppMoveTo.CheckParameters(String())
+  nameWithType.vb: AppDrawTo.CheckParameters(String())
+  fullName.vb: MYBooseApp.AppDrawTo.CheckParameters(String())
   name.vb: CheckParameters(String())
-- uid: MYBooseApp.AppMoveTo.Compile
-  commentId: M:MYBooseApp.AppMoveTo.Compile
+- uid: MYBooseApp.AppDrawTo.Compile
+  commentId: M:MYBooseApp.AppDrawTo.Compile
   id: Compile
-  parent: MYBooseApp.AppMoveTo
+  parent: MYBooseApp.AppDrawTo
   langs:
   - csharp
   - vb
   name: Compile()
-  nameWithType: AppMoveTo.Compile()
-  fullName: MYBooseApp.AppMoveTo.Compile()
+  nameWithType: AppDrawTo.Compile()
+  fullName: MYBooseApp.AppDrawTo.Compile()
   type: Method
   source:
     remote:
-      path: Medium_Scale_Software_Engineering_Project/Medium_Scale_Software_Engineering_Project/AppMoveTo.cs
+      path: Medium_Scale_Software_Engineering_Project/Medium_Scale_Software_Engineering_Project/AppDrawTo.cs
       branch: main
       repo: https://github.com/ASE2025repos/ase-boose-assignment-ssubedi-01.git
     id: Compile
-    path: ../Medium_Scale_Software_Engineering_Project/AppMoveTo.cs
-    startLine: 49
+    path: ../Medium_Scale_Software_Engineering_Project/AppDrawTo.cs
+    startLine: 82
   assemblies:
   - MYBooseApp
   namespace: MYBooseApp
-  summary: >-
-    Compilation phase. MoveTo evaluates expressions at runtime.
-
-    Ensures parameter count is correct.
+  summary: Compiles the DrawTo command.
+  remarks: Parameter evaluation is deferred until execution time.
   example: []
   syntax:
     content: public override void Compile()
     content.vb: Public Overrides Sub Compile()
   overridden: BOOSE.Command.Compile
-  overload: MYBooseApp.AppMoveTo.Compile*
+  overload: MYBooseApp.AppDrawTo.Compile*
   implements:
   - BOOSE.ICommand.Compile
-- uid: MYBooseApp.AppMoveTo.Execute
-  commentId: M:MYBooseApp.AppMoveTo.Execute
+- uid: MYBooseApp.AppDrawTo.Execute
+  commentId: M:MYBooseApp.AppDrawTo.Execute
   id: Execute
-  parent: MYBooseApp.AppMoveTo
+  parent: MYBooseApp.AppDrawTo
   langs:
   - csharp
   - vb
   name: Execute()
-  nameWithType: AppMoveTo.Execute()
-  fullName: MYBooseApp.AppMoveTo.Execute()
+  nameWithType: AppDrawTo.Execute()
+  fullName: MYBooseApp.AppDrawTo.Execute()
   type: Method
   source:
     remote:
-      path: Medium_Scale_Software_Engineering_Project/Medium_Scale_Software_Engineering_Project/AppMoveTo.cs
+      path: Medium_Scale_Software_Engineering_Project/Medium_Scale_Software_Engineering_Project/AppDrawTo.cs
       branch: main
       repo: https://github.com/ASE2025repos/ase-boose-assignment-ssubedi-01.git
     id: Execute
-    path: ../Medium_Scale_Software_Engineering_Project/AppMoveTo.cs
-    startLine: 61
+    path: ../Medium_Scale_Software_Engineering_Project/AppDrawTo.cs
+    startLine: 95
   assemblies:
   - MYBooseApp
   namespace: MYBooseApp
   summary: >-
-    Executes the MoveTo command by evaluating X and Y coordinates
+    Executes the DrawTo command by evaluating the X and Y expressions
 
-    and moving the pen to the computed position on the canvas.
+    and drawing a line to the resulting coordinates.
   example: []
   syntax:
     content: public override void Execute()
     content.vb: Public Overrides Sub Execute()
   overridden: BOOSE.Command.Execute
-  overload: MYBooseApp.AppMoveTo.Execute*
+  overload: MYBooseApp.AppDrawTo.Execute*
   exceptions:
   - type: BOOSE.CommandException
     commentId: T:BOOSE.CommandException
-    description: Thrown when the X or Y parameter cannot be evaluated to a valid integer.
+    description: >-
+      Thrown when coordinate expressions cannot be evaluated
+
+      or do not result in valid integer values.
   implements:
   - BOOSE.ICommand.Execute
 references:
@@ -698,14 +705,20 @@ references:
   name: BOOSE
   nameWithType: BOOSE
   fullName: BOOSE
-- uid: MYBooseApp.AppMoveTo.#ctor*
-  commentId: Overload:MYBooseApp.AppMoveTo.#ctor
-  href: MYBooseApp.AppMoveTo.html#MYBooseApp_AppMoveTo__ctor_BOOSE_ICanvas_
-  name: AppMoveTo
-  nameWithType: AppMoveTo.AppMoveTo
-  fullName: MYBooseApp.AppMoveTo.AppMoveTo
-  nameWithType.vb: AppMoveTo.New
-  fullName.vb: MYBooseApp.AppMoveTo.New
+- uid: MYBooseApp.AppDrawTo
+  commentId: T:MYBooseApp.AppDrawTo
+  href: MYBooseApp.AppDrawTo.html
+  name: AppDrawTo
+  nameWithType: AppDrawTo
+  fullName: MYBooseApp.AppDrawTo
+- uid: MYBooseApp.AppDrawTo.#ctor*
+  commentId: Overload:MYBooseApp.AppDrawTo.#ctor
+  href: MYBooseApp.AppDrawTo.html#MYBooseApp_AppDrawTo__ctor_BOOSE_ICanvas_
+  name: AppDrawTo
+  nameWithType: AppDrawTo.AppDrawTo
+  fullName: MYBooseApp.AppDrawTo.AppDrawTo
+  nameWithType.vb: AppDrawTo.New
+  fullName.vb: MYBooseApp.AppDrawTo.New
   name.vb: New
 - uid: BOOSE.ICanvas
   commentId: T:BOOSE.ICanvas
@@ -755,12 +768,12 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.string
   - name: )
-- uid: MYBooseApp.AppMoveTo.Set*
-  commentId: Overload:MYBooseApp.AppMoveTo.Set
-  href: MYBooseApp.AppMoveTo.html#MYBooseApp_AppMoveTo_Set_BOOSE_StoredProgram_System_String_
+- uid: MYBooseApp.AppDrawTo.Set*
+  commentId: Overload:MYBooseApp.AppDrawTo.Set
+  href: MYBooseApp.AppDrawTo.html#MYBooseApp_AppDrawTo_Set_BOOSE_StoredProgram_System_String_
   name: Set
-  nameWithType: AppMoveTo.Set
-  fullName: MYBooseApp.AppMoveTo.Set
+  nameWithType: AppDrawTo.Set
+  fullName: MYBooseApp.AppDrawTo.Set
 - uid: BOOSE.ICommand.Set(BOOSE.StoredProgram,System.String)
   commentId: M:BOOSE.ICommand.Set(BOOSE.StoredProgram,System.String)
   parent: BOOSE.ICommand
@@ -861,12 +874,12 @@ references:
   - name: (
   - name: )
   - name: )
-- uid: MYBooseApp.AppMoveTo.CheckParameters*
-  commentId: Overload:MYBooseApp.AppMoveTo.CheckParameters
-  href: MYBooseApp.AppMoveTo.html#MYBooseApp_AppMoveTo_CheckParameters_System_String___
+- uid: MYBooseApp.AppDrawTo.CheckParameters*
+  commentId: Overload:MYBooseApp.AppDrawTo.CheckParameters
+  href: MYBooseApp.AppDrawTo.html#MYBooseApp_AppDrawTo_CheckParameters_System_String___
   name: CheckParameters
-  nameWithType: AppMoveTo.CheckParameters
-  fullName: MYBooseApp.AppMoveTo.CheckParameters
+  nameWithType: AppDrawTo.CheckParameters
+  fullName: MYBooseApp.AppDrawTo.CheckParameters
 - uid: BOOSE.ICommand.CheckParameters(System.String[])
   commentId: M:BOOSE.ICommand.CheckParameters(System.String[])
   parent: BOOSE.ICommand
@@ -944,12 +957,12 @@ references:
     isExternal: true
   - name: (
   - name: )
-- uid: MYBooseApp.AppMoveTo.Compile*
-  commentId: Overload:MYBooseApp.AppMoveTo.Compile
-  href: MYBooseApp.AppMoveTo.html#MYBooseApp_AppMoveTo_Compile
+- uid: MYBooseApp.AppDrawTo.Compile*
+  commentId: Overload:MYBooseApp.AppDrawTo.Compile
+  href: MYBooseApp.AppDrawTo.html#MYBooseApp_AppDrawTo_Compile
   name: Compile
-  nameWithType: AppMoveTo.Compile
-  fullName: MYBooseApp.AppMoveTo.Compile
+  nameWithType: AppDrawTo.Compile
+  fullName: MYBooseApp.AppDrawTo.Compile
 - uid: BOOSE.ICommand.Compile
   commentId: M:BOOSE.ICommand.Compile
   parent: BOOSE.ICommand
@@ -988,12 +1001,12 @@ references:
     isExternal: true
   - name: (
   - name: )
-- uid: MYBooseApp.AppMoveTo.Execute*
-  commentId: Overload:MYBooseApp.AppMoveTo.Execute
-  href: MYBooseApp.AppMoveTo.html#MYBooseApp_AppMoveTo_Execute
+- uid: MYBooseApp.AppDrawTo.Execute*
+  commentId: Overload:MYBooseApp.AppDrawTo.Execute
+  href: MYBooseApp.AppDrawTo.html#MYBooseApp_AppDrawTo_Execute
   name: Execute
-  nameWithType: AppMoveTo.Execute
-  fullName: MYBooseApp.AppMoveTo.Execute
+  nameWithType: AppDrawTo.Execute
+  fullName: MYBooseApp.AppDrawTo.Execute
 - uid: BOOSE.ICommand.Execute
   commentId: M:BOOSE.ICommand.Execute
   parent: BOOSE.ICommand

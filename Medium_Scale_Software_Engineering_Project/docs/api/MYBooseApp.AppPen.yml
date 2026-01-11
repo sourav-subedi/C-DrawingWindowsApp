@@ -1,50 +1,55 @@
 ### YamlMime:ManagedReference
 items:
-- uid: MYBooseApp.AppMoveTo
-  commentId: T:MYBooseApp.AppMoveTo
-  id: AppMoveTo
+- uid: MYBooseApp.AppPen
+  commentId: T:MYBooseApp.AppPen
+  id: AppPen
   parent: MYBooseApp
   children:
-  - MYBooseApp.AppMoveTo.#ctor(BOOSE.ICanvas)
-  - MYBooseApp.AppMoveTo.CheckParameters(System.String[])
-  - MYBooseApp.AppMoveTo.Compile
-  - MYBooseApp.AppMoveTo.Execute
-  - MYBooseApp.AppMoveTo.Set(BOOSE.StoredProgram,System.String)
+  - MYBooseApp.AppPen.#ctor(BOOSE.ICanvas)
+  - MYBooseApp.AppPen.CheckParameters(System.String[])
+  - MYBooseApp.AppPen.Compile
+  - MYBooseApp.AppPen.Execute
+  - MYBooseApp.AppPen.Set(BOOSE.StoredProgram,System.String)
   langs:
   - csharp
   - vb
-  name: AppMoveTo
-  nameWithType: AppMoveTo
-  fullName: MYBooseApp.AppMoveTo
+  name: AppPen
+  nameWithType: AppPen
+  fullName: MYBooseApp.AppPen
   type: Class
   source:
     remote:
-      path: Medium_Scale_Software_Engineering_Project/Medium_Scale_Software_Engineering_Project/AppMoveTo.cs
+      path: Medium_Scale_Software_Engineering_Project/Medium_Scale_Software_Engineering_Project/AppPen.cs
       branch: main
       repo: https://github.com/ASE2025repos/ase-boose-assignment-ssubedi-01.git
-    id: AppMoveTo
-    path: ../Medium_Scale_Software_Engineering_Project/AppMoveTo.cs
-    startLine: 8
+    id: AppPen
+    path: ../Medium_Scale_Software_Engineering_Project/AppPen.cs
+    startLine: 9
   assemblies:
   - MYBooseApp
   namespace: MYBooseApp
   summary: >-
-    Implements the MoveTo command for moving the pen to specified coordinates.
+    Implements the 'Pen' command to set the drawing color on the canvas.
 
-    Supports both literal integers and expressions/variables from the stored program.
+    Accepts three parameters (R, G, B) which can be literals or expressions.
+
+    RGB values must be integers in the 0–255 range.
   example: []
   syntax:
-    content: 'public class AppMoveTo : CommandTwoParameters, ICommand'
-    content.vb: Public Class AppMoveTo Inherits CommandTwoParameters Implements ICommand
+    content: 'public class AppPen : CommandThreeParameters, ICommand'
+    content.vb: Public Class AppPen Inherits CommandThreeParameters Implements ICommand
   inheritance:
   - System.Object
   - BOOSE.Command
   - BOOSE.CanvasCommand
   - BOOSE.CommandOneParameter
   - BOOSE.CommandTwoParameters
+  - BOOSE.CommandThreeParameters
   implements:
   - BOOSE.ICommand
   inheritedMembers:
+  - BOOSE.CommandThreeParameters.param3
+  - BOOSE.CommandThreeParameters.param3unprocessed
   - BOOSE.CommandTwoParameters.param2
   - BOOSE.CommandTwoParameters.param2unprocessed
   - BOOSE.CommandOneParameter.param1
@@ -71,194 +76,198 @@ items:
   - System.Object.GetType
   - System.Object.MemberwiseClone
   - System.Object.ReferenceEquals(System.Object,System.Object)
-- uid: MYBooseApp.AppMoveTo.#ctor(BOOSE.ICanvas)
-  commentId: M:MYBooseApp.AppMoveTo.#ctor(BOOSE.ICanvas)
+- uid: MYBooseApp.AppPen.#ctor(BOOSE.ICanvas)
+  commentId: M:MYBooseApp.AppPen.#ctor(BOOSE.ICanvas)
   id: '#ctor(BOOSE.ICanvas)'
-  parent: MYBooseApp.AppMoveTo
+  parent: MYBooseApp.AppPen
   langs:
   - csharp
   - vb
-  name: AppMoveTo(ICanvas)
-  nameWithType: AppMoveTo.AppMoveTo(ICanvas)
-  fullName: MYBooseApp.AppMoveTo.AppMoveTo(BOOSE.ICanvas)
+  name: AppPen(ICanvas)
+  nameWithType: AppPen.AppPen(ICanvas)
+  fullName: MYBooseApp.AppPen.AppPen(BOOSE.ICanvas)
   type: Constructor
   source:
     remote:
-      path: Medium_Scale_Software_Engineering_Project/Medium_Scale_Software_Engineering_Project/AppMoveTo.cs
+      path: Medium_Scale_Software_Engineering_Project/Medium_Scale_Software_Engineering_Project/AppPen.cs
       branch: main
       repo: https://github.com/ASE2025repos/ase-boose-assignment-ssubedi-01.git
     id: .ctor
-    path: ../Medium_Scale_Software_Engineering_Project/AppMoveTo.cs
-    startLine: 18
+    path: ../Medium_Scale_Software_Engineering_Project/AppPen.cs
+    startLine: 19
   assemblies:
   - MYBooseApp
   namespace: MYBooseApp
-  summary: Initializes a new instance with a reference to the canvas.
+  summary: Creates a new AppPen command linked to a specific canvas.
   example: []
   syntax:
-    content: public AppMoveTo(ICanvas canvas)
+    content: public AppPen(ICanvas canvas)
     parameters:
     - id: canvas
       type: BOOSE.ICanvas
-      description: The canvas on which to move the pen
+      description: The canvas where the pen color will be applied.
     content.vb: Public Sub New(canvas As ICanvas)
-  overload: MYBooseApp.AppMoveTo.#ctor*
-  nameWithType.vb: AppMoveTo.New(ICanvas)
-  fullName.vb: MYBooseApp.AppMoveTo.New(BOOSE.ICanvas)
+  overload: MYBooseApp.AppPen.#ctor*
+  nameWithType.vb: AppPen.New(ICanvas)
+  fullName.vb: MYBooseApp.AppPen.New(BOOSE.ICanvas)
   name.vb: New(ICanvas)
-- uid: MYBooseApp.AppMoveTo.Set(BOOSE.StoredProgram,System.String)
-  commentId: M:MYBooseApp.AppMoveTo.Set(BOOSE.StoredProgram,System.String)
+- uid: MYBooseApp.AppPen.Set(BOOSE.StoredProgram,System.String)
+  commentId: M:MYBooseApp.AppPen.Set(BOOSE.StoredProgram,System.String)
   id: Set(BOOSE.StoredProgram,System.String)
-  parent: MYBooseApp.AppMoveTo
+  parent: MYBooseApp.AppPen
   langs:
   - csharp
   - vb
   name: Set(StoredProgram, string)
-  nameWithType: AppMoveTo.Set(StoredProgram, string)
-  fullName: MYBooseApp.AppMoveTo.Set(BOOSE.StoredProgram, string)
+  nameWithType: AppPen.Set(StoredProgram, string)
+  fullName: MYBooseApp.AppPen.Set(BOOSE.StoredProgram, string)
   type: Method
   source:
     remote:
-      path: Medium_Scale_Software_Engineering_Project/Medium_Scale_Software_Engineering_Project/AppMoveTo.cs
+      path: Medium_Scale_Software_Engineering_Project/Medium_Scale_Software_Engineering_Project/AppPen.cs
       branch: main
       repo: https://github.com/ASE2025repos/ase-boose-assignment-ssubedi-01.git
     id: Set
-    path: ../Medium_Scale_Software_Engineering_Project/AppMoveTo.cs
-    startLine: 28
+    path: ../Medium_Scale_Software_Engineering_Project/AppPen.cs
+    startLine: 29
   assemblies:
   - MYBooseApp
   namespace: MYBooseApp
-  summary: Sets the stored program reference and splits the parameter string.
+  summary: Sets the stored program reference and splits the parameters into R, G, B.
   example: []
   syntax:
     content: public override void Set(StoredProgram Program, string Params)
     parameters:
     - id: Program
       type: BOOSE.StoredProgram
-      description: The stored program instance
+      description: Reference to the stored program
     - id: Params
       type: System.String
-      description: The parameters string, e.g., "100, 200"
+      description: RGB parameters separated by comma or space
     content.vb: Public Overrides Sub [Set](Program As StoredProgram, Params As String)
   overridden: BOOSE.Command.Set(BOOSE.StoredProgram,System.String)
-  overload: MYBooseApp.AppMoveTo.Set*
+  overload: MYBooseApp.AppPen.Set*
   implements:
   - BOOSE.ICommand.Set(BOOSE.StoredProgram,System.String)
-  nameWithType.vb: AppMoveTo.Set(StoredProgram, String)
-  fullName.vb: MYBooseApp.AppMoveTo.Set(BOOSE.StoredProgram, String)
+  nameWithType.vb: AppPen.Set(StoredProgram, String)
+  fullName.vb: MYBooseApp.AppPen.Set(BOOSE.StoredProgram, String)
   name.vb: Set(StoredProgram, String)
-- uid: MYBooseApp.AppMoveTo.CheckParameters(System.String[])
-  commentId: M:MYBooseApp.AppMoveTo.CheckParameters(System.String[])
+- uid: MYBooseApp.AppPen.CheckParameters(System.String[])
+  commentId: M:MYBooseApp.AppPen.CheckParameters(System.String[])
   id: CheckParameters(System.String[])
-  parent: MYBooseApp.AppMoveTo
+  parent: MYBooseApp.AppPen
   langs:
   - csharp
   - vb
   name: CheckParameters(string[])
-  nameWithType: AppMoveTo.CheckParameters(string[])
-  fullName: MYBooseApp.AppMoveTo.CheckParameters(string[])
+  nameWithType: AppPen.CheckParameters(string[])
+  fullName: MYBooseApp.AppPen.CheckParameters(string[])
   type: Method
   source:
     remote:
-      path: Medium_Scale_Software_Engineering_Project/Medium_Scale_Software_Engineering_Project/AppMoveTo.cs
+      path: Medium_Scale_Software_Engineering_Project/Medium_Scale_Software_Engineering_Project/AppPen.cs
       branch: main
       repo: https://github.com/ASE2025repos/ase-boose-assignment-ssubedi-01.git
     id: CheckParameters
-    path: ../Medium_Scale_Software_Engineering_Project/AppMoveTo.cs
-    startLine: 39
+    path: ../Medium_Scale_Software_Engineering_Project/AppPen.cs
+    startLine: 40
   assemblies:
   - MYBooseApp
   namespace: MYBooseApp
-  summary: Validates that exactly two parameters are provided.
+  summary: Validates that exactly three parameters are provided for the command.
   example: []
   syntax:
     content: public override void CheckParameters(string[] ParameterList)
     parameters:
     - id: ParameterList
       type: System.String[]
-      description: Array of parameters
+      description: Parameter array to check (not used)
     content.vb: Public Overrides Sub CheckParameters(ParameterList As String())
-  overridden: BOOSE.CommandTwoParameters.CheckParameters(System.String[])
-  overload: MYBooseApp.AppMoveTo.CheckParameters*
+  overridden: BOOSE.CommandThreeParameters.CheckParameters(System.String[])
+  overload: MYBooseApp.AppPen.CheckParameters*
   exceptions:
   - type: BOOSE.CommandException
     commentId: T:BOOSE.CommandException
-    description: Thrown if the number of parameters is not two
+    description: Thrown if parameter count is not exactly 3
   implements:
   - BOOSE.ICommand.CheckParameters(System.String[])
-  nameWithType.vb: AppMoveTo.CheckParameters(String())
-  fullName.vb: MYBooseApp.AppMoveTo.CheckParameters(String())
+  nameWithType.vb: AppPen.CheckParameters(String())
+  fullName.vb: MYBooseApp.AppPen.CheckParameters(String())
   name.vb: CheckParameters(String())
-- uid: MYBooseApp.AppMoveTo.Compile
-  commentId: M:MYBooseApp.AppMoveTo.Compile
+- uid: MYBooseApp.AppPen.Compile
+  commentId: M:MYBooseApp.AppPen.Compile
   id: Compile
-  parent: MYBooseApp.AppMoveTo
+  parent: MYBooseApp.AppPen
   langs:
   - csharp
   - vb
   name: Compile()
-  nameWithType: AppMoveTo.Compile()
-  fullName: MYBooseApp.AppMoveTo.Compile()
+  nameWithType: AppPen.Compile()
+  fullName: MYBooseApp.AppPen.Compile()
   type: Method
   source:
     remote:
-      path: Medium_Scale_Software_Engineering_Project/Medium_Scale_Software_Engineering_Project/AppMoveTo.cs
+      path: Medium_Scale_Software_Engineering_Project/Medium_Scale_Software_Engineering_Project/AppPen.cs
       branch: main
       repo: https://github.com/ASE2025repos/ase-boose-assignment-ssubedi-01.git
     id: Compile
-    path: ../Medium_Scale_Software_Engineering_Project/AppMoveTo.cs
-    startLine: 49
+    path: ../Medium_Scale_Software_Engineering_Project/AppPen.cs
+    startLine: 50
   assemblies:
   - MYBooseApp
   namespace: MYBooseApp
-  summary: >-
-    Compilation phase. MoveTo evaluates expressions at runtime.
-
-    Ensures parameter count is correct.
+  summary: Compiles the command by verifying parameter count.
   example: []
   syntax:
     content: public override void Compile()
     content.vb: Public Overrides Sub Compile()
   overridden: BOOSE.Command.Compile
-  overload: MYBooseApp.AppMoveTo.Compile*
+  overload: MYBooseApp.AppPen.Compile*
+  exceptions:
+  - type: BOOSE.CommandException
+    commentId: T:BOOSE.CommandException
+    description: Thrown if parameter count is not exactly 3
   implements:
   - BOOSE.ICommand.Compile
-- uid: MYBooseApp.AppMoveTo.Execute
-  commentId: M:MYBooseApp.AppMoveTo.Execute
+- uid: MYBooseApp.AppPen.Execute
+  commentId: M:MYBooseApp.AppPen.Execute
   id: Execute
-  parent: MYBooseApp.AppMoveTo
+  parent: MYBooseApp.AppPen
   langs:
   - csharp
   - vb
   name: Execute()
-  nameWithType: AppMoveTo.Execute()
-  fullName: MYBooseApp.AppMoveTo.Execute()
+  nameWithType: AppPen.Execute()
+  fullName: MYBooseApp.AppPen.Execute()
   type: Method
   source:
     remote:
-      path: Medium_Scale_Software_Engineering_Project/Medium_Scale_Software_Engineering_Project/AppMoveTo.cs
+      path: Medium_Scale_Software_Engineering_Project/Medium_Scale_Software_Engineering_Project/AppPen.cs
       branch: main
       repo: https://github.com/ASE2025repos/ase-boose-assignment-ssubedi-01.git
     id: Execute
-    path: ../Medium_Scale_Software_Engineering_Project/AppMoveTo.cs
-    startLine: 61
+    path: ../Medium_Scale_Software_Engineering_Project/AppPen.cs
+    startLine: 64
   assemblies:
   - MYBooseApp
   namespace: MYBooseApp
   summary: >-
-    Executes the MoveTo command by evaluating X and Y coordinates
+    Executes the Pen command by evaluating each parameter expression
 
-    and moving the pen to the computed position on the canvas.
+    and setting the pen color on the canvas.
   example: []
   syntax:
     content: public override void Execute()
     content.vb: Public Overrides Sub Execute()
   overridden: BOOSE.Command.Execute
-  overload: MYBooseApp.AppMoveTo.Execute*
+  overload: MYBooseApp.AppPen.Execute*
   exceptions:
   - type: BOOSE.CommandException
     commentId: T:BOOSE.CommandException
-    description: Thrown when the X or Y parameter cannot be evaluated to a valid integer.
+    description: >-
+      Thrown if a parameter is invalid, cannot be converted to an integer, 
+
+      is out of the 0–255 range, or if setting the color fails.
   implements:
   - BOOSE.ICommand.Execute
 references:
@@ -307,6 +316,13 @@ references:
   name: CommandTwoParameters
   nameWithType: CommandTwoParameters
   fullName: BOOSE.CommandTwoParameters
+- uid: BOOSE.CommandThreeParameters
+  commentId: T:BOOSE.CommandThreeParameters
+  parent: BOOSE
+  isExternal: true
+  name: CommandThreeParameters
+  nameWithType: CommandThreeParameters
+  fullName: BOOSE.CommandThreeParameters
 - uid: BOOSE.ICommand
   commentId: T:BOOSE.ICommand
   parent: BOOSE
@@ -314,6 +330,20 @@ references:
   name: ICommand
   nameWithType: ICommand
   fullName: BOOSE.ICommand
+- uid: BOOSE.CommandThreeParameters.param3
+  commentId: F:BOOSE.CommandThreeParameters.param3
+  parent: BOOSE.CommandThreeParameters
+  isExternal: true
+  name: param3
+  nameWithType: CommandThreeParameters.param3
+  fullName: BOOSE.CommandThreeParameters.param3
+- uid: BOOSE.CommandThreeParameters.param3unprocessed
+  commentId: F:BOOSE.CommandThreeParameters.param3unprocessed
+  parent: BOOSE.CommandThreeParameters
+  isExternal: true
+  name: param3unprocessed
+  nameWithType: CommandThreeParameters.param3unprocessed
+  fullName: BOOSE.CommandThreeParameters.param3unprocessed
 - uid: BOOSE.CommandTwoParameters.param2
   commentId: F:BOOSE.CommandTwoParameters.param2
   parent: BOOSE.CommandTwoParameters
@@ -698,14 +728,14 @@ references:
   name: BOOSE
   nameWithType: BOOSE
   fullName: BOOSE
-- uid: MYBooseApp.AppMoveTo.#ctor*
-  commentId: Overload:MYBooseApp.AppMoveTo.#ctor
-  href: MYBooseApp.AppMoveTo.html#MYBooseApp_AppMoveTo__ctor_BOOSE_ICanvas_
-  name: AppMoveTo
-  nameWithType: AppMoveTo.AppMoveTo
-  fullName: MYBooseApp.AppMoveTo.AppMoveTo
-  nameWithType.vb: AppMoveTo.New
-  fullName.vb: MYBooseApp.AppMoveTo.New
+- uid: MYBooseApp.AppPen.#ctor*
+  commentId: Overload:MYBooseApp.AppPen.#ctor
+  href: MYBooseApp.AppPen.html#MYBooseApp_AppPen__ctor_BOOSE_ICanvas_
+  name: AppPen
+  nameWithType: AppPen.AppPen
+  fullName: MYBooseApp.AppPen.AppPen
+  nameWithType.vb: AppPen.New
+  fullName.vb: MYBooseApp.AppPen.New
   name.vb: New
 - uid: BOOSE.ICanvas
   commentId: T:BOOSE.ICanvas
@@ -755,12 +785,12 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.string
   - name: )
-- uid: MYBooseApp.AppMoveTo.Set*
-  commentId: Overload:MYBooseApp.AppMoveTo.Set
-  href: MYBooseApp.AppMoveTo.html#MYBooseApp_AppMoveTo_Set_BOOSE_StoredProgram_System_String_
+- uid: MYBooseApp.AppPen.Set*
+  commentId: Overload:MYBooseApp.AppPen.Set
+  href: MYBooseApp.AppPen.html#MYBooseApp_AppPen_Set_BOOSE_StoredProgram_System_String_
   name: Set
-  nameWithType: AppMoveTo.Set
-  fullName: MYBooseApp.AppMoveTo.Set
+  nameWithType: AppPen.Set
+  fullName: MYBooseApp.AppPen.Set
 - uid: BOOSE.ICommand.Set(BOOSE.StoredProgram,System.String)
   commentId: M:BOOSE.ICommand.Set(BOOSE.StoredProgram,System.String)
   parent: BOOSE.ICommand
@@ -826,19 +856,19 @@ references:
   name: CommandException
   nameWithType: CommandException
   fullName: BOOSE.CommandException
-- uid: BOOSE.CommandTwoParameters.CheckParameters(System.String[])
-  commentId: M:BOOSE.CommandTwoParameters.CheckParameters(System.String[])
-  parent: BOOSE.CommandTwoParameters
+- uid: BOOSE.CommandThreeParameters.CheckParameters(System.String[])
+  commentId: M:BOOSE.CommandThreeParameters.CheckParameters(System.String[])
+  parent: BOOSE.CommandThreeParameters
   isExternal: true
   href: https://learn.microsoft.com/dotnet/api/system.string
   name: CheckParameters(string[])
-  nameWithType: CommandTwoParameters.CheckParameters(string[])
-  fullName: BOOSE.CommandTwoParameters.CheckParameters(string[])
-  nameWithType.vb: CommandTwoParameters.CheckParameters(String())
-  fullName.vb: BOOSE.CommandTwoParameters.CheckParameters(String())
+  nameWithType: CommandThreeParameters.CheckParameters(string[])
+  fullName: BOOSE.CommandThreeParameters.CheckParameters(string[])
+  nameWithType.vb: CommandThreeParameters.CheckParameters(String())
+  fullName.vb: BOOSE.CommandThreeParameters.CheckParameters(String())
   name.vb: CheckParameters(String())
   spec.csharp:
-  - uid: BOOSE.CommandTwoParameters.CheckParameters(System.String[])
+  - uid: BOOSE.CommandThreeParameters.CheckParameters(System.String[])
     name: CheckParameters
     isExternal: true
   - name: (
@@ -850,7 +880,7 @@ references:
   - name: ']'
   - name: )
   spec.vb:
-  - uid: BOOSE.CommandTwoParameters.CheckParameters(System.String[])
+  - uid: BOOSE.CommandThreeParameters.CheckParameters(System.String[])
     name: CheckParameters
     isExternal: true
   - name: (
@@ -861,12 +891,12 @@ references:
   - name: (
   - name: )
   - name: )
-- uid: MYBooseApp.AppMoveTo.CheckParameters*
-  commentId: Overload:MYBooseApp.AppMoveTo.CheckParameters
-  href: MYBooseApp.AppMoveTo.html#MYBooseApp_AppMoveTo_CheckParameters_System_String___
+- uid: MYBooseApp.AppPen.CheckParameters*
+  commentId: Overload:MYBooseApp.AppPen.CheckParameters
+  href: MYBooseApp.AppPen.html#MYBooseApp_AppPen_CheckParameters_System_String___
   name: CheckParameters
-  nameWithType: AppMoveTo.CheckParameters
-  fullName: MYBooseApp.AppMoveTo.CheckParameters
+  nameWithType: AppPen.CheckParameters
+  fullName: MYBooseApp.AppPen.CheckParameters
 - uid: BOOSE.ICommand.CheckParameters(System.String[])
   commentId: M:BOOSE.ICommand.CheckParameters(System.String[])
   parent: BOOSE.ICommand
@@ -944,12 +974,12 @@ references:
     isExternal: true
   - name: (
   - name: )
-- uid: MYBooseApp.AppMoveTo.Compile*
-  commentId: Overload:MYBooseApp.AppMoveTo.Compile
-  href: MYBooseApp.AppMoveTo.html#MYBooseApp_AppMoveTo_Compile
+- uid: MYBooseApp.AppPen.Compile*
+  commentId: Overload:MYBooseApp.AppPen.Compile
+  href: MYBooseApp.AppPen.html#MYBooseApp_AppPen_Compile
   name: Compile
-  nameWithType: AppMoveTo.Compile
-  fullName: MYBooseApp.AppMoveTo.Compile
+  nameWithType: AppPen.Compile
+  fullName: MYBooseApp.AppPen.Compile
 - uid: BOOSE.ICommand.Compile
   commentId: M:BOOSE.ICommand.Compile
   parent: BOOSE.ICommand
@@ -988,12 +1018,12 @@ references:
     isExternal: true
   - name: (
   - name: )
-- uid: MYBooseApp.AppMoveTo.Execute*
-  commentId: Overload:MYBooseApp.AppMoveTo.Execute
-  href: MYBooseApp.AppMoveTo.html#MYBooseApp_AppMoveTo_Execute
+- uid: MYBooseApp.AppPen.Execute*
+  commentId: Overload:MYBooseApp.AppPen.Execute
+  href: MYBooseApp.AppPen.html#MYBooseApp_AppPen_Execute
   name: Execute
-  nameWithType: AppMoveTo.Execute
-  fullName: MYBooseApp.AppMoveTo.Execute
+  nameWithType: AppPen.Execute
+  fullName: MYBooseApp.AppPen.Execute
 - uid: BOOSE.ICommand.Execute
   commentId: M:BOOSE.ICommand.Execute
   parent: BOOSE.ICommand

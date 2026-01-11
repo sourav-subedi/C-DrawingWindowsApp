@@ -5,6 +5,7 @@ items:
   id: AppCommandFactory
   parent: MYBooseApp
   children:
+  - MYBooseApp.AppCommandFactory.#ctor(BOOSE.ICanvas)
   - MYBooseApp.AppCommandFactory.MakeCommand(System.String)
   langs:
   - csharp
@@ -20,11 +21,18 @@ items:
       repo: https://github.com/ASE2025repos/ase-boose-assignment-ssubedi-01.git
     id: AppCommandFactory
     path: ../Medium_Scale_Software_Engineering_Project/AppCommandFactory.cs
-    startLine: 12
+    startLine: 10
   assemblies:
   - MYBooseApp
   namespace: MYBooseApp
-  summary: the extention of the command factory to add custom made command into it
+  summary: >-
+    Application-specific command factory.
+
+    Responsible for creating BOOSE commands supported by MYBooseApp.
+
+    Extends the base CommandFactory to register custom drawing,
+
+    variable, control-flow, and method-related commands.
   example: []
   syntax:
     content: 'public class AppCommandFactory : CommandFactory, ICommandFactory'
@@ -42,6 +50,41 @@ items:
   - System.Object.MemberwiseClone
   - System.Object.ReferenceEquals(System.Object,System.Object)
   - System.Object.ToString
+- uid: MYBooseApp.AppCommandFactory.#ctor(BOOSE.ICanvas)
+  commentId: M:MYBooseApp.AppCommandFactory.#ctor(BOOSE.ICanvas)
+  id: '#ctor(BOOSE.ICanvas)'
+  parent: MYBooseApp.AppCommandFactory
+  langs:
+  - csharp
+  - vb
+  name: AppCommandFactory(ICanvas)
+  nameWithType: AppCommandFactory.AppCommandFactory(ICanvas)
+  fullName: MYBooseApp.AppCommandFactory.AppCommandFactory(BOOSE.ICanvas)
+  type: Constructor
+  source:
+    remote:
+      path: Medium_Scale_Software_Engineering_Project/Medium_Scale_Software_Engineering_Project/AppCommandFactory.cs
+      branch: main
+      repo: https://github.com/ASE2025repos/ase-boose-assignment-ssubedi-01.git
+    id: .ctor
+    path: ../Medium_Scale_Software_Engineering_Project/AppCommandFactory.cs
+    startLine: 20
+  assemblies:
+  - MYBooseApp
+  namespace: MYBooseApp
+  summary: Initializes a new instance of the AppCommandFactory.
+  example: []
+  syntax:
+    content: public AppCommandFactory(ICanvas canvas)
+    parameters:
+    - id: canvas
+      type: BOOSE.ICanvas
+      description: Reference to the application canvas used by drawing commands.
+    content.vb: Public Sub New(canvas As ICanvas)
+  overload: MYBooseApp.AppCommandFactory.#ctor*
+  nameWithType.vb: AppCommandFactory.New(ICanvas)
+  fullName.vb: MYBooseApp.AppCommandFactory.New(BOOSE.ICanvas)
+  name.vb: New(ICanvas)
 - uid: MYBooseApp.AppCommandFactory.MakeCommand(System.String)
   commentId: M:MYBooseApp.AppCommandFactory.MakeCommand(System.String)
   id: MakeCommand(System.String)
@@ -60,24 +103,28 @@ items:
       repo: https://github.com/ASE2025repos/ase-boose-assignment-ssubedi-01.git
     id: MakeCommand
     path: ../Medium_Scale_Software_Engineering_Project/AppCommandFactory.cs
-    startLine: 19
+    startLine: 37
   assemblies:
   - MYBooseApp
   namespace: MYBooseApp
-  summary: the method overrides the method from the base class to add custom commands
+  summary: Creates and returns an ICommand instance based on the supplied command type.
   example: []
   syntax:
-    content: public override ICommand MakeCommand(string commandType)
+    content: public override ICommand MakeCommand(string CommandType)
     parameters:
-    - id: commandType
+    - id: CommandType
       type: System.String
-      description: the string command name
+      description: The command keyword parsed from the BOOSE program (e.g. "circle", "if", "call").
     return:
       type: BOOSE.ICommand
-      description: ''
-    content.vb: Public Overrides Function MakeCommand(commandType As String) As ICommand
+      description: A new ICommand instance corresponding to the specified command.
+    content.vb: Public Overrides Function MakeCommand(CommandType As String) As ICommand
   overridden: BOOSE.CommandFactory.MakeCommand(System.String)
   overload: MYBooseApp.AppCommandFactory.MakeCommand*
+  exceptions:
+  - type: System.ArgumentException
+    commentId: T:System.ArgumentException
+    description: Thrown when the command type is not recognised.
   nameWithType.vb: AppCommandFactory.MakeCommand(String)
   fullName.vb: MYBooseApp.AppCommandFactory.MakeCommand(String)
   name.vb: MakeCommand(String)
@@ -345,6 +392,29 @@ references:
   name: BOOSE
   nameWithType: BOOSE
   fullName: BOOSE
+- uid: MYBooseApp.AppCommandFactory.#ctor*
+  commentId: Overload:MYBooseApp.AppCommandFactory.#ctor
+  href: MYBooseApp.AppCommandFactory.html#MYBooseApp_AppCommandFactory__ctor_BOOSE_ICanvas_
+  name: AppCommandFactory
+  nameWithType: AppCommandFactory.AppCommandFactory
+  fullName: MYBooseApp.AppCommandFactory.AppCommandFactory
+  nameWithType.vb: AppCommandFactory.New
+  fullName.vb: MYBooseApp.AppCommandFactory.New
+  name.vb: New
+- uid: BOOSE.ICanvas
+  commentId: T:BOOSE.ICanvas
+  parent: BOOSE
+  isExternal: true
+  name: ICanvas
+  nameWithType: ICanvas
+  fullName: BOOSE.ICanvas
+- uid: System.ArgumentException
+  commentId: T:System.ArgumentException
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.argumentexception
+  name: ArgumentException
+  nameWithType: ArgumentException
+  fullName: System.ArgumentException
 - uid: BOOSE.CommandFactory.MakeCommand(System.String)
   commentId: M:BOOSE.CommandFactory.MakeCommand(System.String)
   parent: BOOSE.CommandFactory

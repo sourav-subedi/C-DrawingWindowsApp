@@ -4,11 +4,36 @@ items:
   commentId: N:MYBooseApp
   id: MYBooseApp
   children:
+  - MYBooseApp.AppArray
+  - MYBooseApp.AppAsign
+  - MYBooseApp.AppBoolean
+  - MYBooseApp.AppCall
   - MYBooseApp.AppCanvas
+  - MYBooseApp.AppCircle
+  - MYBooseApp.AppClear
   - MYBooseApp.AppCommandFactory
-  - MYBooseApp.AppMoveto
-  - MYBooseApp.AppParser
+  - MYBooseApp.AppDrawTo
+  - MYBooseApp.AppElse
+  - MYBooseApp.AppEndFor
+  - MYBooseApp.AppEndIf
+  - MYBooseApp.AppEndMethod
+  - MYBooseApp.AppEndWhile
+  - MYBooseApp.AppFor
+  - MYBooseApp.AppIf
+  - MYBooseApp.AppMethod
+  - MYBooseApp.AppMoveTo
+  - MYBooseApp.AppPeek
+  - MYBooseApp.AppPen
+  - MYBooseApp.AppPenSize
+  - MYBooseApp.AppPoke
+  - MYBooseApp.AppReal
+  - MYBooseApp.AppRect
+  - MYBooseApp.AppReset
   - MYBooseApp.AppStoredProgram
+  - MYBooseApp.AppTri
+  - MYBooseApp.AppWhile
+  - MYBooseApp.AppWrite
+  - MYBooseApp.drawingApplication
   langs:
   - csharp
   - vb
@@ -19,33 +44,190 @@ items:
   assemblies:
   - MYBooseApp
 references:
+- uid: MYBooseApp.AppArray
+  commentId: T:MYBooseApp.AppArray
+  href: MYBooseApp.AppArray.html
+  name: AppArray
+  nameWithType: AppArray
+  fullName: MYBooseApp.AppArray
+- uid: MYBooseApp.AppAsign
+  commentId: T:MYBooseApp.AppAsign
+  href: MYBooseApp.AppAsign.html
+  name: AppAsign
+  nameWithType: AppAsign
+  fullName: MYBooseApp.AppAsign
+- uid: MYBooseApp.AppBoolean
+  commentId: T:MYBooseApp.AppBoolean
+  href: MYBooseApp.AppBoolean.html
+  name: AppBoolean
+  nameWithType: AppBoolean
+  fullName: MYBooseApp.AppBoolean
+- uid: MYBooseApp.AppCall
+  commentId: T:MYBooseApp.AppCall
+  href: MYBooseApp.AppCall.html
+  name: AppCall
+  nameWithType: AppCall
+  fullName: MYBooseApp.AppCall
 - uid: MYBooseApp.AppCanvas
   commentId: T:MYBooseApp.AppCanvas
+  parent: MYBooseApp
   href: MYBooseApp.AppCanvas.html
   name: AppCanvas
   nameWithType: AppCanvas
   fullName: MYBooseApp.AppCanvas
+- uid: MYBooseApp.AppCircle
+  commentId: T:MYBooseApp.AppCircle
+  href: MYBooseApp.AppCircle.html
+  name: AppCircle
+  nameWithType: AppCircle
+  fullName: MYBooseApp.AppCircle
+- uid: MYBooseApp.AppClear
+  commentId: T:MYBooseApp.AppClear
+  href: MYBooseApp.AppClear.html
+  name: AppClear
+  nameWithType: AppClear
+  fullName: MYBooseApp.AppClear
 - uid: MYBooseApp.AppCommandFactory
   commentId: T:MYBooseApp.AppCommandFactory
   href: MYBooseApp.AppCommandFactory.html
   name: AppCommandFactory
   nameWithType: AppCommandFactory
   fullName: MYBooseApp.AppCommandFactory
-- uid: MYBooseApp.AppMoveto
-  commentId: T:MYBooseApp.AppMoveto
-  href: MYBooseApp.AppMoveto.html
-  name: AppMoveto
-  nameWithType: AppMoveto
-  fullName: MYBooseApp.AppMoveto
-- uid: MYBooseApp.AppParser
-  commentId: T:MYBooseApp.AppParser
-  href: MYBooseApp.AppParser.html
-  name: AppParser
-  nameWithType: AppParser
-  fullName: MYBooseApp.AppParser
+- uid: MYBooseApp.AppDrawTo
+  commentId: T:MYBooseApp.AppDrawTo
+  href: MYBooseApp.AppDrawTo.html
+  name: AppDrawTo
+  nameWithType: AppDrawTo
+  fullName: MYBooseApp.AppDrawTo
+- uid: MYBooseApp.AppElse
+  commentId: T:MYBooseApp.AppElse
+  href: MYBooseApp.AppElse.html
+  name: AppElse
+  nameWithType: AppElse
+  fullName: MYBooseApp.AppElse
+- uid: MYBooseApp.AppEndFor
+  commentId: T:MYBooseApp.AppEndFor
+  href: MYBooseApp.AppEndFor.html
+  name: AppEndFor
+  nameWithType: AppEndFor
+  fullName: MYBooseApp.AppEndFor
+- uid: MYBooseApp.AppEndIf
+  commentId: T:MYBooseApp.AppEndIf
+  href: MYBooseApp.AppEndIf.html
+  name: AppEndIf
+  nameWithType: AppEndIf
+  fullName: MYBooseApp.AppEndIf
+- uid: MYBooseApp.AppEndMethod
+  commentId: T:MYBooseApp.AppEndMethod
+  href: MYBooseApp.AppEndMethod.html
+  name: AppEndMethod
+  nameWithType: AppEndMethod
+  fullName: MYBooseApp.AppEndMethod
+- uid: MYBooseApp.AppEndWhile
+  commentId: T:MYBooseApp.AppEndWhile
+  href: MYBooseApp.AppEndWhile.html
+  name: AppEndWhile
+  nameWithType: AppEndWhile
+  fullName: MYBooseApp.AppEndWhile
+- uid: MYBooseApp.AppFor
+  commentId: T:MYBooseApp.AppFor
+  href: MYBooseApp.AppFor.html
+  name: AppFor
+  nameWithType: AppFor
+  fullName: MYBooseApp.AppFor
+- uid: MYBooseApp.AppIf
+  commentId: T:MYBooseApp.AppIf
+  href: MYBooseApp.AppIf.html
+  name: AppIf
+  nameWithType: AppIf
+  fullName: MYBooseApp.AppIf
+- uid: MYBooseApp.AppMethod
+  commentId: T:MYBooseApp.AppMethod
+  href: MYBooseApp.AppMethod.html
+  name: AppMethod
+  nameWithType: AppMethod
+  fullName: MYBooseApp.AppMethod
+- uid: MYBooseApp.AppMoveTo
+  commentId: T:MYBooseApp.AppMoveTo
+  href: MYBooseApp.AppMoveTo.html
+  name: AppMoveTo
+  nameWithType: AppMoveTo
+  fullName: MYBooseApp.AppMoveTo
+- uid: MYBooseApp.AppPeek
+  commentId: T:MYBooseApp.AppPeek
+  href: MYBooseApp.AppPeek.html
+  name: AppPeek
+  nameWithType: AppPeek
+  fullName: MYBooseApp.AppPeek
+- uid: MYBooseApp.AppPen
+  commentId: T:MYBooseApp.AppPen
+  href: MYBooseApp.AppPen.html
+  name: AppPen
+  nameWithType: AppPen
+  fullName: MYBooseApp.AppPen
+- uid: MYBooseApp.AppPenSize
+  commentId: T:MYBooseApp.AppPenSize
+  href: MYBooseApp.AppPenSize.html
+  name: AppPenSize
+  nameWithType: AppPenSize
+  fullName: MYBooseApp.AppPenSize
+- uid: MYBooseApp.AppPoke
+  commentId: T:MYBooseApp.AppPoke
+  href: MYBooseApp.AppPoke.html
+  name: AppPoke
+  nameWithType: AppPoke
+  fullName: MYBooseApp.AppPoke
+- uid: MYBooseApp.AppReal
+  commentId: T:MYBooseApp.AppReal
+  href: MYBooseApp.AppReal.html
+  name: AppReal
+  nameWithType: AppReal
+  fullName: MYBooseApp.AppReal
+- uid: MYBooseApp.AppRect
+  commentId: T:MYBooseApp.AppRect
+  href: MYBooseApp.AppRect.html
+  name: AppRect
+  nameWithType: AppRect
+  fullName: MYBooseApp.AppRect
+- uid: MYBooseApp.AppReset
+  commentId: T:MYBooseApp.AppReset
+  href: MYBooseApp.AppReset.html
+  name: AppReset
+  nameWithType: AppReset
+  fullName: MYBooseApp.AppReset
 - uid: MYBooseApp.AppStoredProgram
   commentId: T:MYBooseApp.AppStoredProgram
   href: MYBooseApp.AppStoredProgram.html
   name: AppStoredProgram
   nameWithType: AppStoredProgram
   fullName: MYBooseApp.AppStoredProgram
+- uid: MYBooseApp.AppTri
+  commentId: T:MYBooseApp.AppTri
+  href: MYBooseApp.AppTri.html
+  name: AppTri
+  nameWithType: AppTri
+  fullName: MYBooseApp.AppTri
+- uid: MYBooseApp.AppWhile
+  commentId: T:MYBooseApp.AppWhile
+  href: MYBooseApp.AppWhile.html
+  name: AppWhile
+  nameWithType: AppWhile
+  fullName: MYBooseApp.AppWhile
+- uid: MYBooseApp.AppWrite
+  commentId: T:MYBooseApp.AppWrite
+  href: MYBooseApp.AppWrite.html
+  name: AppWrite
+  nameWithType: AppWrite
+  fullName: MYBooseApp.AppWrite
+- uid: MYBooseApp.drawingApplication
+  commentId: T:MYBooseApp.drawingApplication
+  href: MYBooseApp.drawingApplication.html
+  name: drawingApplication
+  nameWithType: drawingApplication
+  fullName: MYBooseApp.drawingApplication
+- uid: MYBooseApp
+  commentId: N:MYBooseApp
+  href: MYBooseApp.html
+  name: MYBooseApp
+  nameWithType: MYBooseApp
+  fullName: MYBooseApp
