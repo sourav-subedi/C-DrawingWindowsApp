@@ -2,18 +2,17 @@
 using BOOSE;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace UnitTests.Shapes;
+namespace MyBooseAppUnitTest.Shapes;
 
 /// <summary>
-/// Unit tests for the DrawTo command using TestAppCanvas for thread-safe testing
-/// Tests are adjusted for current Set() behavior (splits on comma AND space)
+/// Unit tests for the <see cref="AppDrawTo"/> command using <see cref="TestAppCanvas"/> for thread-safe testing.
+/// These tests verify proper handling of X/Y coordinates with different separators, expressions, and invalid inputs.
 /// </summary>
 [TestClass]
 public class DrawToUnitTest
 {
-    // 1. Valid literal coordinates with space separator (current supported style)
     /// <summary>
-    /// Tests DrawTo with valid literal integers separated by space - should execute successfully
+    /// Verifies that <see cref="AppDrawTo"/> executes successfully with valid literal integers separated by space.
     /// </summary>
     [TestMethod]
     public void DrawTo_ValidLiteralsWithSpaceSeparator_ExecutesSuccessfully()
@@ -29,9 +28,8 @@ public class DrawToUnitTest
         canvas.Dispose();
     }
 
-    // 2. Valid literals with comma and spaces (current split removes empty entries)
     /// <summary>
-    /// Tests DrawTo with comma + spaces - should parse correctly
+    /// Verifies that <see cref="AppDrawTo"/> executes correctly with literals separated by commas and spaces.
     /// </summary>
     [TestMethod]
     public void DrawTo_ValidLiteralsWithCommaAndSpaces_ExecutesSuccessfully()
@@ -47,9 +45,8 @@ public class DrawToUnitTest
         canvas.Dispose();
     }
 
-    // 3. Simple expression without spaces inside (supported by current split)
     /// <summary>
-    /// Tests DrawTo with simple expressions that contain no spaces - should work
+    /// Verifies that <see cref="AppDrawTo"/> executes successfully with simple expressions that contain no spaces.
     /// </summary>
     [TestMethod]
     public void DrawTo_SimpleExpressionNoSpaces_ExecutesSuccessfully()
@@ -66,9 +63,8 @@ public class DrawToUnitTest
         canvas.Dispose();
     }
 
-    // 4. Missing second parameter - should throw in CheckParameters
     /// <summary>
-    /// Tests DrawTo with only one parameter - expects CommandException during validation
+    /// Verifies that <see cref="AppDrawTo"/> throws a <see cref="CommandException"/> when the Y parameter is missing.
     /// </summary>
     [TestMethod]
     [ExpectedException(typeof(CommandException))]
@@ -89,9 +85,8 @@ public class DrawToUnitTest
         }
     }
 
-    // 5. Invalid non-numeric X value - should throw during Execute
     /// <summary>
-    /// Tests DrawTo with invalid/non-numeric X coordinate - expects CommandException
+    /// Verifies that <see cref="AppDrawTo"/> throws a <see cref="CommandException"/> when X is invalid/non-numeric.
     /// </summary>
     [TestMethod]
     [ExpectedException(typeof(CommandException))]
@@ -112,10 +107,9 @@ public class DrawToUnitTest
         }
     }
 
-    // 6. Expression with spaces inside - should fail (documents current limitation)
     /// <summary>
-    /// Tests that expressions containing spaces are NOT supported in current version
-    /// (this test guards/expects the limitation of the current Set() split logic)
+    /// Verifies that <see cref="AppDrawTo"/> fails with expressions containing spaces.
+    /// This test documents a current limitation of the Set() split logic.
     /// </summary>
     [TestMethod]
     [ExpectedException(typeof(CommandException))]
@@ -126,7 +120,7 @@ public class DrawToUnitTest
         {
             var command = new AppDrawTo(canvas);
             command.Set(new StoredProgram(canvas), "100 + 50 200 - 30");
-            // This will split into more than 2 parts → CheckParameters should throw
+            // Splits into more than 2 parts → CheckParameters should throw
             command.CheckParameters(new[] { "100", "+", "50", "200", "-", "30" });
             command.Compile();
             command.Execute();

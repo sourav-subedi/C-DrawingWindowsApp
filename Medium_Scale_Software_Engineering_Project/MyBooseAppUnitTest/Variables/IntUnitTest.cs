@@ -2,18 +2,19 @@
 using BOOSE;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace UnitTests;
+namespace MyBooseAppUnitTest;
 
 /// <summary>
-/// Unit tests for the AppInt (integer variable declaration and assignment)
-/// using StoredProgram for variable management
+/// Unit tests for <see cref="AppInt"/> (integer variable declaration, assignment, and expressions)
+/// using <see cref="StoredProgram"/> for variable management.
+/// Tests include default initialization, literal and expression assignment, re-assignment, and error handling.
 /// </summary>
 [TestClass]
 public class AppIntUnitTest
 {
-    // 1. Declare integer without initialization → defaults to 0
     /// <summary>
-    /// Tests simple declaration "int count" - should create variable with value 0
+    /// Verifies that declaring an integer variable without an initial value
+    /// defaults the variable to 0.
     /// </summary>
     [TestMethod]
     public void AppInt_DeclareWithoutValue_DefaultsToZero()
@@ -31,9 +32,9 @@ public class AppIntUnitTest
         canvas.Dispose();
     }
 
-    // 2. Declare with literal initialization
     /// <summary>
-    /// Tests declaration with literal value "int score = 42" - should set correct value
+    /// Verifies that declaring an integer variable with a literal value
+    /// initializes it correctly.
     /// </summary>
     [TestMethod]
     public void AppInt_DeclareWithLiteral_InitializesCorrectly()
@@ -51,9 +52,9 @@ public class AppIntUnitTest
         canvas.Dispose();
     }
 
-    // 3. Declare with simple expression
     /// <summary>
-    /// Tests declaration with expression "int total = 10 + 35" - should evaluate and store
+    /// Verifies that declaring an integer variable with a simple expression
+    /// evaluates and stores the correct result.
     /// </summary>
     [TestMethod]
     public void AppInt_DeclareWithExpression_EvaluatesCorrectly()
@@ -71,9 +72,9 @@ public class AppIntUnitTest
         canvas.Dispose();
     }
 
-    // 4. Re-assign existing variable with new expression
     /// <summary>
-    /// Tests re-assignment "x = 100" after declaration - should update value
+    /// Verifies that re-assigning an existing integer variable with a new expression
+    /// updates its value correctly.
     /// </summary>
     [TestMethod]
     public void AppInt_ReassignExistingVariable_UpdatesValue()
@@ -96,9 +97,9 @@ public class AppIntUnitTest
         canvas.Dispose();
     }
 
-    // 5. Invalid expression during declaration → should throw
     /// <summary>
-    /// Tests declaration with invalid expression "int bad = hello" - expects CommandException
+    /// Verifies that declaring an integer variable with an invalid expression
+    /// throws a <see cref="CommandException"/>.
     /// </summary>
     [TestMethod]
     [ExpectedException(typeof(CommandException))]
@@ -119,9 +120,9 @@ public class AppIntUnitTest
         }
     }
 
-    // 6. Invalid expression during assignment → should throw
     /// <summary>
-    /// Tests assignment with invalid expression "x = abc" - expects CommandException
+    /// Verifies that assigning an invalid expression to an existing integer variable
+    /// throws a <see cref="CommandException"/>.
     /// </summary>
     [TestMethod]
     [ExpectedException(typeof(CommandException))]

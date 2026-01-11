@@ -2,132 +2,131 @@
 using BOOSE;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace UnitTests.Methods;
-
-/// <summary>
-/// Simple unit tests for custom method calling system (Method + Call + EndMethod)
-/// Tests are kept very minimal and literal
-/// </summary>
-[TestClass]
-public class MethodCallUnitTest
+namespace MyBooseAppUnitTest.Methods
 {
     /// <summary>
-    /// Test 1: Very basic void method declaration + call
-    /// Checks that method can be declared and called without crashing
+    /// Unit tests for the custom method system (<see cref="AppMethod"/>, <see cref="AppCall"/>, <see cref="AppEndMethod"/>).
+    /// Focused on verifying that methods can be declared, called, and executed correctly.
+    /// Minimal logic; primarily tests declaration, invocation, and parameter handling.
     /// </summary>
-    [TestMethod]
-    public void MethodCall_VoidMethod_NoArguments_ExecutesWithoutException()
+    [TestClass]
+    public class MethodCallUnitTest
     {
-        var canvas = new TestAppCanvas(200, 200);
-        var program = new AppStoredProgram(canvas);
+        /// <summary>
+        /// Verifies that a void method with no parameters can be declared and called without exceptions.
+        /// Ensures basic method declaration and execution functionality.
+        /// </summary>
+        [TestMethod]
+        public void MethodCall_VoidMethod_NoArguments_ExecutesWithoutException()
+        {
+            var canvas = new TestAppCanvas(200, 200);
+            var program = new AppStoredProgram(canvas);
 
-        // method drawSomething
-        var methodCmd = new AppMethod();
-        methodCmd.Set(program, "drawSomething");
-        methodCmd.Compile();
-        program.Add(methodCmd);
+            // Declare void method: drawSomething
+            var methodCmd = new AppMethod();
+            methodCmd.Set(program, "drawSomething");
+            methodCmd.Compile();
+            program.Add(methodCmd);
 
-        // (imagine empty body here)
+            // End of method
+            var endMethodCmd = new AppEndMethod();
+            endMethodCmd.Set(program, "");
+            endMethodCmd.Compile();
+            program.Add(endMethodCmd);
 
-        var endMethodCmd = new AppEndMethod();
-        endMethodCmd.Set(program, "");
-        endMethodCmd.Compile();
-        program.Add(endMethodCmd);
+            // Call drawSomething
+            var callCmd = new AppCall();
+            callCmd.Set(program, "drawSomething");
+            callCmd.Compile();
+            program.Add(callCmd);
 
-        // call drawSomething
-        var callCmd = new AppCall();
-        callCmd.Set(program, "drawSomething");
-        callCmd.Compile();
-        program.Add(callCmd);
+            program.SetSyntaxStatus(true);
+            program.ResetProgram();
 
-        program.SetSyntaxStatus(true);
-        program.ResetProgram();
+            // Execution should not throw
+            program.Run();
 
-        // Should not throw exception
-        program.Run();
+            Assert.IsTrue(true, "Void method declaration + call executed without exception");
 
-        Assert.IsTrue(true, "Void method declaration + call executed without exception");
+            canvas.Dispose();
+        }
 
-        canvas.Dispose();
-    }
+        /// <summary>
+        /// Verifies that a method returning <see cref="int"/> with no parameters can be declared and invoked safely.
+        /// Ensures that methods with return types execute without errors, even without parameters.
+        /// </summary>
+        [TestMethod]
+        public void MethodCall_IntReturnMethod_NoArguments_ExecutesSuccessfully()
+        {
+            var canvas = new TestAppCanvas(200, 200);
+            var program = new AppStoredProgram(canvas);
 
-    /// <summary>
-    /// Test 2: Method with int return type + simple call
-    /// Mainly checks that declaration + call doesn't crash
-    /// </summary>
-    [TestMethod]
-    public void MethodCall_IntReturnMethod_NoArguments_ExecutesSuccessfully()
-    {
-        var canvas = new TestAppCanvas(200, 200);
-        var program = new AppStoredProgram(canvas);
+            // Declare method: int getNumber
+            var methodCmd = new AppMethod();
+            methodCmd.Set(program, "int getNumber");
+            methodCmd.Compile();
+            program.Add(methodCmd);
 
-        // method int getNumber
-        var methodCmd = new AppMethod();
-        methodCmd.Set(program, "int getNumber");
-        methodCmd.Compile();
-        program.Add(methodCmd);
+            // End of method
+            var endMethodCmd = new AppEndMethod();
+            endMethodCmd.Set(program, "");
+            endMethodCmd.Compile();
+            program.Add(endMethodCmd);
 
-        // (body would set getNumber = 42, but we skip for minimal test)
+            // Call getNumber
+            var callCmd = new AppCall();
+            callCmd.Set(program, "getNumber");
+            callCmd.Compile();
+            program.Add(callCmd);
 
-        var endMethodCmd = new AppEndMethod();
-        endMethodCmd.Set(program, "");
-        endMethodCmd.Compile();
-        program.Add(endMethodCmd);
+            program.SetSyntaxStatus(true);
+            program.ResetProgram();
 
-        // call getNumber
-        var callCmd = new AppCall();
-        callCmd.Set(program, "getNumber");
-        callCmd.Compile();
-        program.Add(callCmd);
+            // Execution should not throw
+            program.Run();
 
-        program.SetSyntaxStatus(true);
-        program.ResetProgram();
+            Assert.IsTrue(true, "Method with int return type + call executed without exception");
 
-        // Just testing that it runs without crashing
-        program.Run();
+            canvas.Dispose();
+        }
 
-        Assert.IsTrue(true, "Method with int return type + call executed without exception");
+        /// <summary>
+        /// Verifies that a method with two <see cref="int"/> parameters can be declared and called with literal arguments.
+        /// Ensures proper handling of parameter passing and method invocation.
+        /// </summary>
+        [TestMethod]
+        public void MethodCall_MethodWithTwoIntParameters_CanBeCalled()
+        {
+            var canvas = new TestAppCanvas(200, 200);
+            var program = new AppStoredProgram(canvas);
 
-        canvas.Dispose();
-    }
+            // Declare method: int add int a, int b
+            var methodCmd = new AppMethod();
+            methodCmd.Set(program, "int add int a, int b");
+            methodCmd.Compile();
+            program.Add(methodCmd);
 
-    /// <summary>
-    /// Test 3: Method with two int parameters + call with arguments
-    /// Checks basic parameter passing path (only existence, no value checking)
-    /// </summary>
-    [TestMethod]
-    public void MethodCall_MethodWithTwoIntParameters_CanBeCalled()
-    {
-        var canvas = new TestAppCanvas(200, 200);
-        var program = new AppStoredProgram(canvas);
+            // End of method
+            var endMethodCmd = new AppEndMethod();
+            endMethodCmd.Set(program, "");
+            endMethodCmd.Compile();
+            program.Add(endMethodCmd);
 
-        // method int add int a, int b
-        var methodCmd = new AppMethod();
-        methodCmd.Set(program, "int add int a, int b");
-        methodCmd.Compile();
-        program.Add(methodCmd);
+            // Call add 10 20
+            var callCmd = new AppCall();
+            callCmd.Set(program, "add 10 20");
+            callCmd.Compile();
+            program.Add(callCmd);
 
-        // (body would compute a + b, skipped in minimal test)
+            program.SetSyntaxStatus(true);
+            program.ResetProgram();
 
-        var endMethodCmd = new AppEndMethod();
-        endMethodCmd.Set(program, "");
-        endMethodCmd.Compile();
-        program.Add(endMethodCmd);
+            // Execution should not throw
+            program.Run();
 
-        // call add 10 20
-        var callCmd = new AppCall();
-        callCmd.Set(program, "add 10 20");
-        callCmd.Compile();
-        program.Add(callCmd);
+            Assert.IsTrue(true, "Method with two int parameters + call with literals executed successfully");
 
-        program.SetSyntaxStatus(true);
-        program.ResetProgram();
-
-        // Should not crash during parameter creation & call
-        program.Run();
-
-        Assert.IsTrue(true, "Method with two int parameters + call with literals executed successfully");
-
-        canvas.Dispose();
+            canvas.Dispose();
+        }
     }
 }

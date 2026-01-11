@@ -1,66 +1,62 @@
 ﻿using MYBooseApp;
 using BOOSE;
 
-namespace UnitTests.Shapes;
+namespace MyBooseAppUnitTest.Shapes;
 
 /// <summary>
-/// Circle command unit tests using TestAppCanvas for thread-safe testing
+/// Unit tests for the <see cref="AppCircle"/> command using <see cref="TestAppCanvas"/> for thread-safe testing.
+/// These tests verify correct handling of radius and filled parameters, including valid and invalid inputs.
 /// </summary>
 [TestClass]
 public class CircleUnitTest
 {
-    // 1. Valid radius, no filled flag
     /// <summary>
-    /// Commands Circle with valid radius and checks for successful execution
+    /// Verifies that a circle with a valid radius and no filled flag executes successfully.
     /// </summary>
     [TestMethod]
     public void Circle_ValidRadius_ExecutesSuccessfully()
     {
-        // Create independent TestAppCanvas for this test
         var canvas = new TestAppCanvas(200, 200);
         AppCircle command = new AppCircle(canvas);
         command.Set(new StoredProgram(canvas), "50");
         command.CheckParameters(new[] { "50" });
         command.Compile();
         command.Execute();
-        canvas.Dispose(); // Clean up resources
+        canvas.Dispose();
     }
 
-    // 2. Valid radius, filled = true
     /// <summary>
-    /// Commands Circle with valid radius and filled flag set to true, checks for successful execution
+    /// Verifies that a circle with a valid radius and <c>filled = true</c> executes successfully.
     /// </summary>
     [TestMethod]
     public void Circle_FilledTrue_ExecutesSuccessfully()
     {
         var canvas = new TestAppCanvas(200, 200);
         AppCircle command = new AppCircle(canvas);
-        command.Set(new StoredProgram(canvas), "30,true"); 
+        command.Set(new StoredProgram(canvas), "30,true");
         command.CheckParameters(new[] { "30", "true" });
         command.Compile();
         command.Execute();
         canvas.Dispose();
     }
 
-    // 3. Valid radius, filled = false explicitly
     /// <summary>
-    /// Commands Circle with valid radius and filled flag set to false, checks for successful execution
+    /// Verifies that a circle with a valid radius and <c>filled = false</c> executes successfully.
     /// </summary>
     [TestMethod]
     public void Circle_FilledFalse_ExecutesSuccessfully()
     {
         var canvas = new TestAppCanvas(200, 200);
         AppCircle command = new AppCircle(canvas);
-        command.Set(new StoredProgram(canvas), "25,false"); 
+        command.Set(new StoredProgram(canvas), "25,false");
         command.CheckParameters(new[] { "25", "false" });
         command.Compile();
         command.Execute();
         canvas.Dispose();
     }
 
-    // 4. Radius = 0 → should throw CommandException
     /// <summary>
-    /// Commands Circle with radius zero and expects a CommandException
+    /// Verifies that a circle with radius zero throws a <see cref="CommandException"/>.
     /// </summary>
     [TestMethod]
     [ExpectedException(typeof(CommandException))]
@@ -73,7 +69,7 @@ public class CircleUnitTest
             command.Set(new StoredProgram(canvas), "0");
             command.CheckParameters(new[] { "0" });
             command.Compile();
-            command.Execute(); // Should throw
+            command.Execute();
         }
         finally
         {
@@ -81,9 +77,8 @@ public class CircleUnitTest
         }
     }
 
-    // 5. Radius < 0 → should throw CommandException
     /// <summary>
-    /// Commands Circle with negative radius and expects a CommandException
+    /// Verifies that a circle with a negative radius throws a <see cref="CommandException"/>.
     /// </summary>
     [TestMethod]
     [ExpectedException(typeof(CommandException))]
@@ -96,7 +91,7 @@ public class CircleUnitTest
             command.Set(new StoredProgram(canvas), "-10");
             command.CheckParameters(new[] { "-10" });
             command.Compile();
-            command.Execute(); // Should throw
+            command.Execute();
         }
         finally
         {
@@ -104,9 +99,8 @@ public class CircleUnitTest
         }
     }
 
-    // 6. Invalid filled flag → should throw CommandException
     /// <summary>
-    /// Commands Circle with invalid filled flag and expects a CommandException
+    /// Verifies that a circle with an invalid filled flag throws a <see cref="CommandException"/>.
     /// </summary>
     [TestMethod]
     [ExpectedException(typeof(CommandException))]
@@ -116,7 +110,7 @@ public class CircleUnitTest
         try
         {
             AppCircle command = new AppCircle(canvas);
-            command.Set(new StoredProgram(canvas), "40,wrongflag"); 
+            command.Set(new StoredProgram(canvas), "40,wrongflag");
             command.CheckParameters(new[] { "40", "wrongflag" });
             command.Compile();
             command.Execute();

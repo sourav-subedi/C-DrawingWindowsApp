@@ -2,18 +2,19 @@
 using BOOSE;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace UnitTests;
+namespace MyBooseAppUnitTest;
 
 /// <summary>
-/// Unit tests for the AppReal (double/real variable declaration and assignment)
-/// using StoredProgram for variable management
+/// Unit tests for <see cref="AppReal"/> (real/double variable declaration, assignment, and expressions)
+/// using <see cref="StoredProgram"/> for variable management.
+/// Tests include default initialization, literal and expression assignment, re-assignment, and error handling.
 /// </summary>
 [TestClass]
 public class AppRealUnitTest
 {
-    // 1. Declare real without initialization → defaults to 0.0
     /// <summary>
-    /// Tests simple declaration "real pi" - should create variable with value 0.0
+    /// Verifies that declaring a real variable without an initial value
+    /// defaults the variable to 0.0.
     /// </summary>
     [TestMethod]
     public void AppReal_DeclareWithoutValue_DefaultsToZero()
@@ -32,9 +33,9 @@ public class AppRealUnitTest
         canvas.Dispose();
     }
 
-    // 2. Declare with literal initialization
     /// <summary>
-    /// Tests declaration with literal value "real temperature = 23.5" - should set correct value
+    /// Verifies that declaring a real variable with a literal value
+    /// initializes it correctly.
     /// </summary>
     [TestMethod]
     public void AppReal_DeclareWithLiteral_InitializesCorrectly()
@@ -53,9 +54,9 @@ public class AppRealUnitTest
         canvas.Dispose();
     }
 
-    // 3. Declare with simple expression
     /// <summary>
-    /// Tests declaration with expression "real area = 3.14 * 5 * 5" - should evaluate correctly
+    /// Verifies that declaring a real variable with a simple expression
+    /// evaluates and stores the correct result.
     /// </summary>
     [TestMethod]
     public void AppReal_DeclareWithExpression_EvaluatesCorrectly()
@@ -74,9 +75,9 @@ public class AppRealUnitTest
         canvas.Dispose();
     }
 
-    // 4. Re-assign existing variable with new value/expression
     /// <summary>
-    /// Tests re-assignment "distance = 100.75" after declaration - should update value
+    /// Verifies that re-assigning an existing real variable with a new value or expression
+    /// updates its value correctly.
     /// </summary>
     [TestMethod]
     public void AppReal_ReassignExistingVariable_UpdatesValue()
@@ -104,9 +105,9 @@ public class AppRealUnitTest
         canvas.Dispose();
     }
 
-    // 5. Invalid expression during declaration → should throw CommandException
     /// <summary>
-    /// Tests declaration with invalid expression "real invalid = hello * 3.5" - expects CommandException
+    /// Verifies that declaring a real variable with an invalid expression
+    /// throws a <see cref="CommandException"/>.
     /// </summary>
     [TestMethod]
     [ExpectedException(typeof(CommandException))]
@@ -127,9 +128,9 @@ public class AppRealUnitTest
         }
     }
 
-    // 6. Invalid expression during assignment → should throw CommandException
     /// <summary>
-    /// Tests assignment with invalid expression "distance = abc + 2.5" - expects CommandException
+    /// Verifies that assigning an invalid expression to an existing real variable
+    /// throws a <see cref="CommandException"/>.
     /// </summary>
     [TestMethod]
     [ExpectedException(typeof(CommandException))]

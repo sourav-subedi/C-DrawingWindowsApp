@@ -2,18 +2,17 @@
 using BOOSE;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace UnitTests.Shapes;
+namespace MyBooseAppUnitTest.Shapes;
 
 /// <summary>
-/// Unit tests for the Triangle command using TestAppCanvas for thread-safe testing
-/// Tests are adjusted for current Set() behavior (splits on comma AND space)
+/// Unit tests for the <see cref="AppTri"/> command using <see cref="TestAppCanvas"/> for thread-safe testing.
+/// Tests cover valid dimensions, comma/space-separated input, expressions, zero values, and space-containing expressions.
 /// </summary>
 [TestClass]
 public class TriangleUnitTest
 {
-    // 1. Valid literal dimensions (space separated)
     /// <summary>
-    /// Tests Triangle with valid literal width/height - should execute successfully
+    /// Verifies that <see cref="AppTri"/> executes successfully with valid literal width and height.
     /// </summary>
     [TestMethod]
     public void Triangle_ValidLiteralDimensions_ExecutesSuccessfully()
@@ -29,9 +28,8 @@ public class TriangleUnitTest
         canvas.Dispose();
     }
 
-    // 2. Valid literals with comma and spaces
     /// <summary>
-    /// Tests Triangle with comma + spaces around parameters - should parse correctly
+    /// Verifies that <see cref="AppTri"/> executes successfully when width and height are provided with commas and spaces.
     /// </summary>
     [TestMethod]
     public void Triangle_ValidLiteralsWithCommaAndSpaces_ExecutesSuccessfully()
@@ -47,9 +45,8 @@ public class TriangleUnitTest
         canvas.Dispose();
     }
 
-    // 3. Simple expression without spaces (supported by current split)
     /// <summary>
-    /// Tests Triangle with simple expressions (no spaces) for width/height - should work
+    /// Verifies that <see cref="AppTri"/> executes successfully with simple expressions (no spaces) for width and height.
     /// </summary>
     [TestMethod]
     public void Triangle_SimpleExpressionNoSpaces_ExecutesSuccessfully()
@@ -66,9 +63,8 @@ public class TriangleUnitTest
         canvas.Dispose();
     }
 
-    // 4. Zero dimension - should throw BOOSEException
     /// <summary>
-    /// Tests Triangle with zero width - expects BOOSEException (must be positive)
+    /// Verifies that <see cref="AppTri"/> throws a <see cref="BOOSEException"/> when width is zero.
     /// </summary>
     [TestMethod]
     [ExpectedException(typeof(BOOSEException))]
@@ -89,11 +85,9 @@ public class TriangleUnitTest
         }
     }
 
-
-    // 5. Expression with spaces inside - should fail (current limitation)
     /// <summary>
-    /// Documents that expressions containing spaces are not supported in current version
-    /// (splits into multiple parts → validation fails in CheckParameters)
+    /// Verifies that <see cref="AppTri"/> throws a <see cref="CommandException"/> when expressions contain spaces.
+    /// Documents current limitation: inputs split into multiple parts fail validation.
     /// </summary>
     [TestMethod]
     [ExpectedException(typeof(CommandException))]

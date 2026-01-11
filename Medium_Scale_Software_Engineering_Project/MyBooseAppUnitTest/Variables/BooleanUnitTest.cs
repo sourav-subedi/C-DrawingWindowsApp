@@ -2,18 +2,19 @@
 using BOOSE;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace UnitTests;
+namespace MyBooseAppUnitTest;
 
 /// <summary>
-/// Unit tests for the AppBoolean (boolean variable declaration and assignment)
-/// using StoredProgram for variable management
+/// Unit tests for <see cref="AppBoolean"/> (boolean variable declaration, assignment, and expressions)
+/// using <see cref="StoredProgram"/> for variable management.
+/// Tests include default initialization, literal assignment, invalid expression handling, and boolean operations.
 /// </summary>
 [TestClass]
 public class AppBooleanUnitTest
 {
-    // 1. Declare boolean without initialization → defaults to false
     /// <summary>
-    /// Tests simple declaration "boolean flag" - should create variable with value false
+    /// Verifies that declaring a boolean variable without an initial value
+    /// defaults the variable to false.
     /// </summary>
     [TestMethod]
     public void AppBoolean_DeclareWithoutValue_DefaultsToFalse()
@@ -32,9 +33,9 @@ public class AppBooleanUnitTest
         canvas.Dispose();
     }
 
-    // 2. Declare with literal true
     /// <summary>
-    /// Tests declaration with literal value "boolean isActive = true" - should set value to true
+    /// Verifies that declaring a boolean variable with a literal true
+    /// sets the variable value to true.
     /// </summary>
     [TestMethod]
     public void AppBoolean_DeclareWithTrueLiteral_SetsTrue()
@@ -53,9 +54,9 @@ public class AppBooleanUnitTest
         canvas.Dispose();
     }
 
-    // 3. Declare with literal false
     /// <summary>
-    /// Tests declaration with literal value "boolean debug = false" - should set value to false
+    /// Verifies that declaring a boolean variable with a literal false
+    /// sets the variable value to false.
     /// </summary>
     [TestMethod]
     public void AppBoolean_DeclareWithFalseLiteral_SetsFalse()
@@ -74,10 +75,9 @@ public class AppBooleanUnitTest
         canvas.Dispose();
     }
 
-
-    // 4. Invalid expression during assignment → should throw CommandException
     /// <summary>
-    /// Tests assignment with invalid expression "flag = hello and world" expects CommandException
+    /// Verifies that assigning an invalid expression to a boolean variable
+    /// throws a <see cref="CommandException"/>.
     /// </summary>
     [TestMethod]
     [ExpectedException(typeof(CommandException))]
@@ -103,9 +103,9 @@ public class AppBooleanUnitTest
         }
     }
 
-    // 5. Re-assignment using existing boolean variable in expression
     /// <summary>
-    /// Tests re-assignment using another boolean "status = isActive || debug" - evaluates correctly
+    /// Verifies that a boolean variable can be reassigned using other boolean variables
+    /// in a logical expression and evaluates correctly.
     /// </summary>
     [TestMethod]
     public void AppBoolean_ReassignWithOtherBoolean_EvaluatesCorrectly()

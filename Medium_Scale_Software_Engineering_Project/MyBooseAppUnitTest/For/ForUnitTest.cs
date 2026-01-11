@@ -2,116 +2,119 @@
 using BOOSE;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace UnitTests.Loops;
-
-/// <summary>
-/// Unit tests for ForCommand and EndForCommand using TestAppCanvas for thread-safe testing
-/// Tests are minimal and literal-only to work within BOOSE StoredProgram limitations
-/// </summary>
-[TestClass]
-public class ForUnitTest
+namespace MyBooseAppUnitTest.Loops
 {
     /// <summary>
-    /// Tests a for loop with start > end (zero iterations): body should not execute
+    /// Unit tests for <see cref="AppFor"/> and <see cref="AppEndFor"/> commands.
+    /// Uses <see cref="TestAppCanvas"/> for thread-safe testing.
+    /// Tests are minimal and literal-only to work within the constraints of the BOOSE <see cref="StoredProgram"/>.
     /// </summary>
-    [TestMethod]
-    public void For_ZeroIterations_ExecutesSuccessfully()
+    [TestClass]
+    public class ForUnitTest
     {
-        var canvas = new TestAppCanvas(200, 200);
-        var program = new AppStoredProgram(canvas);
-
-        try
+        /// <summary>
+        /// Tests a for loop with start value greater than end value.
+        /// Verifies that the loop body does not execute and the loop variable is not created.
+        /// </summary>
+        [TestMethod]
+        public void For_ZeroIterations_ExecutesSuccessfully()
         {
-            // 1. Create commands
+            var canvas = new TestAppCanvas(200, 200);
+            var program = new AppStoredProgram(canvas);
+
+            try
+            {
+                // Create For and EndFor commands
+                var forCmd = new AppFor();
+                forCmd.Set(program, "i = 5 to 3");  // start > end → zero iterations
+
+                var endForCmd = new AppEndFor();
+                endForCmd.Set(program, "");         // EndFor command
+
+                // Add commands in order (internal linking occurs)
+                program.Add(forCmd);
+                program.Add(endForCmd);
+
+                // Prepare program for execution
+                program.ResetProgram();
+
+                // Execute program
+                program.Run();
+
+                // Verify the loop variable was not created
+                Assert.IsFalse(program.VariableExists("i"),
+                    "Loop variable 'i' should not exist after a zero-iteration loop");
+            }
+            finally
+            {
+                canvas.Dispose();
+            }
+        }
+
+        /// <summary>
+        /// Tests a for loop with an ascending range that executes exactly one iteration.
+        /// Verifies successful compilation and execution of the loop.
+        /// </summary>
+        [TestMethod]
+        public void For_AscendingOneIteration_ExecutesSuccessfully()
+        {
+            var canvas = new TestAppCanvas(200, 200);
+            var program = new AppStoredProgram(canvas);
+
+            // For loop with ascending range
             var forCmd = new AppFor();
-            forCmd.Set(program, "i = 5 to 3");  // start > end → zero iterations
+            forCmd.Set(program, "i = 1 to 2");  // 1 iteration
+            forCmd.CheckParameters(new[] { "i = 1 to 2" });
+            forCmd.Compile();
+            program.Add(forCmd);
 
             var endForCmd = new AppEndFor();
-            endForCmd.Set(program, "");         // empty or "for" — match your parser
-
-            // 2. Add in correct order (this should trigger linking internally)
-            program.Add(forCmd);
-            // program.Add(... any body commands ...);  ← intentionally skipped
+            endForCmd.Set(program, "");
+            endForCmd.CheckParameters(new string[] { });
+            endForCmd.Compile();
             program.Add(endForCmd);
 
-            // 3. Prepare/Reset (most BOOSE-like systems do linking or init here)
-            program.ResetProgram();   // ← usually enough — triggers any lazy init/linking
-
-            // 4. Run — should exit immediately without exception
+            program.SetSyntaxStatus(true);
+            program.ResetProgram();
             program.Run();
 
-            // 5. Basic success assertions
-            Assert.IsFalse(program.VariableExists("i"),
-                "Loop variable 'i' should not exist after a zero-iteration loop");
+            // Success: loop executed without exception
+            Assert.IsTrue(true, "For loop with ascending range executed successfully");
 
-            // If your program exposes final PC:
-            // Assert.AreEqual(program.Count, program.PC, "PC should be at end after zero iterations");
-        }
-        finally
-        {
             canvas.Dispose();
         }
-    }
 
-    /// <summary>
-    /// Tests a for loop with ascending range (1 iteration): body executes once
-    /// </summary>
-    [TestMethod]
-    public void For_AscendingOneIteration_ExecutesSuccessfully()
-    {
-        var canvas = new TestAppCanvas(200, 200);
-        var program = new AppStoredProgram(canvas);
+        /// <summary>
+        /// Tests a for loop with a descending range using a negative step.
+        /// Ensures the loop executes correctly for one iteration and compiles without errors.
+        /// </summary>
+        [TestMethod]
+        public void For_DescendingOneIteration_ExecutesSuccessfully()
+        {
+            var canvas = new TestAppCanvas(200, 200);
+            var program = new AppStoredProgram(canvas);
 
-        var forCmd = new AppFor();
-        forCmd.Set(program, "i = 1 to 2");  // 1 iteration
-        forCmd.CheckParameters(new[] { "i = 1 to 2" });
-        forCmd.Compile();
-        program.Add(forCmd);
+            // For loop with descending range and negative step
+            var forCmd = new AppFor();
+            forCmd.Set(program, "i = 5 to 4 step -1");  // 1 iteration (descending)
+            forCmd.CheckParameters(new[] { "i = 5 to 4 step -1" });
+            forCmd.Compile();
+            program.Add(forCmd);
 
-        var endForCmd = new AppEndFor();
-        endForCmd.Set(program, "");
-        endForCmd.CheckParameters(new string[] { });
-        endForCmd.Compile();
-        program.Add(endForCmd);
+            var endForCmd = new AppEndFor();
+            endForCmd.Set(program, "");
+            endForCmd.CheckParameters(new string[] { });
+            endForCmd.Compile();
+            program.Add(endForCmd);
 
-        program.SetSyntaxStatus(true);
-        program.ResetProgram();
-        program.Run();
+            program.SetSyntaxStatus(true);
+            program.ResetProgram();
+            program.Run();
 
-        // Success: short loop ran without exception
-        Assert.IsTrue(true, "For loop with one iteration compiled and executed successfully");
+            // Success: descending loop executed without exception
+            Assert.IsTrue(true, "For loop with descending range executed successfully");
 
-        canvas.Dispose();
-    }
-
-    /// <summary>
-    /// Tests a for loop with descending range (step negative): body executes once
-    /// </summary>
-    [TestMethod]
-    public void For_DescendingOneIteration_ExecutesSuccessfully()
-    {
-        var canvas = new TestAppCanvas(200, 200);
-        var program = new AppStoredProgram(canvas);
-
-        var forCmd = new AppFor();
-        forCmd.Set(program, "i = 5 to 4 step -1");  // 1 iteration (descending)
-        forCmd.CheckParameters(new[] { "i = 5 to 4 step -1" });
-        forCmd.Compile();
-        program.Add(forCmd);
-
-        var endForCmd = new AppEndFor();
-        endForCmd.Set(program, "");
-        endForCmd.CheckParameters(new string[] { });
-        endForCmd.Compile();
-        program.Add(endForCmd);
-
-        program.SetSyntaxStatus(true);
-        program.ResetProgram();
-        program.Run();
-
-        // Success: short descending loop ran without exception
-        Assert.IsTrue(true, "For loop with descending one iteration compiled and executed successfully");
-
-        canvas.Dispose();
+            canvas.Dispose();
+        }
     }
 }

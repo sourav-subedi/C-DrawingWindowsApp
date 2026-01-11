@@ -2,17 +2,18 @@ using MYBooseApp;
 using BOOSE;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace UnitTests;
+namespace MyBooseAppUnitTest;
 
 /// <summary>
-/// Unit tests for the array system: AppArray (declaration), AppPoke (write), PeekCommand (read)
+/// Unit tests for the array system: <see cref="AppArray"/> (declaration),
+/// <see cref="AppPoke"/> (write), and <see cref="AppPeek"/> (read).
+/// Tests include declaration, poke, peek, expression evaluation, and index validation.
 /// </summary>
 [TestClass]
 public class ArrayUnitTest
 {
-    // 1. Declare int array successfully
     /// <summary>
-    /// Tests declaration of an integer array "array int scores 5" - should create array with size 5
+    /// Verifies that an integer array can be declared successfully with a given size.
     /// </summary>
     [TestMethod]
     public void Array_DeclareIntArray_Success()
@@ -33,9 +34,8 @@ public class ArrayUnitTest
         canvas.Dispose();
     }
 
-    // 2. Declare real array successfully
     /// <summary>
-    /// Tests declaration of a real array "array real temps 10" - should create array with size 10
+    /// Verifies that a real array can be declared successfully with a given size.
     /// </summary>
     [TestMethod]
     public void Array_DeclareRealArray_Success()
@@ -56,9 +56,8 @@ public class ArrayUnitTest
         canvas.Dispose();
     }
 
-    // 3. Poke integer value into int array (literal)
     /// <summary>
-    /// Tests poke command "poke scores 2 = 85" - should set index 2 to 85
+    /// Verifies that an integer value can be poked into an integer array at a specified index.
     /// </summary>
     [TestMethod]
     public void Poke_IntLiteral_SetsCorrectly()
@@ -70,7 +69,7 @@ public class ArrayUnitTest
         arrCmd.Compile();
 
         var pokeCmd = new AppPoke();
-        pokeCmd.Set(program, "scores 2 = 85");  
+        pokeCmd.Set(program, "scores 2 = 85");
         pokeCmd.Compile();
         pokeCmd.Execute();
 
@@ -80,9 +79,8 @@ public class ArrayUnitTest
         canvas.Dispose();
     }
 
-    // 4. Poke real value into real array (expression)
     /// <summary>
-    /// Tests poke with expression "poke temps 3 = 36.6 + 0.4" - should set index 3 to 37.0
+    /// Verifies that a real expression can be poked into a real array at a specified index.
     /// </summary>
     [TestMethod]
     public void Poke_RealExpression_SetsCorrectly()
@@ -94,7 +92,7 @@ public class ArrayUnitTest
         arrCmd.Compile();
 
         var pokeCmd = new AppPoke();
-        pokeCmd.Set(program, "temps 3 = 36.6 + 0.4");   
+        pokeCmd.Set(program, "temps 3 = 36.6 + 0.4");
         pokeCmd.Compile();
         pokeCmd.Execute();
 
@@ -104,9 +102,8 @@ public class ArrayUnitTest
         canvas.Dispose();
     }
 
-    // 5. Peek from int array into int variable
     /// <summary>
-    /// Tests peek "peek result = scores 2" after poke - should copy value 85 to result
+    /// Verifies that a value can be peeked from an integer array into an integer variable.
     /// </summary>
     [TestMethod]
     public void Peek_IntArrayToIntVariable_CopiesCorrectly()
@@ -121,7 +118,7 @@ public class ArrayUnitTest
 
         // Poke value
         var pokeCmd = new AppPoke();
-        pokeCmd.Set(program, "scores 2 = 85");  
+        pokeCmd.Set(program, "scores 2 = 85");
         pokeCmd.Compile();
         pokeCmd.Execute();
 
@@ -132,7 +129,7 @@ public class ArrayUnitTest
 
         // Peek
         var peekCmd = new AppPeek();
-        peekCmd.Set(program, "result = scores 2");   
+        peekCmd.Set(program, "result = scores 2");
         peekCmd.Compile();
         peekCmd.Execute();
 
@@ -142,9 +139,8 @@ public class ArrayUnitTest
         canvas.Dispose();
     }
 
-    // 6. Index out of bounds on poke - should throw
     /// <summary>
-    /// Tests poke with invalid index "poke scores 10 = 99" - expects CommandException
+    /// Verifies that poking a value into an array at an out-of-bounds index throws a <see cref="CommandException"/>.
     /// </summary>
     [TestMethod]
     [ExpectedException(typeof(CommandException))]
@@ -160,9 +156,9 @@ public class ArrayUnitTest
         try
         {
             var pokeCmd = new AppPoke();
-            pokeCmd.Set(program, "scores 10 = 99");   
+            pokeCmd.Set(program, "scores 10 = 99");
             pokeCmd.Compile();
-            pokeCmd.Execute();  // Should throw here
+            pokeCmd.Execute();  // Should throw
         }
         finally
         {

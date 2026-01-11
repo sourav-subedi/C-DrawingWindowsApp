@@ -2,18 +2,17 @@
 using BOOSE;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace UnitTests.Shapes;
+namespace MyBooseAppUnitTest.Shapes;
 
 /// <summary>
-/// Unit tests for the Rectangle command using TestAppCanvas for thread-safe testing
-/// Tests are adjusted for current Set() behavior (splits on comma AND space)
+/// Unit tests for the <see cref="AppRect"/> command using <see cref="TestAppCanvas"/> for thread-safe testing.
+/// These tests verify handling of valid rectangle dimensions, filled flags, expressions, and invalid input.
 /// </summary>
 [TestClass]
 public class RectangleUnitTest
 {
-    // 1. Valid literal dimensions, no filled flag
     /// <summary>
-    /// Tests Rectangle with valid literal width/height, no filled flag - should execute successfully
+    /// Verifies that <see cref="AppRect"/> executes successfully with valid literal width and height.
     /// </summary>
     [TestMethod]
     public void Rectangle_ValidLiteralDimensions_ExecutesSuccessfully()
@@ -29,9 +28,8 @@ public class RectangleUnitTest
         canvas.Dispose();
     }
 
-    // 2. Valid literals with comma and spaces, filled = true
     /// <summary>
-    /// Tests Rectangle with comma + spaces and filled flag - should parse and execute correctly
+    /// Verifies that <see cref="AppRect"/> executes successfully when width, height, and filled flag are provided with commas and spaces.
     /// </summary>
     [TestMethod]
     public void Rectangle_WithFilledTrue_ExecutesSuccessfully()
@@ -47,9 +45,8 @@ public class RectangleUnitTest
         canvas.Dispose();
     }
 
-    // 3. Simple expressions without spaces (supported by current split)
     /// <summary>
-    /// Tests Rectangle with simple expressions (no spaces) for width/height - should work
+    /// Verifies that <see cref="AppRect"/> executes successfully with simple expressions (no spaces) for width and height.
     /// </summary>
     [TestMethod]
     public void Rectangle_SimpleExpressionNoSpaces_ExecutesSuccessfully()
@@ -66,9 +63,8 @@ public class RectangleUnitTest
         canvas.Dispose();
     }
 
-    // 4. Zero dimension - should throw CommandException
     /// <summary>
-    /// Tests Rectangle with zero width - expects CommandException (must be positive)
+    /// Verifies that <see cref="AppRect"/> throws a <see cref="CommandException"/> when width is zero.
     /// </summary>
     [TestMethod]
     [ExpectedException(typeof(CommandException))]
@@ -89,9 +85,8 @@ public class RectangleUnitTest
         }
     }
 
-    // 5. Invalid/non-numeric width - should throw during Execute
     /// <summary>
-    /// Tests Rectangle with invalid/non-numeric width value - expects CommandException
+    /// Verifies that <see cref="AppRect"/> throws a <see cref="CommandException"/> when width is invalid/non-numeric.
     /// </summary>
     [TestMethod]
     [ExpectedException(typeof(CommandException))]
@@ -112,10 +107,9 @@ public class RectangleUnitTest
         }
     }
 
-    // 6. Expression with spaces inside - should fail (current limitation)
     /// <summary>
-    /// Documents that expressions containing spaces are not supported in current version
-    /// (splits into multiple parts → validation fails)
+    /// Verifies that <see cref="AppRect"/> throws a <see cref="CommandException"/> when expressions contain spaces.
+    /// Documents current limitation: inputs split into multiple parts fail validation.
     /// </summary>
     [TestMethod]
     [ExpectedException(typeof(CommandException))]

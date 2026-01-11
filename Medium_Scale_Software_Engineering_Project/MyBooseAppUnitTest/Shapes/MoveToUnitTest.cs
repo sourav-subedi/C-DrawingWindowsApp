@@ -2,18 +2,17 @@
 using BOOSE;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace UnitTests.Shapes;
+namespace MyBooseAppUnitTest.Shapes;
 
 /// <summary>
-/// Unit tests for the MoveTo command using TestAppCanvas for thread-safe testing
-/// Tests are adjusted for current Set() behavior (splits on comma AND space)
+/// Unit tests for the <see cref="AppMoveTo"/> command using <see cref="TestAppCanvas"/> for thread-safe testing.
+/// These tests verify proper handling of X/Y coordinates with different separators, expressions, and invalid inputs.
 /// </summary>
 [TestClass]
 public class MoveToUnitTest
 {
-    // 1. Valid literal coordinates with space separator (current supported style)
     /// <summary>
-    /// Tests MoveTo with valid literal integers separated by space - should execute successfully
+    /// Verifies that <see cref="AppMoveTo"/> executes successfully with valid literal integers separated by space.
     /// </summary>
     [TestMethod]
     public void MoveTo_ValidLiteralsWithSpaceSeparator_ExecutesSuccessfully()
@@ -29,9 +28,8 @@ public class MoveToUnitTest
         canvas.Dispose();
     }
 
-    // 2. Valid literals with comma and spaces (should still work after trimming)
     /// <summary>
-    /// Tests MoveTo with comma + spaces - current split removes empty entries
+    /// Verifies that <see cref="AppMoveTo"/> executes correctly with literals separated by commas and spaces.
     /// </summary>
     [TestMethod]
     public void MoveTo_ValidLiteralsWithCommaAndSpaces_ExecutesSuccessfully()
@@ -47,9 +45,8 @@ public class MoveToUnitTest
         canvas.Dispose();
     }
 
-    // 3. Simple expression without spaces inside (supported by current split)
     /// <summary>
-    /// Tests MoveTo with simple expressions that contain no spaces - should work
+    /// Verifies that <see cref="AppMoveTo"/> executes successfully with simple expressions that contain no spaces.
     /// </summary>
     [TestMethod]
     public void MoveTo_SimpleExpressionNoSpaces_ExecutesSuccessfully()
@@ -66,9 +63,8 @@ public class MoveToUnitTest
         canvas.Dispose();
     }
 
-    // 4. Missing second parameter - should throw
     /// <summary>
-    /// Tests MoveTo with only one parameter - expects CommandException
+    /// Verifies that <see cref="AppMoveTo"/> throws a <see cref="CommandException"/> when the Y parameter is missing.
     /// </summary>
     [TestMethod]
     [ExpectedException(typeof(CommandException))]
@@ -89,9 +85,8 @@ public class MoveToUnitTest
         }
     }
 
-    // 5. Invalid non-numeric X - should throw during Execute
     /// <summary>
-    /// Tests MoveTo with invalid X value - expects CommandException
+    /// Verifies that <see cref="AppMoveTo"/> throws a <see cref="CommandException"/> when X is invalid/non-numeric.
     /// </summary>
     [TestMethod]
     [ExpectedException(typeof(CommandException))]
@@ -112,10 +107,9 @@ public class MoveToUnitTest
         }
     }
 
-    // 6. Expression with spaces inside should fail (matches current implementation)
     /// <summary>
-    /// Tests that expressions containing spaces are NOT supported in current version
-    /// (this test documents/guards the current limitation)
+    /// Verifies that <see cref="AppDrawTo"/> fails when expressions contain spaces.
+    /// This documents a current limitation of the Set() split logic.
     /// </summary>
     [TestMethod]
     [ExpectedException(typeof(CommandException))]
@@ -124,13 +118,12 @@ public class MoveToUnitTest
         var canvas = new TestAppCanvas(300, 300);
         var command = new AppDrawTo(canvas);
 
-        // We expect this input to be split into too many pieces
+        // Input with spaces → split into too many pieces
         command.Set(new StoredProgram(canvas), "100 + 50 200 - 30");
 
-        // Show what the internal array actually becomes after split
         string[] splitResult = new[] { "100", "+", "50", "200", "-", "30" };
 
-        // This should throw because length != 2
+        // Should throw because parameter length != 2
         command.CheckParameters(splitResult);
 
         command.Compile();

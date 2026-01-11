@@ -2,18 +2,17 @@
 using BOOSE;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace UnitTests.Shapes;
+namespace MyBooseAppUnitTest.Shapes;
 
 /// <summary>
-/// Unit tests for the Pen command (RGB color) using TestAppCanvas for thread-safe testing
-/// Tests are adjusted for current Set() behavior (splits on comma AND space)
+/// Unit tests for the <see cref="AppPen"/> command (RGB color) using <see cref="TestAppCanvas"/> for thread-safe testing.
+/// These tests verify handling of valid RGB values, expressions, and invalid input for the pen color command.
 /// </summary>
 [TestClass]
 public class PenUnitTest
 {
-    // 1. Valid literal RGB values
     /// <summary>
-    /// Tests Pen with valid literal RGB values - should execute successfully
+    /// Verifies that <see cref="AppPen"/> executes successfully with valid literal RGB values.
     /// </summary>
     [TestMethod]
     public void Pen_ValidLiteralRGB_ExecutesSuccessfully()
@@ -29,9 +28,8 @@ public class PenUnitTest
         canvas.Dispose();
     }
 
-    // 2. Valid literals with comma and spaces
     /// <summary>
-    /// Tests Pen with comma + spaces around RGB values - should parse correctly
+    /// Verifies that <see cref="AppPen"/> executes successfully when RGB values contain commas and extra spaces.
     /// </summary>
     [TestMethod]
     public void Pen_ValidLiteralsWithCommaAndSpaces_ExecutesSuccessfully()
@@ -47,9 +45,8 @@ public class PenUnitTest
         canvas.Dispose();
     }
 
-    // 3. Simple expressions without spaces inside (supported by current split)
     /// <summary>
-    /// Tests Pen with simple expressions (no spaces) that evaluate to valid RGB values
+    /// Verifies that <see cref="AppPen"/> executes successfully with simple expressions (no spaces) that evaluate to valid RGB values.
     /// </summary>
     [TestMethod]
     public void Pen_SimpleExpressionNoSpaces_ExecutesSuccessfully()
@@ -66,9 +63,8 @@ public class PenUnitTest
         canvas.Dispose();
     }
 
-    // 4. Invalid RGB count (too few parameters) - should throw in CheckParameters
     /// <summary>
-    /// Tests Pen with only two parameters - expects CommandException
+    /// Verifies that <see cref="AppPen"/> throws a <see cref="CommandException"/> when fewer than three RGB parameters are provided.
     /// </summary>
     [TestMethod]
     [ExpectedException(typeof(CommandException))]
@@ -89,9 +85,8 @@ public class PenUnitTest
         }
     }
 
-    // 5. Out-of-range RGB value - should throw during Execute
     /// <summary>
-    /// Tests Pen with an RGB value > 255 - expects CommandException
+    /// Verifies that <see cref="AppPen"/> throws a <see cref="CommandException"/> when an RGB value is out of range (>255).
     /// </summary>
     [TestMethod]
     [ExpectedException(typeof(CommandException))]
@@ -112,10 +107,9 @@ public class PenUnitTest
         }
     }
 
-    // 6. Expression with spaces inside - should fail (current limitation)
     /// <summary>
-    /// Documents that expressions containing spaces are not supported in current version
-    /// (splits into multiple parts → validation fails)
+    /// Verifies that <see cref="AppPen"/> throws a <see cref="CommandException"/> when expressions contain spaces.
+    /// This test documents a current limitation: inputs split into more than three parts fail validation.
     /// </summary>
     [TestMethod]
     [ExpectedException(typeof(CommandException))]
