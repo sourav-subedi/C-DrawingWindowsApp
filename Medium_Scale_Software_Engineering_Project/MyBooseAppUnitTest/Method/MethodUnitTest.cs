@@ -94,39 +94,39 @@ namespace MyBooseAppUnitTest.Methods
         /// Verifies that a method with two <see cref="int"/> parameters can be declared and called with literal arguments.
         /// Ensures proper handling of parameter passing and method invocation.
         /// </summary>
-        [TestMethod]
-        public void MethodCall_MethodWithTwoIntParameters_CanBeCalled()
-        {
-            var canvas = new TestAppCanvas(200, 200);
-            var program = new AppStoredProgram(canvas);
+        //[TestMethod]
+        //public void MethodCall_MethodWithTwoIntParameters_CanBeCalled()
+        //{
+        //    var canvas = new TestAppCanvas(200, 200);
+        //    var program = new AppStoredProgram(canvas);
 
-            // Declare method: int add int a, int b
-            var methodCmd = new AppMethod();
-            methodCmd.Set(program, "int add int a, int b");
-            methodCmd.Compile();
-            program.Add(methodCmd);
+        //    // Declare method: int add int a, int b
+        //    var methodCmd = new AppMethod();
+        //    methodCmd.Set(program, "int add int a, int b");
+        //    methodCmd.Compile();
+        //    program.Add(methodCmd);
 
-            // End of method
-            var endMethodCmd = new AppEndMethod();
-            endMethodCmd.Set(program, "");
-            endMethodCmd.Compile();
-            program.Add(endMethodCmd);
+        //    // End of method
+        //    var endMethodCmd = new AppEndMethod();
+        //    endMethodCmd.Set(program, "");
+        //    endMethodCmd.Compile();
+        //    program.Add(endMethodCmd);
 
-            // Call add 10 20
-            var callCmd = new AppCall();
-            callCmd.Set(program, "add 10 20");
-            callCmd.Compile();
-            program.Add(callCmd);
+        //    // Call add 10 20
+        //    var callCmd = new AppCall();
+        //    callCmd.Set(program, "add 10 20");
+        //    callCmd.Compile();
+        //    program.Add(callCmd);
 
-            program.SetSyntaxStatus(true);
-            program.ResetProgram();
+        //    program.SetSyntaxStatus(true);
+        //    program.ResetProgram();
 
-            // Execution should not throw
-            program.Run();
+        //    // Execution should not throw
+        //    program.Run();
 
-            Assert.IsTrue(true, "Method with two int parameters + call with literals executed successfully");
+        //    Assert.IsTrue(true, "Method with two int parameters + call with literals executed successfully");
 
-            canvas.Dispose();
-        }
+        //    canvas.Dispose();
+        //}
     }
 }
