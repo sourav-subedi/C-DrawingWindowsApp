@@ -3,13 +3,10 @@
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net8.0-windows</TargetFramework>
+    <RootNamespace>AayamRegmi_assignment</RootNamespace>
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
-
-    <!-- REQUIRED FOR DOCFX -->
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <DocumentationFile>bin\Debug\net8.0-windows\Medium_Scale_Software_Engineering_Project.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

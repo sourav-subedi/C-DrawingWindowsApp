@@ -1,6 +1,0 @@
-@BooseAPI_HostAddress = http://localhost:5182
-
-GET {{BooseAPI_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###

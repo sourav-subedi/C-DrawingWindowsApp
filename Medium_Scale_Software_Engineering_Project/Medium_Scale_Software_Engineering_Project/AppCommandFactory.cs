@@ -3,64 +3,89 @@
 namespace MYBooseApp
 {
     /// <summary>
-    /// Custom command factory for the MYBooseApp environment.
-    /// Creates App* commands without relying on static counters.
+    /// Application-specific command factory.
+    /// Responsible for creating BOOSE commands supported by MYBooseApp.
+    /// Extends the base CommandFactory to register custom drawing,
+    /// variable, control-flow, and method-related commands.
     /// </summary>
     public class AppCommandFactory : CommandFactory
     {
+        private ICanvas Canvas;
+
         /// <summary>
-        /// Creates a command instance based on the given command type string.
+        /// Initializes a new instance of the AppCommandFactory.
         /// </summary>
-        /// <param name="commandType">The type of command to create (case-insensitive).</param>
-        /// <returns>An <see cref="ICommand"/> instance corresponding to the command type.</returns>
-        public override ICommand MakeCommand(string commandType)
+        /// <param name="canvas">
+        /// Reference to the application canvas used by drawing commands.
+        /// </param>
+        public AppCommandFactory(ICanvas canvas)
         {
-            commandType = commandType.ToLower().Trim();
+            Canvas = canvas;
+        }
 
-            // Variable types
-            if (commandType == "evaluation")
-                return new AppEvaluation();
-            if (commandType == "int")
-                return new AppInt();
-            if (commandType == "real")
-                return new AppReal();
-            if (commandType == "boolean")
-                return new AppBoolean();
-            if (commandType == "array")
-                return new AppArray();
-            if (commandType == "poke")
-                return new AppPoke();
-            if (commandType == "peek")
-                return new AppPeek();
+        /// <summary>
+        /// Creates and returns an ICommand instance based on the supplied command type.
+        /// </summary>
+        /// <param name="CommandType">
+        /// The command keyword parsed from the BOOSE program (e.g. "circle", "if", "call").
+        /// </param>
+        /// <returns>
+        /// A new ICommand instance corresponding to the specified command.
+        /// </returns>
+        /// <exception cref="ArgumentException">
+        /// Thrown when the command type is not recognised.
+        /// </exception>
+        public override ICommand MakeCommand(string CommandType)
+        {
+            CommandType = CommandType.ToLower().Trim();
 
-            // Compound commands
-            if (commandType == "if")
-                return new AppIf();
-            if (commandType == "else")
-                return new AppElse();
-            if (commandType == "while")
-                return new AppWhile();
-            if (commandType == "for")
-                return new AppFor();
-            if (commandType == "method")
-                return new AppMethod();
-            if (commandType == "end")
-                return new AppEnd();
+            // Drawing commands
+            if (CommandType == "circle") return new AppCircle(Canvas);
+            if (CommandType == "moveto") return new AppMoveTo(Canvas);
+            if (CommandType == "drawto") return new AppDrawTo(Canvas);
+            if (CommandType == "pen") return new AppPen(Canvas);
+            if (CommandType == "rect") return new AppRect(Canvas);
+            if (CommandType == "pensize") return new AppPenSize(Canvas);
+            if (CommandType == "tri") return new AppTri(Canvas);
+            if (CommandType == "write") return new AppWrite(Canvas);
+            if (CommandType == "clear") return new AppClear(Canvas);
+            if (CommandType == "reset") return new AppReset(Canvas);
 
-            // Drawing / output commands
-            if (commandType == "write")
-                return new AppWrite();
-            if (commandType == "moveto")
-                return new AppMoveto();
-            if (commandType == "circle")
-                return new AppCircle();
-            if (commandType == "rect" || commandType == "rectangle")
-                return new AppRect();
-            if (commandType == "call")
-                return new Call();
+            // Variable declaration commands
+            if (CommandType == "int") return new AppInt();
+            if (CommandType == "real") return new AppReal();
+            if (CommandType == "boolean") return new AppBoolean();
 
-            // Fallback to base factory for unknown commands
-            return base.MakeCommand(commandType);
+            // Array-related commands
+            if (CommandType == "array") return new AppArray();
+            if (CommandType == "poke") return new AppPoke();
+            if (CommandType == "peek") return new AppPeek();
+
+            // Assignment commands
+            if (CommandType == "assign" || CommandType == "set")
+            {
+                return new AppAsign();
+            }
+
+            // Conditional commands
+            if (CommandType == "if") return new AppIf();
+            if (CommandType == "else") return new AppElse();
+            if (CommandType == "end") return new AppEndIf();
+
+            // While loop commands
+            if (CommandType == "while") return new AppWhile();
+            if (CommandType == "endwhile" || CommandType == "end while") return new AppEndWhile();
+
+            // For loop commands
+            if (CommandType == "for") return new AppFor();
+            if (CommandType == "endfor" || CommandType == "end for") return new AppEndFor();
+
+            // Method-related commands
+            if (CommandType == "method") return new AppMethod();
+            if (CommandType == "endmethod" || CommandType == "end method") return new AppEndMethod();
+            if (CommandType == "call") return new AppCall();
+
+            return base.MakeCommand(CommandType);
         }
     }
 }

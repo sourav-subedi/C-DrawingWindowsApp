@@ -1,260 +1,271 @@
 ﻿using System;
 using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.Windows.Forms;
 using BOOSE;
 
 namespace MYBooseApp
 {
     /// <summary>
-    /// This class extends the canvas class from the library
-    /// The umplemented method from the libray are implemented here
+    /// Implements the ICanvas interface to provide drawing functionality.
+    /// This class uses the Singleton design pattern to guarantee that
+    /// only one canvas instance is created and shared across the application.
     /// </summary>
-    public class AppCanvas : Canvas
+    public class AppCanvas : ICanvas
     {
-        private Bitmap bmp;
-        private Graphics g;
-        private Pen pen;
-        private SolidBrush brush;
-        private Color currentColour = Color.Black;
-
-        private int _xpos;
-        private int _ypos;
+        /// <summary>
+        /// Holds the single shared instance of the AppCanvas.
+        /// </summary>
+        private static AppCanvas _instance;
 
         /// <summary>
-        /// it is used to initalize the canvas 
+        /// Synchronization object used to ensure thread-safe
+        /// creation of the singleton instance.
         /// </summary>
-        /// <param name="width">the width of the canvas</param>
-        /// <param name="height">the height of the canvas</param>
-        public AppCanvas(int width, int height)
+        private static readonly object _lock = new object();
+
+        private Bitmap CanvasBitmap;
+        private Graphics graphics;
+        private int xPos, yPos, PenWidth = 1;
+        private Pen Pen;
+
+        /// <summary>
+        /// Reference to the PictureBox control responsible for displaying the canvas.
+        /// </summary>
+        private PictureBox displayControl;
+
+        /// <summary>
+        /// Initializes a new AppCanvas instance.
+        /// The constructor is private to prevent external instantiation
+        /// and enforce the Singleton pattern.
+        /// </summary>
+        /// <param name="xsize">Initial width of the canvas</param>
+        /// <param name="ysize">Initial height of the canvas</param>
+        private AppCanvas(int xsize, int ysize)
         {
-            bmp = new Bitmap(Math.Max(1, width), Math.Max(1, height));
-            g = Graphics.FromImage(bmp);
-            pen = new Pen(Color.Black, 2);
-            brush = new SolidBrush(Color.Black);
-            Clear();
+            CanvasBitmap = new Bitmap(xsize, ysize);
+            graphics = Graphics.FromImage(CanvasBitmap);
+            xPos = 0;
+            yPos = 0;
+            graphics.SmoothingMode = SmoothingMode.AntiAlias;
+            Pen = new Pen(Color.Black, PenWidth);
         }
 
         /// <summary>
-        /// handlels the horizontal position of the cursor
+        /// Returns the global AppCanvas instance, creating it if necessary.
         /// </summary>
-        public override int Xpos
+        /// <param name="width">Canvas width (used only on first creation)</param>
+        /// <param name="height">Canvas height (used only on first creation)</param>
+        /// <returns>The singleton AppCanvas instance</returns>
+        public static AppCanvas Instance(int width = 1280, int height = 1080)
         {
-            get => _xpos;
-            set => _xpos = value;
-        }
-        /// <summary>
-        /// handlels the verticle position of the cursor
-        /// </summary>
-        public override int Ypos
-        {
-            get => _ypos;
-            set => _ypos = value;
-        }
-
-        /// <summary>
-        /// handels the color of the pen
-        /// </summary>
-        public override object PenColour
-        {
-            get => currentColour;
-            set
+            lock (_lock)
             {
-                if (value is Color c)
-                {
-                    SetColour(c.R, c.G, c.B);
-                }
-                else if (value is int[] arr && arr.Length >= 3)
-                {
-                    SetColour(arr[0], arr[1], arr[2]);
-                }
-                else if (value is string s)
-                {
-                    
-                    var parts = s.Split(',');
-                    if (parts.Length >= 3 &&
-                        int.TryParse(parts[0].Trim(), out int r) &&
-                        int.TryParse(parts[1].Trim(), out int g) &&
-                        int.TryParse(parts[2].Trim(), out int b))
-                    {
-                        SetColour(r, g, b);
-                    }
-                }
+                if (_instance == null)
+                    _instance = new AppCanvas(width, height);
+                return _instance;
             }
         }
 
         /// <summary>
-        /// draws the circle
+        /// Associates the canvas bitmap with a PictureBox for rendering.
         /// </summary>
-        /// <param name="radius">the radius of the circle</param>
-        /// <param name="filled">bool value to determine the fill of the circle </param>
-        public override void Circle(int radius, bool filled)
+        /// <param name="pictureBox">PictureBox used to display the canvas</param>
+        public void LinkToPictureBox(PictureBox pictureBox)
         {
-            if (radius <= 0) return;
-            var rect = new Rectangle(_xpos - radius, _ypos - radius, radius * 2, radius * 2);
+            displayControl = pictureBox;
+            displayControl.Image = CanvasBitmap;
+        }
+
+        /// <summary>
+        /// Forces the display control to repaint and show the latest drawing updates.
+        /// </summary>
+        private void RefreshDisplay()
+        {
+            displayControl?.Invalidate();
+        }
+
+        /// <summary>
+        /// Gets or sets the current horizontal position of the drawing cursor.
+        /// </summary>
+        public int Xpos { get => xPos; set => xPos = value; }
+
+        /// <summary>
+        /// Gets or sets the current vertical position of the drawing cursor.
+        /// </summary>
+        public int Ypos { get => yPos; set => yPos = value; }
+
+        /// <summary>
+        /// Gets or sets the current pen colour.
+        /// </summary>
+        public object PenColour { get => Pen.Color; set => Pen.Color = (Color)value; }
+
+        /// <summary>
+        /// Draws a circle centred at the current cursor position.
+        /// </summary>
+        /// <param name="radius">Radius of the circle</param>
+        /// <param name="filled">Indicates whether the circle should be filled</param>
+        public void Circle(int radius, bool filled = false)
+        {
+            int x = xPos - radius;
+            int y = yPos - radius;
+
             if (filled)
-                g.FillEllipse(brush, rect);
+                graphics.FillEllipse(new SolidBrush(Pen.Color), x, y, radius * 2, radius * 2);
             else
-                g.DrawEllipse(pen, rect);
+                graphics.DrawEllipse(Pen, x, y, radius * 2, radius * 2);
+
+            RefreshDisplay();
         }
 
         /// <summary>
-        /// draws the rectangle
+        /// Resets the canvas to its initial state, clearing all drawings
+        /// and restoring default cursor and pen settings.
         /// </summary>
-        /// <param name="width">width of recatangle</param>
-        /// <param name="height">height of rectangle</param>
-        /// <param name="filled">bool value to determine the fill of the rectangle</param>
-        public override void Rect(int width, int height, bool filled)
+        public void Reset()
         {
-            if (width <= 0 || height <= 0) return;
+            xPos = 0;
+            yPos = 0;
+            Pen = new Pen(Color.Black, PenWidth);
+            graphics.Clear(Color.White);
+            RefreshDisplay();
+        }
+
+        /// <summary>
+        /// Clears all drawings from the canvas.
+        /// </summary>
+        public void Clear()
+        {
+            graphics.Clear(Color.White);
+            RefreshDisplay();
+        }
+
+        /// <summary>
+        /// Draws a line from the current cursor position to the specified point.
+        /// </summary>
+        /// <param name="x">Target X coordinate</param>
+        /// <param name="y">Target Y coordinate</param>
+        public void DrawTo(int x, int y)
+        {
+            graphics.DrawLine(Pen, xPos, yPos, x, y);
+            xPos = x;
+            yPos = y;
+            RefreshDisplay();
+        }
+
+        /// <summary>
+        /// Moves the drawing cursor to the specified location without drawing.
+        /// </summary>
+        /// <param name="x">New X coordinate</param>
+        /// <param name="y">New Y coordinate</param>
+        public void MoveTo(int x, int y)
+        {
+            xPos = x;
+            yPos = y;
+        }
+
+        /// <summary>
+        /// Draws a rectangle using the current cursor position as the top-left corner.
+        /// </summary>
+        /// <param name="width">Width of the rectangle</param>
+        /// <param name="height">Height of the rectangle</param>
+        /// <param name="filled">Indicates whether the rectangle should be filled</param>
+        public void Rect(int width, int height, bool filled)
+        {
             if (filled)
-                g.FillRectangle(brush, _xpos, _ypos, width, height);
+                graphics.FillRectangle(new SolidBrush(Pen.Color), xPos, yPos, width, height);
             else
-                g.DrawRectangle(pen, _xpos, _ypos, width, height);
-        }
-        /// <summary>
-        /// handles the difference in spelling of the rect method
-        /// </summary>
-        /// <param name="width"></param>
-        /// <param name="height"></param>
-        /// <param name="filled"></param>
-        public override void Rectangle(int width, int height, bool filled)
-        {
-            Rect(width, height, filled);
+                graphics.DrawRectangle(Pen, xPos, yPos, width, height);
+
+            RefreshDisplay();
         }
 
         /// <summary>
-        /// draws the triangle
+        /// Resizes the canvas and reinitializes the drawing surface.
         /// </summary>
-        /// <param name="width"></param>
-        /// <param name="height"></param>
-        public override void Tri(int width, int height)
+        /// <param name="width">New canvas width</param>
+        /// <param name="height">New canvas height</param>
+        public void Set(int width, int height)
         {
-            if (width <= 0 || height == 0) return;
+            CanvasBitmap = new Bitmap(width, height);
+            graphics = Graphics.FromImage(CanvasBitmap);
+            graphics.SmoothingMode = SmoothingMode.AntiAlias;
 
-            Point p1 = new Point(_xpos, _ypos);
-            Point p2 = new Point(_xpos + width, _ypos);
-            Point p3 = new Point(_xpos + width / 2, _ypos - Math.Abs(height)); // up if height positive
+            if (displayControl != null)
+                displayControl.Image = CanvasBitmap;
 
-            g.DrawPolygon(pen, new[] { p1, p2, p3 });
-        }
-        /// <summary>
-        /// clears the canvas
-        /// </summary>
-        public override void Clear()
-        {
-            g.Clear(Color.White);
-            //_xpos = 0;
-            //_ypos = 0;
+            RefreshDisplay();
         }
 
         /// <summary>
-        /// draws the line 
+        /// Sets the pen colour using individual RGB components.
         /// </summary>
-        /// <param name="x">horizontal position of the end of line</param>
-        /// <param name="y">verticle position fo the end of line</param>
-        public override void DrawTo(int x, int y)
+        /// <param name="red">Red value (0–255)</param>
+        /// <param name="green">Green value (0–255)</param>
+        /// <param name="blue">Blue value (0–255)</param>
+        public void SetColour(int red, int green, int blue)
         {
-            g.DrawLine(pen, _xpos, _ypos, x, y);
-            _xpos = x;
-            _ypos = y;
+            Pen.Color = Color.FromArgb(red, green, blue);
         }
 
         /// <summary>
-        /// returns the bitmap 
+        /// Draws an outlined triangle at the current cursor position.
         /// </summary>
-        /// <returns></returns>
-        public override object getBitmap()
+        /// <param name="width">Base width of the triangle</param>
+        /// <param name="height">Height of the triangle</param>
+        public void Tri(int width, int height)
         {
-            return bmp;
-        }
-        /// <summary>
-        /// moves the pen to the desired position
-        /// </summary>
-        /// <param name="x">horizontal position of the pen</param>
-        /// <param name="y">vertical postion of the pen</param>
-        public override void MoveTo(int x, int y)
-        {
-            _xpos = x;
-            _ypos = y;
-        }
-        /// <summary>
-        /// resets the canvas and sets position of pen to 0,0
-        /// </summary>
-        public override void Reset()
-        {
-            _xpos = 0;
-            _ypos = 0;
-        }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="width"></param>
-        /// <param name="height"></param>
-        public override void Set(int width, int height)
-        {
-            if (width <= 0) width = 1;
-            if (height <= 0) height = 1;
+            Point[] points = new Point[3];
+            points[0] = new Point(xPos + width / 2, yPos);
+            points[1] = new Point(xPos, yPos + height);
+            points[2] = new Point(xPos + width, yPos + height);
 
-            bmp?.Dispose();
-            g?.Dispose();
-            bmp = new Bitmap(width, height);
-            g = Graphics.FromImage(bmp);
-            Clear();
-        }
-        /// <summary>
-        /// sets the color of the brush
-        /// </summary>
-        /// <param name="red">red value</param>
-        /// <param name="green">green value</param>
-        /// <param name="blue">blue value</param>
-        public override void SetColour(int red, int green, int blue)
-        {
-            red = Math.Max(0, Math.Min(255, red));
-            green = Math.Max(0, Math.Min(255, green));
-            blue = Math.Max(0, Math.Min(255, blue));
-
-            currentColour = Color.FromArgb(red, green, blue);
-
-            float previousWidth = pen?.Width ?? 2;
-
-            pen?.Dispose();
-            brush?.Dispose();
-
-            pen = new Pen(currentColour, previousWidth);
-            brush = new SolidBrush(currentColour);
-        }
-
-        public override void WriteText(string text)
-        {
-            if (string.IsNullOrEmpty(text)) return;
-            using (var f = new Font("Arial", 12))
-            {
-                g.DrawString(text, f, brush, _xpos, _ypos);
-            }
-        }
-        /// <summary>
-        /// writes the text in the canvas
-        /// </summary>
-        /// <param name="text">the text to be written</param>
-        /// <param name="x">the horizontal position of the text</param>
-        /// <param name="y">the vertical position of the text</param>
-        public void WriteText(string text, int x, int y)
-        {
-            if (string.IsNullOrEmpty(text)) return;
-            using (var f = new Font("Arial", 12))
-            {
-                g.DrawString(text, f, brush, x, y);
-            }
+            graphics.DrawPolygon(Pen, points);
+            RefreshDisplay();
         }
 
         /// <summary>
-        /// used to dispose the resource after use
+        /// Renders text at the current cursor position.
         /// </summary>
-        public void DisposeResources()
+        /// <param name="text">Text to be drawn</param>
+        public void WriteText(string text)
         {
-            pen?.Dispose();
-            brush?.Dispose();
-            g?.Dispose();
-            bmp?.Dispose();
+            graphics.DrawString(
+                text,
+                new Font("Arial", 12),
+                new SolidBrush(Pen.Color),
+                xPos,
+                yPos);
+
+            RefreshDisplay();
+        }
+
+        /// <summary>
+        /// Updates the pen thickness used for drawing operations.
+        /// </summary>
+        /// <param name="size">New pen width</param>
+        public void penSize(int size)
+        {
+            PenWidth = size;
+            Pen.Width = size;
+        }
+
+        /// <summary>
+        /// Retrieves the current bitmap representing the canvas contents.
+        /// </summary>
+        /// <returns>The canvas bitmap</returns>
+        public object getBitmap()
+        {
+            return CanvasBitmap;
+        }
+
+        /// <summary>
+        /// Resets the singleton instance, allowing a new canvas
+        /// to be created on the next request.
+        /// </summary>
+        public static void ResetInstance()
+        {
+            _instance = null;
         }
     }
 }

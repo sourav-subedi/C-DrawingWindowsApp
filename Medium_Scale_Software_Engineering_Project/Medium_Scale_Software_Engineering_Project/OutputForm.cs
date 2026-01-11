@@ -1,392 +1,551 @@
 ﻿using BOOSE;
-//using BOOSEDrawingApp;
-using MYBooseApp;
-using System;
+using System.Data;
 using System.Diagnostics;
-using System.Drawing;
-using System.Text;
-using System.Windows.Forms;
 
-namespace Medium_Scale_Software_Engineering_Project
+
+namespace MYBooseApp
 {
     /// <summary>
-    /// Represents the main output and editor form for the BOOSE graphics application.
-    /// Handles program input, parsing, execution, canvas drawing, file operations, and UI commands.
+    /// WinForms drawing application form class with canvas, command factory, stored program and parser
     /// </summary>
-    public partial class OutputForm : Form
+    public partial class drawingApplication : Form
     {
-        /// <summary>
-        /// The application canvas used for drawing shapes and text.
-        /// </summary>
-        private AppCanvas canvas;
+        AppCanvas canvas; //appcanvas reference
+        AppCommandFactory Factory; //command factory reference
+        AppStoredProgram Program; //stored program reference
+        Parser Parser; //BOOSE parser reference
+        private readonly string[] allCommands = new string[]
+        {
+            "circle radius [true/false]",
+            "rect width height [true/false]",
+            "tri width height",
+            "moveto x y",
+            "drawto x y",
+            "pen color",
+            "pensize size",
+            "write text",
+            "clear",
+            "reset",
+            "int varname = value",
+            "real varname = value",
+            "boolean varname = value",
+            "array arrayname = size",
+            "poke arrayname index value",
+            "peek arrayname index",
+            "if condition",
+            "else",
+            "end if",
+            "while condition",
+            "end while",
+            "for var = start to end [step increment]",
+            "end for",
+            "method [returnType] methodName [params]",
+            "end method",
+            "call methodName [args]"
+        };
 
         /// <summary>
-        /// Command factory responsible for creating BOOSE command objects.
+        /// Constructor for drawingApplication form. Initializes canvas and sets canvas refernce to commandfactory, program
+        /// makes parser work with command factory and stored program
         /// </summary>
-        private AppCommandFactory factory;
-
-        /// <summary>
-        /// Stores the parsed BOOSE program before execution.
-        /// </summary>
-        private AppStoredProgram program;
-
-        /// <summary>
-        /// The parser responsible for converting text commands into BOOSE executable commands.
-        /// </summary>
-        private AppParser parser;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="OutputForm"/> class.
-        /// Sets up the BOOSE environment, canvas, parser, and UI.
-        /// </summary>
-        public OutputForm()
+        public drawingApplication()
         {
             InitializeComponent();
             Debug.WriteLine(AboutBOOSE.about());
+            canvas = AppCanvas.Instance(1280, 1080);
+            Factory = new AppCommandFactory(canvas); // pass canvas here
+            Program = new AppStoredProgram(canvas);
+            Parser = new Parser(Factory, Program);
+            debugBox.AppendText(AboutBOOSE.about() + Environment.NewLine);
 
-            this.Load += (s, e) =>
-            {
-                try
-                {
-                    canvas = new AppCanvas(drawingBoard.Width, drawingBoard.Height);
-                    factory = new AppCommandFactory();
-                    program = new AppStoredProgram(canvas);
-                    parser = new AppParser(factory, program);
+            // Link the off-screen bitmap to the PictureBox so that changes are visible immediately.
+            // The PictureBox will now display the same Bitmap that AppCanvas draws on.
+            drawingBox.Image = (Bitmap)canvas.getBitmap();
 
-                    canvas.Clear();
-                    canvas.PenColour = Color.Black;
-                    canvas.WriteText("BOOSE Ready", 20, 50);
-                    RefreshCanvas();
-                }
-                catch (Exception ex)
-                {
-                    debugWindow.AppendText($"INIT ERROR: {ex.Message}\r\n");
-                }
-            };
+            // Ensure the image fits the PictureBox properly without distortion
+            drawingBox.SizeMode = PictureBoxSizeMode.StretchImage;
         }
 
         /// <summary>
-        /// Refreshes the drawing canvas displayed on the PictureBox.
+        /// Paint event of drawing panel
         /// </summary>
-        private void RefreshCanvas()
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void drawingBox_Paint(object sender, PaintEventArgs e)
         {
+            Graphics g = e.Graphics;
+            Bitmap b = (Bitmap)canvas.getBitmap();
+            g.DrawImage(b, 0, 0);
+        }
+
+        /// <summary>
+        /// Executes all commands in the main textbox first, then the single command textbox if it has content.
+        /// Each command is parsed and added to the stored program, then executed.
+        /// </summary>
+        private void ExecuteCommands()
+        {
+            debugBox.Clear();
+
+            // Clear and reset before starting
+            Program.Clear();
+            Program.ResetProgram();
+
             try
             {
-                drawingBoard.Image = canvas?.getBitmap() as Bitmap;
-                drawingBoard.Invalidate();
+                // STEP 1: Parse all commands from main textbox
+                string mainCode = commandTextBox.Text;
+                if (!string.IsNullOrWhiteSpace(mainCode))
+                {
+                    // Split lines and remove empty ones immediately
+                    string[] lines = mainCode
+                        .Replace("\r", "")
+                        .Split(new[] { '\n', ';' }, StringSplitOptions.RemoveEmptyEntries)
+                        .Where(l => !string.IsNullOrWhiteSpace(l.Trim()))
+                        .ToArray();
+
+                    int lineNumber = 1;
+                    foreach (string line in lines)
+                    {
+                        string trimmedLine = line.Trim();
+                        if (string.IsNullOrWhiteSpace(trimmedLine))
+                            continue;
+
+                        string lineToParse = trimmedLine;
+
+                        // Normalize end-if variants to "end"
+                        string lower = trimmedLine.ToLowerInvariant();
+                        if (lower.StartsWith("end if") || lower == "endif" || lower == "end")
+                        {
+                            lineToParse = "end";
+                        }
+                        else if (lower == "endwhile" || lower.StartsWith("end while"))
+                        {
+                            // Normalize while endings → EndAppWhile
+                            lineToParse = "endwhile";
+                        }
+                        else if (lower == "endfor" || lower.StartsWith("end for"))
+                        {
+                            // Normalize for endings → EndForCommand
+                            lineToParse = "endfor";
+                        }
+                        else if (lower == "endmethod" || lower.StartsWith("end method"))
+                        {
+                            // Normalize method endings → EndMethodCommand
+                            lineToParse = "endmethod";
+                        }
+                        else if (IsAssignmentLine(trimmedLine))
+                        {
+                            lineToParse = NormalizeAssignment(trimmedLine);
+                        }
+
+                        try
+                        {
+                            Debug.WriteLine($"Line {lineNumber}: Parsing '{lineToParse}' (original: '{trimmedLine}')");
+
+                            int countBefore = Program.Count;  // Check count BEFORE parsing
+
+                            ICommand command = Parser.ParseCommand(lineToParse);
+
+                            int countAfter = Program.Count;  // Check count AFTER parsing
+
+
+                            // Only add if parser didn't already add it
+                            if (countAfter == countBefore)
+                            {
+                                Program.Add(command);
+                                Debug.WriteLine($"Manually added command at index {Program.Count - 1}");
+                            }
+                            else
+                            {
+                                Debug.WriteLine($"Parser auto-added command (count increased from {countBefore} to {countAfter})");
+                            }
+
+                            Debug.WriteLine($"Line {lineNumber}: Added {command.GetType().Name} at index {Program.Count - 1}");
+                            debugBox.AppendText($"Line {lineNumber}: Parsed: {trimmedLine}\r\n");
+                        }
+                        catch (Exception ex)
+                        {
+                            debugBox.AppendText($"Line {lineNumber}: Parse error '{trimmedLine}': {ex.Message}\r\n");
+                        }
+
+                        lineNumber++;
+                    }
+                }
+
+                // STEP 2: Single command (same cleaning)
+                string singleCode = singleCommandTextBox.Text;
+                if (!string.IsNullOrWhiteSpace(singleCode))
+                {
+                    try
+                    {
+                        string singleToParse = singleCode.Trim();
+                        string lowerSingle = singleToParse.ToLowerInvariant();
+                        if (lowerSingle.StartsWith("end if") || lowerSingle == "endif" || lowerSingle == "end")
+                            singleToParse = "end";
+                        else if (IsAssignmentLine(singleToParse))
+                            singleToParse = NormalizeAssignment(singleToParse);
+
+                        ICommand singleCmd = Parser.ParseCommand(singleToParse);
+                        Program.Add(singleCmd);
+                        debugBox.AppendText($"Single command parsed: {singleCode}\r\n");
+                    }
+                    catch (Exception ex)
+                    {
+                        debugBox.AppendText($"Single command parse error: {ex.Message}\r\n");
+                    }
+                }
+
+                // STEP 3: Run and refresh
+                if (Program.Count > 0)
+                {
+                    debugBox.AppendText("\r\n--- Executing Program ---\r\n");
+                    Program.Run();
+                    debugBox.AppendText("✓ Program executed successfully!\r\n");
+
+                    // Force canvas refresh
+                    drawingBox.Image = (Bitmap)canvas.getBitmap();
+                    drawingBox.Invalidate();
+                    drawingBox.Update();
+                }
             }
             catch (Exception ex)
             {
-                debugWindow.AppendText($"REFRESH ERROR: {ex.Message}\r\n");
+                debugBox.AppendText($"Execution error: {ex.Message}\r\n");
+            }
+        }
+        /// <summary>
+        /// Executes single command from the single command textbox
+        /// </summary>
+        /// <param name="commandLine">the command written on the text box</param>
+        private void ExecuteSingleCommand(string commandLine)
+        {
+            debugBox.Clear();
+            if (string.IsNullOrWhiteSpace(commandLine))
+            {
+                debugBox.AppendText("No command entered.\r\n");
+                return;
+            }
+            try
+            {
+                // Parse the command
+                string lineToParse = commandLine.Trim();
+
+                if (IsAssignmentLine(lineToParse))
+                {
+                    lineToParse = NormalizeAssignment(lineToParse);
+                }
+
+                ICommand command = Parser.ParseCommand(lineToParse);
+                // Add to program and execute
+                Program.Add(command);
+                Program.Run();
+                debugBox.AppendText("Single command executed successfully.\r\n");
+
+                // Force repaint after execution
+                drawingBox.Invalidate();
+            }
+            catch (Exception ex)
+            {
+                debugBox.AppendText($"Error: {ex.Message}\r\n");
             }
         }
 
         /// <summary>
-        /// Executes when the "Run" button is clicked.
-        /// Parses user input line-by-line, handles multi-line statements,
-        /// and runs the BOOSE program when all lines are valid.
+        /// run button for textbox which calls the execute command method
         /// </summary>
-        private void button1_Click(object sender, EventArgs e)
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void runCommand_Click(object sender, EventArgs e)
         {
-            string code = multiLineInputBox.Text;
-            if (string.IsNullOrWhiteSpace(code))
+            ExecuteCommands();
+        }
+
+        /// <summary>
+        /// Event handler for key press in command text box shift + enter to execute commands
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void commandTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            //Shift + Enter to execute commands
+            if (e.KeyChar == (char)Keys.Enter && Control.ModifierKeys == Keys.Shift)
             {
-                debugWindow.AppendText("No code entered.\r\n");
-                return;
+                e.Handled = true; // prevent newline
+                ExecuteCommands();
             }
+        }
 
-            canvas.Clear();
-            canvas.PenColour = Color.Black;
-            RefreshCanvas();
-            debugWindow.Clear();
+        /// <summary>
+        /// clears the debug text box
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void clearDebug_Click(object sender, EventArgs e)
+        {
+            // Clear the debug box
+            debugBox.Text = "";
+        }
 
+        /// <summary>
+        /// button command for single textbox
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void runOneCommand_Click(object sender, EventArgs e)
+        {
+            ExecuteSingleCommand(singleCommandTextBox.Text);
+        }
+
+        /// <summary>
+        /// Displays about BOOSE information in the debug box
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            debugBox.AppendText(AboutBOOSE.about() + Environment.NewLine);
+        }
+
+        /// <summary>
+        /// Opens the documentation URL in the default web browser
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void documentationToolStripMenuItem_Click(object sender, EventArgs e)
+        {
             try
             {
-                debugWindow.AppendText("=== Starting Execution ===\r\n");
-
-                // Reset the program to clear old commands
-                program.ResetProgram();
-                debugWindow.AppendText("Program reset.\r\n");
-
-                // Parse the entire program at once (BOOSE handles line breaks)
-                debugWindow.AppendText($"Parsing code...\r\n");
-                parser.ParseProgram(code);
-
-                debugWindow.AppendText($"Parsed {program.Count} commands.\r\n");
-
-                if (program.Count == 0)
+                // Open the documentation URL in the default web browser
+                Process.Start(new ProcessStartInfo
                 {
-                    debugWindow.AppendText("WARNING: No commands were parsed!\r\n");
+                    FileName = "https://aayamregmi.github.io/BOOSE_Interpreter_Documentation/",
+                    UseShellExecute = true
+                });
+            }
+            catch (Exception ex)
+            {
+                // Optional: Show error if opening fails
+                MessageBox.Show($"Unable to open documentation: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
+        /// Opens a new form displaying the list of available commands
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void commandListToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                // Create a new form
+                Form commandListForm = new Form
+                {
+                    Text = "Available Commands",
+                    Width = 400,
+                    Height = 500,
+                    StartPosition = FormStartPosition.CenterParent
+                };
+                // Add a ListBox to display commands
+                ListBox listBox = new ListBox
+                {
+                    Dock = DockStyle.Fill,
+                    Font = new System.Drawing.Font("Segoe UI", 10)
+                };
+                listBox.Items.AddRange(allCommands);
+                // Add the ListBox to the form
+                commandListForm.Controls.Add(listBox);
+                // Show the form
+                commandListForm.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Unable to open command list: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
+        /// Exits the application when the Exit menu item is clicked
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // Close the main form and exit the application
+            Application.Exit();
+        }
+
+        /// <summary>
+        /// Opens a save file dialog to save the current canvas as PNG and commands as BOOSE file
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                using (SaveFileDialog sfd = new SaveFileDialog())
+                {
+                    sfd.Title = "Save BOOSE Drawing";
+                    sfd.Filter = "PNG Image (*.png)|*.png|BOOSE File (*.boose)|*.boose";
+                    sfd.AddExtension = true;
+                    sfd.DefaultExt = "boose";
+                    sfd.InitialDirectory = Path.Combine(Application.StartupPath, "saves");
+
+                    // Ensure saves folder exists
+                    if (!Directory.Exists(sfd.InitialDirectory))
+                        Directory.CreateDirectory(sfd.InitialDirectory);
+
+                    if (sfd.ShowDialog() == DialogResult.OK)
+                    {
+                        string filePath = sfd.FileName;
+                        string ext = Path.GetExtension(filePath).ToLower();
+
+                        // Save PNG
+                        if (ext == ".png" || ext == "")
+                        {
+                            var bmpObj = canvas.getBitmap();
+                            if (bmpObj is Bitmap bmp)
+                                bmp.Save(filePath, System.Drawing.Imaging.ImageFormat.Png);
+                            else if (bmpObj is Image img)
+                                new Bitmap(img).Save(filePath, System.Drawing.Imaging.ImageFormat.Png);
+                            else
+                                MessageBox.Show("Canvas bitmap is invalid.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+
+                        // Save BOOSE commands
+                        if (ext == ".boose" || ext == "")
+                        {
+                            File.WriteAllText(Path.ChangeExtension(filePath, ".boose"), commandTextBox.Text);
+                        }
+
+                        MessageBox.Show($"Saved successfully!\nFile: {filePath}", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error saving file: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
+        /// Saves the current canvas png and commands to a BOOSE file
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void loadToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                // Go one level above the solution folder
+                string parentFolder = Path.GetFullPath(Path.Combine(Application.StartupPath, @"..\..\..\.."));
+                string savesFolder = Path.Combine(parentFolder, "saves");
+
+                if (!Directory.Exists(savesFolder))
+                {
+                    MessageBox.Show("Saves folder does not exist.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
 
-                // ADD THIS DEBUG OUTPUT HERE:
-                debugWindow.AppendText("=== Program Structure ===\r\n");
-                for (int i = 0; i < program.Count; i++)
+                // Open file dialog to select a .boose file
+                using (OpenFileDialog ofd = new OpenFileDialog())
                 {
-                    debugWindow.AppendText($"Line {i}: {program[i].GetType().Name}\r\n");
-                }
-                debugWindow.AppendText("=== End Structure ===\r\n");
-
-                // Run the program
-                debugWindow.AppendText("Running program...\r\n");
-                program.Run();
-
-                debugWindow.AppendText($"[{DateTime.Now:HH:mm:ss}] Success!\r\n");
-            }
-            catch (Exception ex)
-            {
-                debugWindow.AppendText($"[{DateTime.Now:HH:mm:ss}] ERROR: {ex.Message}\r\n");
-                if (ex.InnerException != null)
-                {
-                    debugWindow.AppendText($"Inner: {ex.InnerException.Message}\r\n");
-                }
-            }
-            finally
-            {
-                debugWindow.AppendText("Refreshing canvas...\r\n");
-                RefreshCanvas();
-            }
-        }
-
-        /// <summary>
-        /// Handles custom drawing of the PictureBox to ensure the canvas bitmap is displayed correctly.
-        /// </summary>
-        private void pictureBox1_Paint(object sender, PaintEventArgs e)
-        {
-            try
-            {
-                if (canvas?.getBitmap() is Bitmap bmp)
-                    e.Graphics.DrawImage(bmp, 0, 0);
-            }
-            catch (Exception ex)
-            {
-                debugWindow.AppendText($"PAINT ERROR: {ex.Message}\r\n");
-            }
-        }
-
-        /// <summary>
-        /// Confirms before closing the application when the Exit menu item is clicked.
-        /// </summary>
-        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                var result = MessageBox.Show(
-                    "Are you sure you want to exit?",
-                    "Exit",
-                    MessageBoxButtons.YesNo,
-                    MessageBoxIcon.Question);
-
-                if (result == DialogResult.Yes)
-                    Application.Exit();
-            }
-            catch (Exception ex)
-            {
-                debugWindow.AppendText($"EXIT ERROR: {ex.Message}\r\n");
-            }
-        }
-
-        /// <summary>
-        /// Clears input and resets the canvas when creating a new program.
-        /// </summary>
-        private void newToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                multiLineInputBox.Clear();
-                canvas.Clear();
-                RefreshCanvas();
-            }
-            catch (Exception ex)
-            {
-                debugWindow.AppendText($"RESET ERROR: {ex.Message}\r\n");
-            }
-        }
-
-        /// <summary>
-        /// Saves the contents of the editor to a text file.
-        /// </summary>
-        private void saveFileToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                SaveFileDialog dialog = new SaveFileDialog();
-                dialog.Filter = "BOOSE File (*.txt)|*.txt|All Files (*.*)|*.*";
-
-                if (dialog.ShowDialog() == DialogResult.OK)
-                {
-                    System.IO.File.WriteAllText(dialog.FileName, multiLineInputBox.Text);
-                    MessageBox.Show("Code saved successfully!", "Success");
-                }
-            }
-            catch (Exception ex)
-            {
-                debugWindow.AppendText($"SAVE FILE ERROR: {ex.Message}\r\n");
-            }
-        }
-
-        /// <summary>
-        /// Saves the current canvas image to disk.
-        /// </summary>
-        private void saveImageToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                SaveFileDialog dialog = new SaveFileDialog();
-                dialog.Filter = "PNG Image (*.png)|*.png|JPEG Image (*.jpg)|*.jpg";
-
-                if (dialog.ShowDialog() == DialogResult.OK)
-                {
-                    if (canvas?.getBitmap() is Bitmap bmp)
+                    ofd.InitialDirectory = savesFolder;
+                    ofd.Filter = "BOOSE Files (*.boose)|*.boose";
+                    ofd.Title = "Load BOOSE File";
+                    if (ofd.ShowDialog() == DialogResult.OK)
                     {
-                        bmp.Save(dialog.FileName);
-                        MessageBox.Show("Image saved successfully!", "Success");
-                    }
-                    else
-                    {
-                        debugWindow.AppendText("No image available to save.\r\n");
+                        // Read the commands from the file
+                        string commands = File.ReadAllText(ofd.FileName);
+                        // Put the commands into the main command textbox
+                        commandTextBox.Text = commands;
+                        // Optionally clear single command box
+                        singleCommandTextBox.Clear();
+                        // Optionally execute loaded commands immediately
+                        ExecuteCommands();
+                        debugBox.AppendText($"Loaded commands from {Path.GetFileName(ofd.FileName)}\r\n");
                     }
                 }
             }
             catch (Exception ex)
             {
-                debugWindow.AppendText($"SAVE IMAGE ERROR: {ex.Message}\r\n");
+                MessageBox.Show($"Error loading file: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
         /// <summary>
-        /// Loads a BOOSE program text file into the editor.
+        /// displays similar commands as user types in the command textbox
         /// </summary>
-        private void loadFileToolStripMenuItem_Click(object sender, EventArgs e)
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void commandTextBox_TextChanged(object sender, EventArgs e)
         {
-            try
-            {
-                OpenFileDialog dialog = new OpenFileDialog();
-                dialog.Filter = "BOOSE File (*.txt)|*.txt|All Files (*.*)|*.*";
+            string input = commandTextBox.Text.Trim().ToLower();
 
-                if (dialog.ShowDialog() == DialogResult.OK)
-                {
-                    multiLineInputBox.Text = System.IO.File.ReadAllText(dialog.FileName);
-                    MessageBox.Show("Code loaded successfully!", "Success");
-                }
-            }
-            catch (Exception ex)
-            {
-                debugWindow.AppendText($"LOAD FILE ERROR: {ex.Message}\r\n");
-            }
+            // Clear suggestions first
+            
+
+            if (string.IsNullOrWhiteSpace(input))
+                return; // No input, no suggestions
+
+            // Find matching commands
+            var matches = allCommands
+                .Where(cmd => cmd.ToLower().Contains(input))
+                .ToList();
+
+            
         }
 
         /// <summary>
-        /// Loads an image file into the drawing board.
+        /// Resets the canvas and stored program when clear canvas button is clicked
         /// </summary>
-        private void loadImageToolStripMenuItem_Click(object sender, EventArgs e)
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void clearCanvas_Click(object sender, EventArgs e)
         {
-            try
-            {
-                OpenFileDialog dialog = new OpenFileDialog();
-                dialog.Filter = "Image Files (*.png;*.jpg)|*.png;*.jpg";
-
-                if (dialog.ShowDialog() == DialogResult.OK)
-                {
-                    Bitmap bmp = new Bitmap(dialog.FileName);
-                    drawingBoard.Image = bmp;
-                    drawingBoard.Invalidate();
-                }
-            }
-            catch (Exception ex)
-            {
-                debugWindow.AppendText($"LOAD IMAGE ERROR: {ex.Message}\r\n");
-            }
+            canvas.Clear(); 
+            drawingBox.Invalidate();
+            Program.ResetProgram();
         }
 
         /// <summary>
-        /// Displays application information.
+        /// detects direct assignment
         /// </summary>
-        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        /// <param name="line"></param>
+        /// <returns></returns>
+        private bool IsAssignmentLine(string line)
         {
-            try
-            {
-                MessageBox.Show(
-                    "BOOSE Editor\nBuilt by Sourav\n2025\nUsing BOOSE Interpreter",
-                    "About",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Information);
-            }
-            catch (Exception ex)
-            {
-                debugWindow.AppendText($"ABOUT ERROR: {ex.Message}\r\n");
-            }
+            string trimmed = line.TrimStart();
+            if (!trimmed.Contains("=")) return false;
+
+            string firstWord = trimmed.Split(new char[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries)[0].ToLower();
+
+            // Skip declaration keywords
+            if (firstWord == "int" || firstWord == "real" || firstWord == "array" || firstWord == "boolean")
+                return false;
+
+            // Skip known commands (including end, set)
+            string[] knownCommands = { "circle", "moveto", "drawto", "pen", "rect", "pensize", "tri", "write", "clear", "reset", "poke", "peek", "set", "if", "else", "end", "while", "endwhile", "for", "endfor", "method", "endmethod" };
+            if (System.Array.IndexOf(knownCommands, firstWord) >= 0)
+                return false;
+
+            return true;
         }
 
-        /// <summary>
-        /// Handles Enter key input for the single-line command box.
-        /// </summary>
-        private void singleLineInputBox_KeyDown(object sender, KeyEventArgs e)
+
+        private string NormalizeAssignment(string line)
         {
-            try
-            {
-                if (e.KeyCode == Keys.Enter)
-                {
-                    e.SuppressKeyPress = true;
-                    HandleSingleCommand(singleLineInputBox.Text.Trim());
-                    singleLineInputBox.Clear();
-                }
-            }
-            catch (Exception ex)
-            {
-                debugWindow.AppendText($"COMMAND INPUT ERROR: {ex.Message}\r\n");
-            }
+            string trimmed = line.Trim();
+
+            // If it already starts with "set", return as-is (prevent double-prefix)
+            if (trimmed.ToLower().StartsWith("set "))
+                return trimmed;
+
+            // Add "set" prefix for BOOSE AppAsign
+            return "set " + trimmed;
         }
 
-        /// <summary>
-        /// Executes quick UI commands (new, save, load, exit) typed in the single-line command box.
-        /// </summary>
-        private void HandleSingleCommand(string command)
-        {
-            try
-            {
-                command = command.ToLower().Trim();
 
-                switch (command)
-                {
-                    case "new":
-                    case "reset":
-                    case "clear":
-                        newToolStripMenuItem_Click(null, null);
-                        break;
-
-                    case "save":
-                        saveFileToolStripMenuItem_Click(null, null);
-                        break;
-
-                    case "saveimage":
-                        saveImageToolStripMenuItem_Click(null, null);
-                        break;
-
-                    case "load":
-                    case "open":
-                        loadFileToolStripMenuItem_Click(null, null);
-                        break;
-
-                    case "loadimage":
-                        loadImageToolStripMenuItem_Click(null, null);
-                        break;
-
-                    case "exit":
-                    case "quit":
-                        Application.Exit();
-                        break;
-
-                    default:
-                        MessageBox.Show("Unknown command: " + command);
-                        break;
-                }
-            }
-            catch (Exception ex)
-            {
-                debugWindow.AppendText($"SINGLE COMMAND ERROR: {ex.Message}\r\n");
-            }
-        }
     }
 }

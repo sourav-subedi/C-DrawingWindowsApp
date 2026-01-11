@@ -1,0 +1,92 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BOOSE Web Interpreter</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <h1>BOOSE Web Interpreter</h1>
+        <div class="header-actions">
+            <button id="savePngBtn">💾 Save PNG</button>
+            <button id="saveCommandsBtn">💾 Save Commands</button>
+            <button id="loadBtn">📂 Load</button>
+            <input type="file" id="fileInput" accept=".boose" hidden>
+        </div>
+    </header>
+
+    <!-- Main Layout -->
+    <main>
+        <!-- Left Panel: Inputs -->
+        <section class="panel left-panel">
+            <div class="section">
+                <label for="commandTextArea">Commands</label>
+                <textarea id="commandTextArea" placeholder="Enter BOOSE commands here... (Shift+Enter to run all)" rows="12"></textarea>
+                <div class="btn-group">
+                    <button id="runBtn" class="btn primary">▶ Run</button>
+                    <button id="clearCanvasBtn" class="btn secondary">🗑 Clear Canvas</button>
+                </div>
+            </div>
+
+            <div class="section">
+                <label for="singleCommandInput">Single Command</label>
+                <div class="single-command">
+                    <input type="text" id="singleCommandInput" placeholder="Enter single command">
+                    <button id="runOneBtn" class="btn primary">▶ Run One</button>
+                </div>
+            </div>
+
+            <!--<div class="section">
+                <label>Suggestions</label>
+                <div id="suggestionsBox" class="suggestions-box"></div>
+            </div>-->
+        </section>
+
+        <!-- Right Panel: Canvas -->
+        <section class="panel right-panel">
+            <div class="canvas-wrapper">
+                <img id="canvasOutput" alt="Canvas Output">
+            </div>
+        </section>
+    </main>
+
+    <!-- Debug Section -->
+    <section class="debug-panel">
+        <div class="debug-header">
+            <span>Debug Output</span>
+            <button id="clearDebugBtn" class="btn small">Clear</button>
+        </div>
+        <textarea id="debugBox" readonly rows="6"></textarea>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <button id="aboutBtn" class="footer-btn">ℹ About</button>
+        <button id="commandListBtn" class="footer-btn">📋 Commands</button>
+        <button id="documentationBtn" class="footer-btn">📖 Docs</button>
+    </footer>
+
+    <!-- Modals -->
+    <div id="commandListModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Available Commands</h2>
+            <ul id="commandList"></ul>
+        </div>
+    </div>
+
+    <div id="aboutModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>About BOOSE</h2>
+            <p id="aboutContent"></p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

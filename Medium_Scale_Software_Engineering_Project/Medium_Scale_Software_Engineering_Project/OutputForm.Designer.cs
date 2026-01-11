@@ -1,6 +1,6 @@
-﻿namespace Medium_Scale_Software_Engineering_Project
+﻿namespace MYBooseApp
 {
-    partial class OutputForm
+    partial class drawingApplication
     {
         /// <summary>
         ///  Required designer variable.
@@ -28,163 +28,129 @@
         /// </summary>
         private void InitializeComponent()
         {
-            multiLineInputBox = new TextBox();
-            debugWindow = new TextBox();
-            runButton = new Button();
-            drawingBoard = new PictureBox();
-            singleLineInputBox = new TextBox();
-            commandLabel = new Label();
+            drawingBox = new PictureBox();
+            singleCommandTextBox = new TextBox();
+            runCommand = new Button();
+            debugBox = new TextBox();
+            debugLabel = new Label();
             menuStrip1 = new MenuStrip();
             fileToolStripMenuItem = new ToolStripMenuItem();
-            newToolStripMenuItem = new ToolStripMenuItem();
-            saveAsToolStripMenuItem = new ToolStripMenuItem();
-            saveFileToolStripMenuItem = new ToolStripMenuItem();
-            saveImageToolStripMenuItem = new ToolStripMenuItem();
+            saveToolStripMenuItem = new ToolStripMenuItem();
             loadToolStripMenuItem = new ToolStripMenuItem();
-            loadFileToolStripMenuItem = new ToolStripMenuItem();
-            loadImageToolStripMenuItem = new ToolStripMenuItem();
             exitToolStripMenuItem = new ToolStripMenuItem();
             helpToolStripMenuItem = new ToolStripMenuItem();
             aboutToolStripMenuItem = new ToolStripMenuItem();
-            ((System.ComponentModel.ISupportInitialize)drawingBoard).BeginInit();
+            commandListToolStripMenuItem = new ToolStripMenuItem();
+            documentationToolStripMenuItem = new ToolStripMenuItem();
+            commandTextBox = new TextBox();
+            clearDebug = new Button();
+            runOneCommandButton = new Button();
+            clearCanvas = new Button();
+            ((System.ComponentModel.ISupportInitialize)drawingBox).BeginInit();
             menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
-            // multiLineInputBox
+            // drawingBox
             // 
-            multiLineInputBox.BackColor = Color.White;
-            multiLineInputBox.Location = new Point(26, 58);
-            multiLineInputBox.Multiline = true;
-            multiLineInputBox.Name = "multiLineInputBox";
-            multiLineInputBox.ScrollBars = ScrollBars.Vertical;
-            multiLineInputBox.Size = new Size(683, 458);
-            multiLineInputBox.TabIndex = 0;
+            drawingBox.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            drawingBox.BackColor = SystemColors.ButtonHighlight;
+            drawingBox.BorderStyle = BorderStyle.Fixed3D;
+            drawingBox.Location = new Point(589, 85);
+            drawingBox.Margin = new Padding(6, 6, 6, 6);
+            drawingBox.Name = "drawingBox";
+            drawingBox.Size = new Size(1079, 850);
+            drawingBox.TabIndex = 0;
+            drawingBox.TabStop = false;
+            drawingBox.Paint += drawingBox_Paint;
             // 
-            // debugWindow
+            // singleCommandTextBox
             // 
-            debugWindow.Location = new Point(36, 634);
-            debugWindow.Multiline = true;
-            debugWindow.Name = "debugWindow";
-            debugWindow.ReadOnly = true;
-            debugWindow.ScrollBars = ScrollBars.Vertical;
-            debugWindow.Size = new Size(673, 262);
-            debugWindow.TabIndex = 1;
+            singleCommandTextBox.Location = new Point(22, 896);
+            singleCommandTextBox.Margin = new Padding(6, 6, 6, 6);
+            singleCommandTextBox.Name = "singleCommandTextBox";
+            singleCommandTextBox.Size = new Size(524, 39);
+            singleCommandTextBox.TabIndex = 2;
             // 
-            // runButton
+            // runCommand
             // 
-            runButton.BackColor = SystemColors.GradientActiveCaption;
-            runButton.Location = new Point(36, 582);
-            runButton.Name = "runButton";
-            runButton.Size = new Size(107, 46);
-            runButton.TabIndex = 2;
-            runButton.Text = "Run";
-            runButton.UseVisualStyleBackColor = false;
-            runButton.Click += button1_Click;
+            runCommand.ForeColor = SystemColors.ControlText;
+            runCommand.Location = new Point(173, 958);
+            runCommand.Margin = new Padding(6, 6, 6, 6);
+            runCommand.Name = "runCommand";
+            runCommand.Size = new Size(139, 49);
+            runCommand.TabIndex = 3;
+            runCommand.Text = "Run";
+            runCommand.UseVisualStyleBackColor = true;
+            runCommand.Click += runCommand_Click;
             // 
-            // drawingBoard
+            // debugBox
             // 
-            drawingBoard.BackColor = SystemColors.ButtonShadow;
-            drawingBoard.BorderStyle = BorderStyle.FixedSingle;
-            drawingBoard.Location = new Point(715, 58);
-            drawingBoard.Name = "drawingBoard";
-            drawingBoard.Size = new Size(1254, 838);
-            drawingBoard.TabIndex = 3;
-            drawingBoard.TabStop = false;
-            drawingBoard.Paint += pictureBox1_Paint;
+            debugBox.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            debugBox.Location = new Point(22, 1078);
+            debugBox.Margin = new Padding(6, 6, 6, 6);
+            debugBox.Multiline = true;
+            debugBox.Name = "debugBox";
+            debugBox.ReadOnly = true;
+            debugBox.ScrollBars = ScrollBars.Vertical;
+            debugBox.Size = new Size(1646, 253);
+            debugBox.TabIndex = 4;
             // 
-            // singleLineInputBox
+            // debugLabel
             // 
-            singleLineInputBox.Location = new Point(176, 542);
-            singleLineInputBox.Name = "singleLineInputBox";
-            singleLineInputBox.Size = new Size(495, 39);
-            singleLineInputBox.TabIndex = 4;
-            singleLineInputBox.KeyDown += singleLineInputBox_KeyDown;
-            // 
-            // commandLabel
-            // 
-            commandLabel.AutoSize = true;
-            commandLabel.Location = new Point(35, 542);
-            commandLabel.Name = "commandLabel";
-            commandLabel.Size = new Size(130, 32);
-            commandLabel.TabIndex = 5;
-            commandLabel.Text = "Command:";
+            debugLabel.AutoSize = true;
+            debugLabel.ForeColor = SystemColors.ActiveCaptionText;
+            debugLabel.Location = new Point(22, 1030);
+            debugLabel.Margin = new Padding(6, 0, 6, 0);
+            debugLabel.Name = "debugLabel";
+            debugLabel.Size = new Size(180, 32);
+            debugLabel.TabIndex = 5;
+            debugLabel.Text = "Debug Window";
             // 
             // menuStrip1
             // 
+            menuStrip1.BackColor = Color.White;
             menuStrip1.ImageScalingSize = new Size(32, 32);
             menuStrip1.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem, helpToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
-            menuStrip1.Size = new Size(1988, 40);
-            menuStrip1.TabIndex = 6;
-            menuStrip1.Text = "topMenuBar";
+            menuStrip1.Padding = new Padding(11, 4, 0, 4);
+            menuStrip1.Size = new Size(1694, 44);
+            menuStrip1.TabIndex = 8;
+            menuStrip1.Text = "menuStrip1";
             // 
             // fileToolStripMenuItem
             // 
-            fileToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { newToolStripMenuItem, saveAsToolStripMenuItem, loadToolStripMenuItem, exitToolStripMenuItem });
+            fileToolStripMenuItem.BackColor = Color.White;
+            fileToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { saveToolStripMenuItem, loadToolStripMenuItem, exitToolStripMenuItem });
+            fileToolStripMenuItem.ForeColor = Color.Black;
             fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             fileToolStripMenuItem.Size = new Size(71, 36);
             fileToolStripMenuItem.Text = "File";
             // 
-            // newToolStripMenuItem
+            // saveToolStripMenuItem
             // 
-            newToolStripMenuItem.Name = "newToolStripMenuItem";
-            newToolStripMenuItem.Size = new Size(229, 44);
-            newToolStripMenuItem.Text = "New";
-            newToolStripMenuItem.Click += newToolStripMenuItem_Click;
-            // 
-            // saveAsToolStripMenuItem
-            // 
-            saveAsToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { saveFileToolStripMenuItem, saveImageToolStripMenuItem });
-            saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
-            saveAsToolStripMenuItem.Size = new Size(229, 44);
-            saveAsToolStripMenuItem.Text = "Save As";
-            // 
-            // saveFileToolStripMenuItem
-            // 
-            saveFileToolStripMenuItem.Name = "saveFileToolStripMenuItem";
-            saveFileToolStripMenuItem.Size = new Size(270, 44);
-            saveFileToolStripMenuItem.Text = "Save File";
-            saveFileToolStripMenuItem.Click += saveFileToolStripMenuItem_Click;
-            // 
-            // saveImageToolStripMenuItem
-            // 
-            saveImageToolStripMenuItem.Name = "saveImageToolStripMenuItem";
-            saveImageToolStripMenuItem.Size = new Size(270, 44);
-            saveImageToolStripMenuItem.Text = "Save Image";
-            saveImageToolStripMenuItem.Click += saveImageToolStripMenuItem_Click;
+            saveToolStripMenuItem.Name = "saveToolStripMenuItem";
+            saveToolStripMenuItem.Size = new Size(359, 44);
+            saveToolStripMenuItem.Text = "Save ";
+            saveToolStripMenuItem.Click += saveToolStripMenuItem_Click;
             // 
             // loadToolStripMenuItem
             // 
-            loadToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { loadFileToolStripMenuItem, loadImageToolStripMenuItem });
             loadToolStripMenuItem.Name = "loadToolStripMenuItem";
-            loadToolStripMenuItem.Size = new Size(229, 44);
+            loadToolStripMenuItem.Size = new Size(359, 44);
             loadToolStripMenuItem.Text = "Load";
-            // 
-            // loadFileToolStripMenuItem
-            // 
-            loadFileToolStripMenuItem.Name = "loadFileToolStripMenuItem";
-            loadFileToolStripMenuItem.Size = new Size(271, 44);
-            loadFileToolStripMenuItem.Text = "Load File";
-            loadFileToolStripMenuItem.Click += loadFileToolStripMenuItem_Click;
-            // 
-            // loadImageToolStripMenuItem
-            // 
-            loadImageToolStripMenuItem.Name = "loadImageToolStripMenuItem";
-            loadImageToolStripMenuItem.Size = new Size(271, 44);
-            loadImageToolStripMenuItem.Text = "Load Image";
-            loadImageToolStripMenuItem.Click += loadImageToolStripMenuItem_Click;
+            loadToolStripMenuItem.Click += loadToolStripMenuItem_Click;
             // 
             // exitToolStripMenuItem
             // 
             exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            exitToolStripMenuItem.Size = new Size(229, 44);
+            exitToolStripMenuItem.Size = new Size(359, 44);
             exitToolStripMenuItem.Text = "Exit";
             exitToolStripMenuItem.Click += exitToolStripMenuItem_Click;
             // 
             // helpToolStripMenuItem
             // 
-            helpToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { aboutToolStripMenuItem });
+            helpToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { aboutToolStripMenuItem, commandListToolStripMenuItem, documentationToolStripMenuItem });
             helpToolStripMenuItem.Name = "helpToolStripMenuItem";
             helpToolStripMenuItem.Size = new Size(84, 36);
             helpToolStripMenuItem.Text = "Help";
@@ -192,26 +158,98 @@
             // aboutToolStripMenuItem
             // 
             aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            aboutToolStripMenuItem.Size = new Size(212, 44);
+            aboutToolStripMenuItem.Size = new Size(359, 44);
             aboutToolStripMenuItem.Text = "About";
             aboutToolStripMenuItem.Click += aboutToolStripMenuItem_Click;
             // 
-            // OutputForm
+            // commandListToolStripMenuItem
+            // 
+            commandListToolStripMenuItem.Name = "commandListToolStripMenuItem";
+            commandListToolStripMenuItem.Size = new Size(359, 44);
+            commandListToolStripMenuItem.Text = "Command list";
+            commandListToolStripMenuItem.Click += commandListToolStripMenuItem_Click;
+            // 
+            // documentationToolStripMenuItem
+            // 
+            documentationToolStripMenuItem.Name = "documentationToolStripMenuItem";
+            documentationToolStripMenuItem.Size = new Size(359, 44);
+            documentationToolStripMenuItem.Text = "Documentation";
+            documentationToolStripMenuItem.Click += documentationToolStripMenuItem_Click;
+            // 
+            // commandTextBox
+            // 
+            commandTextBox.Location = new Point(22, 85);
+            commandTextBox.Margin = new Padding(6, 6, 6, 6);
+            commandTextBox.Multiline = true;
+            commandTextBox.Name = "commandTextBox";
+            commandTextBox.Size = new Size(524, 793);
+            commandTextBox.TabIndex = 9;
+            commandTextBox.TextChanged += commandTextBox_TextChanged;
+            commandTextBox.KeyPress += commandTextBox_KeyPress;
+            // 
+            // clearDebug
+            // 
+            clearDebug.Font = new Font("Segoe UI Black", 7.125F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            clearDebug.ForeColor = SystemColors.MenuText;
+            clearDebug.Location = new Point(337, 958);
+            clearDebug.Margin = new Padding(6, 6, 6, 6);
+            clearDebug.Name = "clearDebug";
+            clearDebug.Size = new Size(116, 49);
+            clearDebug.TabIndex = 10;
+            clearDebug.Text = "Clear";
+            clearDebug.UseVisualStyleBackColor = true;
+            clearDebug.Click += clearDebug_Click;
+            // 
+            // runOneCommandButton
+            // 
+            runOneCommandButton.ForeColor = SystemColors.ActiveCaptionText;
+            runOneCommandButton.Location = new Point(22, 958);
+            runOneCommandButton.Margin = new Padding(6, 6, 6, 6);
+            runOneCommandButton.Name = "runOneCommandButton";
+            runOneCommandButton.Size = new Size(139, 49);
+            runOneCommandButton.TabIndex = 12;
+            runOneCommandButton.Text = "Run One";
+            runOneCommandButton.UseVisualStyleBackColor = true;
+            runOneCommandButton.Click += runOneCommand_Click;
+            // 
+            // clearCanvas
+            // 
+            clearCanvas.BackColor = Color.Red;
+            clearCanvas.FlatStyle = FlatStyle.Flat;
+            clearCanvas.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            clearCanvas.ForeColor = Color.Snow;
+            clearCanvas.Location = new Point(1651, 56);
+            clearCanvas.Margin = new Padding(0);
+            clearCanvas.Name = "clearCanvas";
+            clearCanvas.RightToLeft = RightToLeft.No;
+            clearCanvas.Size = new Size(43, 49);
+            clearCanvas.TabIndex = 13;
+            clearCanvas.Text = "X";
+            clearCanvas.UseVisualStyleBackColor = false;
+            clearCanvas.Click += clearCanvas_Click;
+            // 
+            // drawingApplication
             // 
             AutoScaleDimensions = new SizeF(13F, 32F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1988, 908);
-            Controls.Add(commandLabel);
-            Controls.Add(singleLineInputBox);
-            Controls.Add(drawingBoard);
-            Controls.Add(runButton);
-            Controls.Add(debugWindow);
-            Controls.Add(multiLineInputBox);
+            BackColor = Color.FromArgb(224, 224, 224);
+            ClientSize = new Size(1694, 1361);
+            Controls.Add(clearCanvas);
+            Controls.Add(runOneCommandButton);
+            Controls.Add(clearDebug);
+            Controls.Add(commandTextBox);
+            Controls.Add(debugLabel);
+            Controls.Add(debugBox);
+            Controls.Add(runCommand);
+            Controls.Add(singleCommandTextBox);
+            Controls.Add(drawingBox);
             Controls.Add(menuStrip1);
+            ForeColor = SystemColors.Window;
             MainMenuStrip = menuStrip1;
-            Name = "OutputForm";
-            Text = "MyBoose App";
-            ((System.ComponentModel.ISupportInitialize)drawingBoard).EndInit();
+            Margin = new Padding(6, 6, 6, 6);
+            Name = "drawingApplication";
+            Text = "MyBooseApp";
+            ((System.ComponentModel.ISupportInitialize)drawingBox).EndInit();
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
             ResumeLayout(false);
@@ -220,23 +258,23 @@
 
         #endregion
 
-        private TextBox multiLineInputBox;
-        private TextBox debugWindow;
-        private Button runButton;
-        private PictureBox drawingBoard;
-        private TextBox singleLineInputBox;
-        private Label commandLabel;
+        private PictureBox drawingBox;
+        private TextBox singleCommandTextBox;
+        private Button runCommand;
+        private TextBox debugBox;
+        private Label debugLabel;
         private MenuStrip menuStrip1;
         private ToolStripMenuItem fileToolStripMenuItem;
-        private ToolStripMenuItem newToolStripMenuItem;
-        private ToolStripMenuItem saveAsToolStripMenuItem;
-        private ToolStripMenuItem saveFileToolStripMenuItem;
-        private ToolStripMenuItem saveImageToolStripMenuItem;
+        private ToolStripMenuItem saveToolStripMenuItem;
         private ToolStripMenuItem loadToolStripMenuItem;
-        private ToolStripMenuItem loadFileToolStripMenuItem;
-        private ToolStripMenuItem loadImageToolStripMenuItem;
+        private ToolStripMenuItem exitToolStripMenuItem;
         private ToolStripMenuItem helpToolStripMenuItem;
         private ToolStripMenuItem aboutToolStripMenuItem;
-        private ToolStripMenuItem exitToolStripMenuItem;
+        private ToolStripMenuItem commandListToolStripMenuItem;
+        private TextBox commandTextBox;
+        private Button clearDebug;
+        private Button runOneCommandButton;
+        private ToolStripMenuItem documentationToolStripMenuItem;
+        private Button clearCanvas;
     }
 }
