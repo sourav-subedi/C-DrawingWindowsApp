@@ -1,34 +1,56 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BOOSE Web Interpreter</title>
+
+    <!-- Styles -->
     <link rel="stylesheet" href="styles.css">
+
+    <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
+
 <body>
+
     <!-- Header -->
     <header>
         <h1>BOOSE Web Interpreter</h1>
         <div class="header-actions">
-            <button id="savePngBtn">💾 Save PNG</button>
-            <button id="saveCommandsBtn">💾 Save Commands</button>
-            <button id="loadBtn">📂 Load</button>
+            <button id="savePngBtn">
+                <i class="fa-solid fa-image"></i> Save PNG
+            </button>
+            <button id="saveCommandsBtn">
+                <i class="fa-solid fa-floppy-disk"></i> Save Commands
+            </button>
+            <button id="loadBtn">
+                <i class="fa-solid fa-folder-open"></i> Load
+            </button>
             <input type="file" id="fileInput" accept=".boose" hidden>
         </div>
     </header>
 
     <!-- Main Layout -->
     <main>
-        <!-- Left Panel: Inputs -->
+        <!-- Left Panel -->
         <section class="panel left-panel">
             <div class="section">
                 <label for="commandTextArea">Commands</label>
-                <textarea id="commandTextArea" placeholder="Enter BOOSE commands here... (Shift+Enter to run all)" rows="12"></textarea>
+                <textarea id="commandTextArea" placeholder="Enter BOOSE commands here... (Shift+Enter to run all)"
+                          rows="12"></textarea>
+
                 <div class="btn-group">
-                    <button id="runBtn" class="btn primary">▶ Run</button>
-                    <button id="clearCanvasBtn" class="btn secondary">🗑 Clear Canvas</button>
+                    <button id="runBtn" class="btn primary">
+                        <i class="fa-solid fa-play"></i> Run
+                    </button>
+                    <button id="clearCanvasBtn" class="btn secondary">
+                        <i class="fa-solid fa-trash"></i> Clear Canvas
+                    </button>
                 </div>
             </div>
 
@@ -36,17 +58,14 @@
                 <label for="singleCommandInput">Single Command</label>
                 <div class="single-command">
                     <input type="text" id="singleCommandInput" placeholder="Enter single command">
-                    <button id="runOneBtn" class="btn primary">▶ Run One</button>
+                    <button id="runOneBtn" class="btn primary">
+                        <i class="fa-solid fa-play"></i> Run One
+                    </button>
                 </div>
             </div>
-
-            <!--<div class="section">
-                <label>Suggestions</label>
-                <div id="suggestionsBox" class="suggestions-box"></div>
-            </div>-->
         </section>
 
-        <!-- Right Panel: Canvas -->
+        <!-- Right Panel -->
         <section class="panel right-panel">
             <div class="canvas-wrapper">
                 <img id="canvasOutput" alt="Canvas Output">
@@ -57,17 +76,25 @@
     <!-- Debug Section -->
     <section class="debug-panel">
         <div class="debug-header">
-            <span>Debug Output</span>
-            <button id="clearDebugBtn" class="btn small">Clear</button>
+            <span><i class="fa-solid fa-bug"></i> Debug Output</span>
+            <button id="clearDebugBtn" class="btn small">
+                <i class="fa-solid fa-broom"></i> Clear
+            </button>
         </div>
         <textarea id="debugBox" readonly rows="6"></textarea>
     </section>
 
     <!-- Footer -->
     <footer>
-        <button id="aboutBtn" class="footer-btn">ℹ About</button>
-        <button id="commandListBtn" class="footer-btn">📋 Commands</button>
-        <button id="documentationBtn" class="footer-btn">📖 Docs</button>
+        <button id="aboutBtn" class="footer-btn">
+            <i class="fa-solid fa-circle-info"></i> About
+        </button>
+        <button id="commandListBtn" class="footer-btn">
+            <i class="fa-solid fa-list"></i> Commands
+        </button>
+        <button id="documentationBtn" class="footer-btn">
+            <i class="fa-solid fa-book"></i> Docs
+        </button>
     </footer>
 
     <!-- Modals -->
@@ -87,6 +114,8 @@
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <!-- Script -->
+    <script src="webscript.js"></script>
 </body>
+
 </html>

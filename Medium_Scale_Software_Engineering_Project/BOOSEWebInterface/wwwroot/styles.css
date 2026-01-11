@@ -1,5 +1,4 @@
-﻿/* Base Reset */
-* {
+﻿* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -8,7 +7,7 @@
 body {
     font-family: 'Roboto', sans-serif;
     background: #f0f2f5;
-    color: #333;
+    color: #1b294f;
     display: flex;
     flex-direction: column;
     min-height: 100vh;

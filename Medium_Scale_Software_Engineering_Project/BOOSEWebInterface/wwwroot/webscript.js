@@ -293,7 +293,7 @@ aboutBtn.addEventListener('click', () => {
     aboutModal.style.display = 'block';
 });
 
-// Close modals 
+// Close the opened modals
 document.querySelectorAll('.close').forEach(closeBtn => {
     closeBtn.addEventListener('click', function () {
         this.closest('.modal').style.display = 'none';
